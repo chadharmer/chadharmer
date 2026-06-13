@@ -221,23 +221,45 @@ export type Role = {
   focus: string;
 };
 
-export const experience: Role[] = [
-  {
-    company: "Capital One",
-    context: "Enterprise product leadership",
-    focus: "Leading product at scale across complex, regulated systems.",
+export const experience = {
+  intro:
+    "Over the last 15+ years I've worked across customer service, team leadership, process improvement, process management, enterprise risk, data governance, and product management — inside banking, risk, operations, and product organizations.",
+  connection:
+    "The same problems kept recurring: workflow design, operational efficiency, stakeholder alignment, governance, and reducing friction in complex processes. Many of the themes in my projects — trust, reducing context switching, preserving valuable work, and building systems that scale — originated long before I started building software.",
+  themes: [
+    "Workflow design",
+    "Process optimization",
+    "Operational efficiency",
+    "Stakeholder alignment",
+    "Governance",
+    "Scaling systems",
+    "Reducing friction",
+  ],
+  roles: [
+    {
+      company: "Capital One",
+      context: "Product Management & Enterprise Risk",
+      focus:
+        "Built and managed products supporting governance, compliance, risk management, enterprise data workflows, and operational decision-making — focused on product strategy, roadmap development, stakeholder alignment, and large-scale enterprise initiatives.",
+    },
+    {
+      company: "PNC Bank",
+      context: "Process Improvement Consulting",
+      focus:
+        "Partnered with business leaders and operational teams to identify inefficiencies, improve workflows, coach teams, and drive continuous-improvement initiatives.",
+    },
+    {
+      company: "TD Bank",
+      context: "Process Management & Operational Leadership",
+      focus:
+        "Progressed from frontline leadership into business process management and enterprise process improvement — leading large-scale process optimization, data analysis, operational redesign, and organizational improvement programs.",
+    },
+  ] satisfies Role[],
+  closing: {
+    lead: "The projects demonstrate what I build.",
+    trail: "My experience explains why I think about problems the way I do.",
   },
-  {
-    company: "PNC",
-    context: "Product & platform",
-    focus: "Shaping digital products inside a large financial institution.",
-  },
-  {
-    company: "TD",
-    context: "Product strategy",
-    focus: "Driving strategy and execution across customer-facing platforms.",
-  },
-];
+} as const;
 
 export type Essay = {
   category: string;
