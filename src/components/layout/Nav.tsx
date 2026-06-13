@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { nav, site } from "@/lib/content";
 import { cn } from "@/lib/cn";
@@ -27,8 +28,8 @@ export function Nav() {
       >
         <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 sm:px-8">
           {/* Wordmark */}
-          <a
-            href="#top"
+          <Link
+            href="/#top"
             className="group flex items-center gap-2.5"
             aria-label="Chad Harmer — home"
           >
@@ -38,25 +39,25 @@ export function Nav() {
             <span className="text-sm font-medium tracking-tight text-fg">
               {site.name}
             </span>
-          </a>
+          </Link>
 
           {/* Desktop links */}
           <div className="hidden items-center gap-1 md:flex">
             {nav.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 className="rounded-md px-3 py-2 text-sm text-muted transition-colors hover:text-fg"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
-            <a
-              href="#contact"
+            <Link
+              href="/#contact"
               className="ml-2 rounded-full border border-line-strong bg-elevated px-4 py-2 text-sm font-medium text-fg transition-all hover:border-accent/50 hover:bg-elevated/80"
             >
               Get in touch
-            </a>
+            </Link>
           </div>
 
           {/* Mobile toggle */}
@@ -89,22 +90,22 @@ export function Nav() {
           <div className="border-t border-line bg-base/95 backdrop-blur-xl md:hidden">
             <div className="mx-auto flex max-w-6xl flex-col px-6 py-4 sm:px-8">
               {nav.map((item) => (
-                <a
+                <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className="rounded-md px-2 py-3 text-sm text-muted transition-colors hover:text-fg"
                 >
                   {item.label}
-                </a>
+                </Link>
               ))}
-              <a
-                href="#contact"
+              <Link
+                href="/#contact"
                 onClick={() => setOpen(false)}
                 className="mt-2 rounded-full border border-line-strong bg-elevated px-4 py-2.5 text-center text-sm font-medium text-fg"
               >
                 Get in touch
-              </a>
+              </Link>
             </div>
           </div>
         ) : null}
