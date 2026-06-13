@@ -4,7 +4,6 @@ import { Hero } from "@/components/sections/Hero";
 import { FeaturedProducts } from "@/components/sections/FeaturedProducts";
 import { HowIBuild } from "@/components/sections/HowIBuild";
 import { Experience } from "@/components/sections/Experience";
-import { Writing } from "@/components/sections/Writing";
 import { Contact } from "@/components/sections/Contact";
 
 export default function Home() {
@@ -16,7 +15,6 @@ export default function Home() {
         <FeaturedProducts />
         <HowIBuild />
         <Experience />
-        <Writing />
         <Contact />
       </main>
       <Footer />

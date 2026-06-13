@@ -289,8 +289,16 @@ export default function RygerCaseStudy() {
             <Reveal delay={0.16}>
               <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
                 <a
-                  href={`mailto:${site.email}`}
+                  href="https://www.ryger.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-fg px-5 py-3 text-sm font-medium text-base transition-transform hover:-translate-y-0.5"
+                >
+                  Visit Ryger
+                </a>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-elevated/60 px-5 py-3 text-sm font-medium text-fg transition-colors hover:border-accent/40"
                 >
                   Talk products with me
                 </a>

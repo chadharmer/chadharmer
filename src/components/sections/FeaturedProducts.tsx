@@ -37,10 +37,7 @@ export function FeaturedProducts() {
 
 function RygerFeature() {
   return (
-    <Link
-      href="/ryger"
-      className="group relative block overflow-hidden rounded-3xl border border-line-strong bg-surface/60 p-7 transition-colors duration-300 hover:border-accent/40 sm:p-9"
-    >
+    <div className="group relative overflow-hidden rounded-3xl border border-line-strong bg-surface/60 p-7 transition-colors duration-300 hover:border-accent/40 sm:p-9">
       {/* Ambient glow */}
       <div
         aria-hidden
@@ -77,23 +74,23 @@ function RygerFeature() {
             {ryger.intro}
           </p>
 
-          <div className="mt-7 inline-flex items-center gap-2 text-sm font-medium text-fg transition-colors">
-            Read the case study
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              className="transition-transform group-hover:translate-x-0.5"
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            <Link
+              href="/ryger"
+              className="group/cta inline-flex items-center gap-2 rounded-full bg-fg px-4 py-2.5 text-sm font-medium text-base transition-transform hover:-translate-y-0.5"
             >
-              <path
-                d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+              Read Case Study
+              <Arrow className="group-hover/cta:translate-x-0.5" />
+            </Link>
+            <a
+              href="https://www.ryger.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group/cta inline-flex items-center gap-2 rounded-full border border-line-strong bg-elevated/60 px-4 py-2.5 text-sm font-medium text-fg transition-colors hover:border-accent/40"
+            >
+              Visit Ryger
+              <Arrow className="group-hover/cta:translate-x-0.5" />
+            </a>
           </div>
         </div>
 
@@ -114,16 +111,13 @@ function RygerFeature() {
           </ol>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
 function ProductCard({ product }: { product: Product }) {
   return (
-    <a
-      href={product.href}
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface/50 p-6 transition-all duration-300 hover:border-line-strong hover:bg-surface"
-    >
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface/50 p-6 transition-colors duration-300 hover:border-line-strong">
       {/* Hover glow */}
       <div
         aria-hidden
@@ -189,27 +183,63 @@ function ProductCard({ product }: { product: Product }) {
           </div>
         ) : null}
 
-        {/* Footer link */}
-        <div className="mt-auto flex items-center gap-1.5 pt-6 text-sm font-medium text-muted transition-colors group-hover:text-fg">
-          Learn more
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 14 14"
-            fill="none"
-            className="transition-transform group-hover:translate-x-0.5"
-          >
-            <path
-              d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+        {/* Footer: real CTAs if a live destination exists, else status text */}
+        <div className="mt-auto pt-6">
+          {product.actions?.length ? (
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+              {product.actions.map((action) =>
+                action.external ? (
+                  <a
+                    key={action.label}
+                    href={action.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/cta inline-flex items-center gap-1.5 text-sm font-medium text-fg transition-colors hover:text-accent"
+                  >
+                    {action.label}
+                    <Arrow className="group-hover/cta:translate-x-0.5" />
+                  </a>
+                ) : (
+                  <Link
+                    key={action.label}
+                    href={action.href}
+                    className="group/cta inline-flex items-center gap-1.5 text-sm font-medium text-fg transition-colors hover:text-accent"
+                  >
+                    {action.label}
+                    <Arrow className="group-hover/cta:translate-x-0.5" />
+                  </Link>
+                )
+              )}
+            </div>
+          ) : product.availability ? (
+            <div className="flex items-center gap-2 text-sm text-faint">
+              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-faint/70" />
+              {product.availability}
+            </div>
+          ) : null}
         </div>
       </div>
-    </a>
+    </div>
+  );
+}
+
+function Arrow({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 14 14"
+      fill="none"
+      className={"transition-transform " + className}
+    >
+      <path
+        d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 

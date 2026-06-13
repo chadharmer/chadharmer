@@ -7,7 +7,7 @@
 export const site = {
   name: "Chad Harmer",
   role: "Product Leader · Founder · Builder",
-  email: "chadharmer@mac.com",
+  email: "chad@ryger.app",
   linkedin: "https://www.linkedin.com/in/chadharmer",
 } as const;
 
@@ -15,7 +15,6 @@ export const nav = [
   { label: "Products", href: "/#products" },
   { label: "How I Build", href: "/#how-i-build" },
   { label: "Experience", href: "/#experience" },
-  { label: "Writing", href: "/#writing" },
 ] as const;
 
 export const hero = {
@@ -39,10 +38,13 @@ export type Product = {
   problem: string;
   why: string;
   lesson: string;
-  href: string;
   accent: string; // tailwind-ish rgba used for the card glow
   highlights?: string[]; // short capability chips
   architecture?: ArchGroup[]; // grouped tech-stack categories
+  /** Real CTA links. Only ever points to live, useful destinations. */
+  actions?: { label: string; href: string; external?: boolean }[];
+  /** Non-clickable status text, used when no live destination exists yet. */
+  availability?: string;
 };
 
 export type ArchGroup = {
@@ -60,8 +62,10 @@ export const products: Product[] = [
     why: "Built to tell a more complete career story. Resume pairs a traditional resume with a deeper career narrative, then reads a job description against both — surfacing the most relevant real experience first, always grounded in your actual work history.",
     lesson:
       "The hard part was never generating content. It was preserving trust — keeping resumes truthful, free of invented metrics, and still sounding like the person behind them.",
-    href: "#",
     accent: "109, 139, 255",
+    // Live product link intentionally omitted until www.ryger.app/resume is
+    // confirmed live (currently restoring). No placeholder link in the meantime.
+    availability: "Resume landing page being restored",
     highlights: ["Career-story grounded", "JD-aware prioritization", "Truthful by design"],
     architecture: [
       { label: "Frontend", items: ["Next.js", "TypeScript", "Tailwind", "Vercel"] },
@@ -89,8 +93,8 @@ export const products: Product[] = [
     why: "Built in partnership with an experienced educator with a PhD in education and instructional design — grounding decisions in how teachers actually plan, not how software imagines they do. The defining discovery: teachers don't just need lessons generated, they need lessons that adapt — a shortened class, a substitute version, ELL or intervention support, more challenge for advanced learners — without losing learning objectives, standards alignment, or instructional flow. Every AI suggestion is preview-first; teachers review, refine, reject, or approve before anything is saved.",
     lesson:
       "The most valuable educational AI augments teacher workflows rather than replacing judgment. And a lesson isn't a static document — it's a reusable instructional asset that has to adapt as classroom realities change.",
-    href: "#",
     accent: "120, 200, 255",
+    availability: "Private demo available on request",
     highlights: [
       "Built with a PhD educator",
       "Standards-aware",
