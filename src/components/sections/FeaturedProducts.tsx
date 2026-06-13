@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { Architecture } from "@/components/ui/Architecture";
 import { products, ryger, type Product } from "@/lib/content";
 
 export function FeaturedProducts() {
@@ -171,6 +172,20 @@ function ProductCard({ product }: { product: Product }) {
                 {h}
               </span>
             ))}
+          </div>
+        ) : null}
+
+        {/* Architecture */}
+        {product.architecture ? (
+          <div className="mt-6 border-t border-line pt-5">
+            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+              Architecture
+            </p>
+            <Architecture
+              compact
+              groups={product.architecture}
+              className="mt-4"
+            />
           </div>
         ) : null}
 

@@ -42,6 +42,12 @@ export type Product = {
   href: string;
   accent: string; // tailwind-ish rgba used for the card glow
   highlights?: string[]; // short capability chips
+  architecture?: ArchGroup[]; // grouped tech-stack categories
+};
+
+export type ArchGroup = {
+  label: string;
+  items: string[];
 };
 
 export const products: Product[] = [
@@ -57,6 +63,22 @@ export const products: Product[] = [
     href: "#",
     accent: "109, 139, 255",
     highlights: ["Career-story grounded", "JD-aware prioritization", "Truthful by design"],
+    architecture: [
+      { label: "Frontend", items: ["Next.js", "TypeScript", "Tailwind", "Vercel"] },
+      { label: "Platform", items: ["AWS Lambda", "API Gateway", "DynamoDB", "S3"] },
+      { label: "AI", items: ["OpenAI"] },
+      { label: "Identity", items: ["Custom authentication"] },
+      {
+        label: "Key Systems",
+        items: [
+          "Career story engine",
+          "Resume generation workflows",
+          "Grounded content generation",
+          "Job alignment workflows",
+          "Truth-preservation controls",
+        ],
+      },
+    ],
   },
   {
     name: "Lesson Plan",
@@ -74,6 +96,22 @@ export const products: Product[] = [
       "Standards-aware",
       "Adaptive by design",
       "Preview-first & teacher-controlled",
+    ],
+    architecture: [
+      { label: "Frontend", items: ["Next.js", "TypeScript", "Tailwind", "Vercel"] },
+      { label: "Platform", items: ["PostgreSQL", "Supabase"] },
+      { label: "AI", items: ["Anthropic Claude", "Vercel AI SDK"] },
+      {
+        label: "Key Systems",
+        items: [
+          "Standards framework",
+          "Lesson versioning",
+          "Adaptive planning workflows",
+          "Lesson evaluation workflows",
+          "Preview-first generation",
+          "Differentiation & adaptation systems",
+        ],
+      },
     ],
   },
 ];
@@ -166,6 +204,48 @@ export const ryger = {
       },
     ],
   },
+
+  architecture: [
+    { label: "Frontend", items: ["Next.js", "TypeScript", "Tailwind", "Vercel"] },
+    {
+      label: "Platform",
+      items: [
+        "AWS Lambda",
+        "API Gateway",
+        "DynamoDB",
+        "S3",
+        "ECS",
+        "CloudFront",
+        "SES",
+      ],
+    },
+    {
+      label: "AI & Intelligence",
+      items: [
+        "OpenAI",
+        "Requirement-level evaluation",
+        "Evidence-backed reasoning",
+        "Match reasoning workflows",
+      ],
+    },
+    { label: "Identity & Billing", items: ["Clerk", "Stripe"] },
+    {
+      label: "Integrations",
+      items: ["Google Maps API", "Geocoding", "Location proximity"],
+    },
+    {
+      label: "Key Systems",
+      items: [
+        "Recruiter-owned talent networks",
+        "Candidate ingestion pipelines",
+        "Recruiter landing pages",
+        "Resume intelligence",
+        "Match reasoning engine",
+        "Slate management workflows",
+        "Signal integrity controls",
+      ],
+    },
+  ] satisfies ArchGroup[],
 
   lesson:
     "The biggest lesson from Ryger is that technology alone rarely solves workflow problems. The most valuable opportunities show up somewhere quieter — in how people actually work, where trust breaks down, where information gets lost, and where systems fail to compound value over time. Find those, and the product almost designs itself.",

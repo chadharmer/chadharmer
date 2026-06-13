@@ -4,6 +4,7 @@ import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
+import { Architecture } from "@/components/ui/Architecture";
 import { DiscoveryTimeline } from "@/components/ryger/DiscoveryTimeline";
 import { ryger, site } from "@/lib/content";
 
@@ -204,6 +205,36 @@ export default function RygerCaseStudy() {
                   </div>
                 </Reveal>
               ))}
+            </div>
+          </Container>
+        </section>
+
+        {/* Architecture */}
+        <section className="border-t border-line py-24 sm:py-32">
+          <Container>
+            <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+              <Reveal>
+                <div className="max-w-md">
+                  <span className="font-mono text-xs uppercase tracking-[0.18em] text-faint">
+                    Architecture
+                  </span>
+                  <h2 className="mt-4 text-balance text-3xl font-semibold tracking-tight text-gradient sm:text-4xl">
+                    A real system, built deliberately.
+                  </h2>
+                  <p className="mt-5 text-base leading-relaxed text-muted">
+                    Every architecture decision served the product strategy —
+                    the network thesis, evidence-backed matching, and signal
+                    integrity. The stack supports the story; it isn&apos;t the
+                    story.
+                  </p>
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.08}>
+                <div className="rounded-2xl border border-line bg-surface/50 p-6 sm:p-8">
+                  <Architecture groups={ryger.architecture} />
+                </div>
+              </Reveal>
             </div>
           </Container>
         </section>
