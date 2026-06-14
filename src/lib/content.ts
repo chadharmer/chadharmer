@@ -63,13 +63,16 @@ export const products: Product[] = [
     lesson:
       "The hard part was never generating content. It was preserving trust — keeping resumes truthful, free of invented metrics, and still sounding like the person behind them.",
     accent: "109, 139, 255",
-    // Live product link intentionally omitted until www.ryger.app/resume is
-    // confirmed live (currently restoring). No placeholder link in the meantime.
-    availability: "Resume landing page being restored",
+    // Landing page is live at www.ryger.app/resume — link directly to it.
+    actions: [
+      { label: "Visit Resume", href: "https://www.ryger.app/resume", external: true },
+    ],
+    // Fallback status if the live link is ever pulled. Kept positive, never "broken".
+    availability: "Available by request",
     highlights: ["Career-story grounded", "JD-aware prioritization", "Truthful by design"],
     architecture: [
       { label: "Frontend", items: ["Next.js", "TypeScript", "Tailwind", "Vercel"] },
-      { label: "Platform", items: ["AWS Lambda", "API Gateway", "DynamoDB", "S3"] },
+      { label: "Platform", items: ["AWS Lambda", "API Gateway", "DynamoDB", "S3", "SES"] },
       { label: "AI", items: ["OpenAI"] },
       { label: "Identity", items: ["Custom authentication"] },
       {
