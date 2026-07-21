@@ -54,9 +54,58 @@ export type ArchGroup = {
 
 export const products: Product[] = [
   {
+    name: "ReadMyStrip",
+    tagline: "AI-Powered Water Test Strip Reader for iPhone",
+    status: "Live · App Store",
+    problem:
+      "Testing pool, spa, or aquarium water means reading a strip of subtle color pads against a reference chart — slow, subjective, and easy to get wrong. Results shift with lighting, eyesight, and guesswork, right when accuracy matters most.",
+    why: "ReadMyStrip turns that into a single photo. I led the product from concept through production release — product strategy, UX, AI workflow design, engineering, backend architecture, and App Store launch — so anyone can point their iPhone at a used test strip and get reliable, interpreted results in seconds.",
+    lesson:
+      "The hard part was never the model. It was making a technically complex image-analysis workflow feel simple and dependable — onboarding, edge cases, subscriptions, and Apple's review process all disappearing behind a single trustworthy tap.",
+    accent: "72, 202, 178",
+    // Live App Store listing — link directly to it.
+    actions: [
+      {
+        label: "View on App Store",
+        href: "https://apps.apple.com/us/app/readmystrip/id6785080076",
+        external: true,
+      },
+    ],
+    // Fallback status if the live link is ever pulled. Kept positive, never "broken".
+    availability: "Live on the Apple App Store",
+    highlights: [
+      "Shipped end-to-end",
+      "AI photo analysis",
+      "iOS · Expo React Native",
+      "Simple over complex",
+    ],
+    architecture: [
+      { label: "App", items: ["Expo", "React Native", "TypeScript", "iOS"] },
+      {
+        label: "AI",
+        items: ["Image analysis workflow", "Test strip interpretation"],
+      },
+      {
+        label: "Platform",
+        items: ["Authentication", "Backend APIs", "Cloud storage"],
+      },
+      { label: "Payments", items: ["RevenueCat", "Subscription management"] },
+      {
+        label: "Key Systems",
+        items: [
+          "Single-photo capture flow",
+          "AI water-chemistry interpretation",
+          "End-to-end onboarding to results",
+          "Subscription management",
+          "App Store production release",
+        ],
+      },
+    ],
+  },
+  {
     name: "Resume",
     tagline: "Resumes grounded in your whole career, not just one role",
-    status: "Product",
+    status: "Live · Web",
     problem:
       "Resumes are built for a single role, so experience that doesn't match the current application quietly gets cut. Most tools make it worse — optimizing for keywords, or inventing accomplishments that no longer sound like you.",
     why: "Built to tell a more complete career story. Resume pairs a traditional resume with a deeper career narrative, then reads a job description against both — surfacing the most relevant real experience first, always grounded in your actual work history.",
@@ -90,14 +139,14 @@ export const products: Product[] = [
   {
     name: "Lesson Plan",
     tagline: "Adaptive lesson planning, designed around how teachers actually work",
-    status: "Product",
+    status: "Beta",
     problem:
       "Teachers rarely start from a blank page. They work inside courses, units, standards, lesson sequences, and real classroom constraints. Most AI education tools start with a prompt and ignore all of that structure.",
     why: "Built in partnership with an experienced educator with a PhD in education and instructional design — grounding decisions in how teachers actually plan, not how software imagines they do. The defining discovery: teachers don't just need lessons generated, they need lessons that adapt — a shortened class, a substitute version, ELL or intervention support, more challenge for advanced learners — without losing learning objectives, standards alignment, or instructional flow. Every AI suggestion is preview-first; teachers review, refine, reject, or approve before anything is saved.",
     lesson:
       "The most valuable educational AI augments teacher workflows rather than replacing judgment. And a lesson isn't a static document — it's a reusable instructional asset that has to adapt as classroom realities change.",
     accent: "120, 200, 255",
-    availability: "Private demo available on request",
+    availability: "Currently in Teacher Beta Testing",
     highlights: [
       "Built with a PhD educator",
       "Standards-aware",
@@ -372,9 +421,9 @@ export const writing: Essay[] = [
   },
   {
     category: "Product Strategy",
-    title: "Lessons from building three products in a year",
+    title: "Lessons from building four products in a year",
     blurb:
-      "What actually transferred between Ryger, Resume, and Lesson Plan — and what didn't.",
+      "What actually transferred between Ryger, Resume, ReadMyStrip, and Lesson Plan — and what didn't.",
     status: "Coming soon",
   },
 ];
