@@ -12,7 +12,7 @@ export function FeaturedProducts() {
         <SectionHeading
           label="Featured Work"
           title="What I've Built"
-          description="The products I've built, the problems they solve, and the decisions behind them."
+          description="The products, the problems they solve, and the decisions behind them."
         />
 
         {/* Ryger — featured case study */}
