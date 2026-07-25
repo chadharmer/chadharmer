@@ -11,8 +11,8 @@ export function FeaturedProducts() {
       <Container>
         <SectionHeading
           label="Featured Work"
-          title="Products as evidence of thinking."
-          description="Each of these started as a question about how work should actually flow. They're less a gallery and more a record of how I approach problems."
+          title="What I've Built"
+          description="The products I've built, the problems they solve, and the decisions behind them."
         />
 
         {/* Ryger — featured case study */}
