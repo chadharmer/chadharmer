@@ -44,7 +44,13 @@ export type Product = {
   highlights?: string[]; // short capability chips
   architecture?: ArchGroup[]; // grouped tech-stack categories
   /** Real CTA links. Only ever points to live, useful destinations. */
-  actions?: { label: string; href: string; external?: boolean }[];
+  actions?: {
+    label: string;
+    href: string;
+    external?: boolean;
+    /** Visual weight on flagship cards. Defaults to secondary. */
+    variant?: "primary" | "secondary";
+  }[];
   /** Non-clickable status text, used when no live destination exists yet. */
   availability?: string;
 };
@@ -53,6 +59,11 @@ export type ArchGroup = {
   label: string;
   items: string[];
 };
+
+/** Build a mailto: link with a reliably-encoded subject and body. */
+function mailto(to: string, subject: string, body: string): string {
+  return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
 
 export const products: Product[] = [
   {
@@ -67,6 +78,27 @@ export const products: Product[] = [
     lesson:
       "The engineering that matters lives in the coordination: hybrid standards retrieval that filters, ranks by vector similarity, then reranks; immutable, trigger-written version history that makes every change reversible and attributable; copy-on-write scheduled instances that let one lesson run in many classes without collisions; cost- and stakes-based model routing; and destination-abstracted publishing to Google Classroom that stays idempotent. AI earns its place by being orchestrated into real work and keeping the teacher accountable — not by making decisions on its own.",
     accent: "120, 200, 255",
+    actions: [
+      {
+        label: "Book a Demo",
+        href: mailto(
+          "chad@ryger.app",
+          "Lesson Planning Platform Demo",
+          "Hi Chad,\n\nI'm interested in seeing a demo.\n\nName:\nSchool:\nGrade(s):\nSubject(s):"
+        ),
+        variant: "primary",
+      },
+      {
+        label: "Notify Me When It's Live",
+        href: mailto(
+          "chad@ryger.app",
+          "Notify Me When It's Live",
+          "Hi Chad,\n\nI'd like to be notified when the platform is publicly available.\n\nName:\nSchool (optional):\nEmail:"
+        ),
+        variant: "secondary",
+      },
+    ],
+    // Fallback status if the CTAs are ever removed.
     availability: "Currently in Teacher Beta Testing",
     highlights: [
       "The workflow is the product",

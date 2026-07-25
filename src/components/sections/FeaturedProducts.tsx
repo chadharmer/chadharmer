@@ -128,6 +128,45 @@ function RygerFeature() {
   );
 }
 
+function ActionButton({
+  action,
+}: {
+  action: NonNullable<Product["actions"]>[number];
+}) {
+  const primary = action.variant === "primary";
+  const className = primary
+    ? "group/cta inline-flex items-center gap-2 rounded-full bg-fg px-4 py-2.5 text-sm font-medium text-base transition-transform hover:-translate-y-0.5"
+    : "group/cta inline-flex items-center gap-2 rounded-full border border-line-strong bg-elevated/60 px-4 py-2.5 text-sm font-medium text-fg transition-colors hover:border-accent/40";
+
+  const inner = (
+    <>
+      {action.label}
+      <Arrow className="group-hover/cta:translate-x-0.5" />
+    </>
+  );
+
+  // Internal route → Next Link. mailto: / tel: → plain anchor (no new tab).
+  // http(s) → new tab with safe rel.
+  if (action.href.startsWith("/")) {
+    return (
+      <Link href={action.href} className={className}>
+        {inner}
+      </Link>
+    );
+  }
+
+  const external = action.href.startsWith("http");
+  return (
+    <a
+      href={action.href}
+      className={className}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+    >
+      {inner}
+    </a>
+  );
+}
+
 function FeatureCard({ product }: { product: Product }) {
   return (
     <div className="group relative overflow-hidden rounded-3xl border border-line-strong bg-surface/60 p-7 transition-colors duration-300 hover:border-accent/40 sm:p-9">
@@ -187,30 +226,10 @@ function FeatureCard({ product }: { product: Product }) {
 
             <div className="mt-5">
               {product.actions?.length ? (
-                <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-                  {product.actions.map((action) =>
-                    action.external ? (
-                      <a
-                        key={action.label}
-                        href={action.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group/cta inline-flex items-center gap-1.5 text-sm font-medium text-fg transition-colors hover:text-accent"
-                      >
-                        {action.label}
-                        <Arrow className="group-hover/cta:translate-x-0.5" />
-                      </a>
-                    ) : (
-                      <Link
-                        key={action.label}
-                        href={action.href}
-                        className="group/cta inline-flex items-center gap-1.5 text-sm font-medium text-fg transition-colors hover:text-accent"
-                      >
-                        {action.label}
-                        <Arrow className="group-hover/cta:translate-x-0.5" />
-                      </Link>
-                    )
-                  )}
+                <div className="flex flex-wrap items-center gap-3">
+                  {product.actions.map((action) => (
+                    <ActionButton key={action.label} action={action} />
+                  ))}
                 </div>
               ) : product.availability ? (
                 <div className="flex items-center gap-2 text-sm text-faint">
