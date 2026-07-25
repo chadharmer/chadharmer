@@ -22,13 +22,26 @@ export function FeaturedProducts() {
           </Reveal>
         </div>
 
+        {/* Flagship feature cards — full width, richer layout */}
+        {products
+          .filter((p) => p.featured)
+          .map((product) => (
+            <div key={product.name} className="mt-5">
+              <Reveal>
+                <FeatureCard product={product} />
+              </Reveal>
+            </div>
+          ))}
+
         {/* Supporting products */}
         <div className="mt-5 grid gap-5 md:grid-cols-2">
-          {products.map((product, i) => (
-            <Reveal key={product.name} delay={i * 0.08} className="h-full">
-              <ProductCard product={product} />
-            </Reveal>
-          ))}
+          {products
+            .filter((p) => !p.featured)
+            .map((product, i) => (
+              <Reveal key={product.name} delay={i * 0.08} className="h-full">
+                <ProductCard product={product} />
+              </Reveal>
+            ))}
         </div>
       </Container>
     </section>
@@ -110,6 +123,114 @@ function RygerFeature() {
             ))}
           </ol>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function FeatureCard({ product }: { product: Product }) {
+  return (
+    <div className="group relative overflow-hidden rounded-3xl border border-line-strong bg-surface/60 p-7 transition-colors duration-300 hover:border-accent/40 sm:p-9">
+      {/* Ambient glow, tinted to the product accent */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-px opacity-60 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: `radial-gradient(700px circle at 80% 0%, rgba(${product.accent}, 0.12), transparent 60%)`,
+        }}
+      />
+
+      <div className="relative">
+        {/* Header */}
+        <div className="flex items-center gap-3">
+          <span
+            className="grid h-11 w-11 place-items-center rounded-xl border border-line-strong bg-elevated font-mono text-lg font-medium"
+            style={{ color: `rgb(${product.accent})` }}
+          >
+            {product.name.charAt(0)}
+          </span>
+          <div>
+            <h3 className="text-2xl font-semibold tracking-tight text-fg">
+              {product.name}
+            </h3>
+            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+              {product.status}
+            </span>
+          </div>
+        </div>
+
+        <p className="mt-6 max-w-3xl text-balance text-lg leading-relaxed text-fg/90">
+          {product.tagline}
+        </p>
+
+        {/* Narrative + rail */}
+        <div className="mt-8 grid gap-8 lg:grid-cols-[1.55fr_1fr] lg:gap-12">
+          <dl className="space-y-5">
+            <Row label="Problem" value={product.problem} />
+            <Row label="Why I built it" value={product.why} />
+            <Row label="Lesson" value={product.lesson} accent={product.accent} />
+          </dl>
+
+          <div className="lg:border-l lg:border-line lg:pl-10">
+            {product.highlights ? (
+              <div className="flex flex-wrap gap-1.5">
+                {product.highlights.map((h) => (
+                  <span
+                    key={h}
+                    className="rounded-md border border-line bg-base/40 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-faint"
+                  >
+                    {h}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+
+            <div className="mt-5">
+              {product.actions?.length ? (
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                  {product.actions.map((action) =>
+                    action.external ? (
+                      <a
+                        key={action.label}
+                        href={action.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group/cta inline-flex items-center gap-1.5 text-sm font-medium text-fg transition-colors hover:text-accent"
+                      >
+                        {action.label}
+                        <Arrow className="group-hover/cta:translate-x-0.5" />
+                      </a>
+                    ) : (
+                      <Link
+                        key={action.label}
+                        href={action.href}
+                        className="group/cta inline-flex items-center gap-1.5 text-sm font-medium text-fg transition-colors hover:text-accent"
+                      >
+                        {action.label}
+                        <Arrow className="group-hover/cta:translate-x-0.5" />
+                      </Link>
+                    )
+                  )}
+                </div>
+              ) : product.availability ? (
+                <div className="flex items-center gap-2 text-sm text-faint">
+                  <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-faint/70" />
+                  {product.availability}
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </div>
+
+        {/* Architecture band — full width beneath the narrative */}
+        {product.architecture ? (
+          <div className="mt-8 border-t border-line pt-6">
+            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+              Architecture
+            </p>
+            <Architecture groups={product.architecture} className="mt-5" />
+          </div>
+        ) : null}
       </div>
     </div>
   );

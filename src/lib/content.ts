@@ -39,6 +39,8 @@ export type Product = {
   why: string;
   lesson: string;
   accent: string; // tailwind-ish rgba used for the card glow
+  /** Render as a full-width flagship card instead of a grid cell. */
+  featured?: boolean;
   highlights?: string[]; // short capability chips
   architecture?: ArchGroup[]; // grouped tech-stack categories
   /** Real CTA links. Only ever points to live, useful destinations. */
@@ -54,6 +56,116 @@ export type ArchGroup = {
 
 export const products: Product[] = [
   {
+    name: "Lesson Plan",
+    featured: true,
+    tagline:
+      "An end-to-end teaching workflow platform that orchestrates AI from lesson planning through Google Classroom delivery.",
+    status: "Beta",
+    problem:
+      "Teaching isn't a sequence of blank pages — it's a workflow. A lesson has to align to authoritative standards, hold up under review, adapt to the class in front of you, carry its own materials, land on a specific day, and reach students through the tools a school already runs on. Most AI education tools generate a lesson and stop there, dropping a plausible document into the middle of a workflow they don't understand.",
+    why: "The workflow became the product. Lesson generation is one capability inside a larger system that orchestrates AI across the full arc of teaching. A lesson is grounded in authoritative multi-state standards through retrieval rather than recollection, reviewed and evaluated against those standards, adapted for a shortened block or an ELL group or a substitute without losing its objective, extended into quizzes, worksheets, and exit tickets as reusable assets, scheduled into real classes, and delivered into Google Classroom as Docs, Forms, or live links. One orchestration layer coordinates retrieval, generation, review, adaptation, evaluation, material creation, scheduling, and publishing — and every AI write is previewed and teacher-approved before it counts. The teacher directs the workflow; AI runs the stages.",
+    lesson:
+      "The engineering that matters lives in the coordination: hybrid standards retrieval that filters, ranks by vector similarity, then reranks; immutable, trigger-written version history that makes every change reversible and attributable; copy-on-write scheduled instances that let one lesson run in many classes without collisions; cost- and stakes-based model routing; and destination-abstracted publishing to Google Classroom that stays idempotent. AI earns its place by being orchestrated into real work and keeping the teacher accountable — not by making decisions on its own.",
+    accent: "120, 200, 255",
+    availability: "Currently in Teacher Beta Testing",
+    highlights: [
+      "The workflow is the product",
+      "AI orchestration across stages",
+      "Retrieval over recollection",
+      "Preview-first, teacher-approved",
+      "Reusable assets, not documents",
+      "Classroom delivery, not just plans",
+    ],
+    architecture: [
+      {
+        label: "Stack",
+        items: [
+          "Next.js 16",
+          "React 19",
+          "TypeScript",
+          "Supabase / Postgres",
+          "Vercel",
+        ],
+      },
+      {
+        label: "Data & standards",
+        items: [
+          "pgvector",
+          "Multi-state standards (NJ · CA · NY · OH · PA)",
+          "Authoritative ingest",
+          "Immutable trigger-based versioning",
+        ],
+      },
+      {
+        label: "AI orchestration",
+        items: [
+          "One orchestration layer across all AI stages",
+          "Model-agnostic routing via AI Gateway",
+          "Cost / stakes-based model routing",
+          "Retrieval where correctness matters",
+          "Preview-first, teacher-approved writes",
+        ],
+      },
+      {
+        label: "Google Classroom",
+        items: [
+          "OAuth with encrypted tokens",
+          "Persistent period → course mapping",
+          "Publishing as Docs · Forms · live links",
+          "Idempotent re-publish",
+        ],
+      },
+      {
+        label: "Key Systems",
+        items: [
+          "Hybrid standards retrieval (filter + vector + rerank)",
+          "AI orchestration across stages",
+          "Reusable instructional assets",
+          "Copy-on-write scheduled instances",
+          "Lesson review & evaluation",
+          "Instructional material generation",
+          "Scheduling into classes",
+          "Destination-abstracted publishing",
+          "Duplicate-publication prevention",
+        ],
+      },
+    ],
+  },
+  {
+    name: "Resume",
+    tagline: "Resumes grounded in your whole career, not just one role",
+    status: "Live · Web",
+    problem:
+      "Resumes are built for a single role, so experience that doesn't match the current application quietly gets cut. Most tools make it worse — optimizing for keywords, or inventing accomplishments that no longer sound like you.",
+    why: "Built to tell a more complete career story. Resume pairs a traditional resume with a deeper career narrative, then reads a job description against both — surfacing the most relevant real experience first, always grounded in your actual work history.",
+    lesson:
+      "Trust is the product. Every resume has to stay truthful, free of invented metrics, and still sound like the person behind it — even though a model does the drafting.",
+    accent: "109, 139, 255",
+    // Landing page is live at www.ryger.app/resume — link directly to it.
+    actions: [
+      { label: "Visit Resume", href: "https://www.ryger.app/resume", external: true },
+    ],
+    // Fallback status if the live link is ever pulled. Kept positive, never "broken".
+    availability: "Available by request",
+    highlights: ["Career-story grounded", "JD-aware prioritization", "Truthful by design"],
+    architecture: [
+      { label: "Frontend", items: ["Next.js", "TypeScript", "Tailwind", "Vercel"] },
+      { label: "Platform", items: ["AWS Lambda", "API Gateway", "DynamoDB", "S3", "SES"] },
+      { label: "AI", items: ["OpenAI"] },
+      { label: "Identity", items: ["Custom authentication"] },
+      {
+        label: "Key Systems",
+        items: [
+          "Career story engine",
+          "Resume generation workflows",
+          "Grounded content generation",
+          "Job alignment workflows",
+          "Truth-preservation controls",
+        ],
+      },
+    ],
+  },
+  {
     name: "ReadMyStrip",
     tagline: "AI-Powered Water Test Strip Reader for iPhone",
     status: "Live · App Store",
@@ -61,7 +173,7 @@ export const products: Product[] = [
       "Testing pool, spa, or aquarium water means reading a strip of subtle color pads against a reference chart — slow, subjective, and easy to get wrong. Results shift with lighting, eyesight, and guesswork, right when accuracy matters most.",
     why: "ReadMyStrip turns that into a single photo. I led the product from concept through production release — product strategy, UX, AI workflow design, engineering, backend architecture, and App Store launch — so anyone can point their iPhone at a used test strip and get reliable, interpreted results in seconds.",
     lesson:
-      "The hard part was never the model. It was making a technically complex image-analysis workflow feel simple and dependable — onboarding, edge cases, subscriptions, and Apple's review process all disappearing behind a single trustworthy tap.",
+      "Reliability is the product. A technically complex image-analysis workflow has to land as one trustworthy tap — onboarding, edge cases, subscriptions, and Apple's review process all handled so the user never has to think about them.",
     accent: "72, 202, 178",
     // Live App Store listing — link directly to it.
     actions: [
@@ -98,74 +210,6 @@ export const products: Product[] = [
           "End-to-end onboarding to results",
           "Subscription management",
           "App Store production release",
-        ],
-      },
-    ],
-  },
-  {
-    name: "Resume",
-    tagline: "Resumes grounded in your whole career, not just one role",
-    status: "Live · Web",
-    problem:
-      "Resumes are built for a single role, so experience that doesn't match the current application quietly gets cut. Most tools make it worse — optimizing for keywords, or inventing accomplishments that no longer sound like you.",
-    why: "Built to tell a more complete career story. Resume pairs a traditional resume with a deeper career narrative, then reads a job description against both — surfacing the most relevant real experience first, always grounded in your actual work history.",
-    lesson:
-      "The hard part was never generating content. It was preserving trust — keeping resumes truthful, free of invented metrics, and still sounding like the person behind them.",
-    accent: "109, 139, 255",
-    // Landing page is live at www.ryger.app/resume — link directly to it.
-    actions: [
-      { label: "Visit Resume", href: "https://www.ryger.app/resume", external: true },
-    ],
-    // Fallback status if the live link is ever pulled. Kept positive, never "broken".
-    availability: "Available by request",
-    highlights: ["Career-story grounded", "JD-aware prioritization", "Truthful by design"],
-    architecture: [
-      { label: "Frontend", items: ["Next.js", "TypeScript", "Tailwind", "Vercel"] },
-      { label: "Platform", items: ["AWS Lambda", "API Gateway", "DynamoDB", "S3", "SES"] },
-      { label: "AI", items: ["OpenAI"] },
-      { label: "Identity", items: ["Custom authentication"] },
-      {
-        label: "Key Systems",
-        items: [
-          "Career story engine",
-          "Resume generation workflows",
-          "Grounded content generation",
-          "Job alignment workflows",
-          "Truth-preservation controls",
-        ],
-      },
-    ],
-  },
-  {
-    name: "Lesson Plan",
-    tagline: "Adaptive lesson planning, designed around how teachers actually work",
-    status: "Beta",
-    problem:
-      "Teachers rarely start from a blank page. They work inside courses, units, standards, lesson sequences, and real classroom constraints. Most AI education tools start with a prompt and ignore all of that structure.",
-    why: "Built in partnership with an experienced educator with a PhD in education and instructional design — grounding decisions in how teachers actually plan, not how software imagines they do. The defining discovery: teachers don't just need lessons generated, they need lessons that adapt — a shortened class, a substitute version, ELL or intervention support, more challenge for advanced learners — without losing learning objectives, standards alignment, or instructional flow. Every AI suggestion is preview-first; teachers review, refine, reject, or approve before anything is saved.",
-    lesson:
-      "The most valuable educational AI augments teacher workflows rather than replacing judgment. And a lesson isn't a static document — it's a reusable instructional asset that has to adapt as classroom realities change.",
-    accent: "120, 200, 255",
-    availability: "Currently in Teacher Beta Testing",
-    highlights: [
-      "Built with a PhD educator",
-      "Standards-aware",
-      "Adaptive by design",
-      "Preview-first & teacher-controlled",
-    ],
-    architecture: [
-      { label: "Frontend", items: ["Next.js", "TypeScript", "Tailwind", "Vercel"] },
-      { label: "Platform", items: ["PostgreSQL", "Supabase"] },
-      { label: "AI", items: ["Anthropic Claude", "Vercel AI SDK"] },
-      {
-        label: "Key Systems",
-        items: [
-          "Standards framework",
-          "Lesson versioning",
-          "Adaptive planning workflows",
-          "Lesson evaluation workflows",
-          "Preview-first generation",
-          "Differentiation & adaptation systems",
         ],
       },
     ],
