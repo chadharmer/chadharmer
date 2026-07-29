@@ -127,7 +127,7 @@ export const products: Product[] = [
         label: "Data & standards",
         items: [
           "pgvector",
-          "Multi-state standards (NJ · CA · NY · OH · PA)",
+          "Multi-state standards",
           "Authoritative ingest",
           "Immutable trigger-based versioning",
         ],

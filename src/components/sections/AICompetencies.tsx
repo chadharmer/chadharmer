@@ -38,7 +38,7 @@ function CompetencyCard({ competency }: { competency: Competency }) {
       <ul className="mt-4 space-y-2.5 border-t border-line pt-4">
         {competency.evidence.map((e) => (
           <li key={e.product} className="flex gap-2.5">
-            <span className="mt-0.5 shrink-0 rounded border border-line bg-base/50 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.1em] text-accent/80">
+            <span className="flex w-24 shrink-0 items-center justify-center whitespace-nowrap rounded border border-line bg-base/50 px-1.5 py-1 text-center font-mono text-[9px] uppercase tracking-[0.1em] text-accent/80">
               {e.product}
             </span>
             <span className="text-[13px] leading-relaxed text-muted">
