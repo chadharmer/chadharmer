@@ -133,10 +133,12 @@ function ActionButton({
 }: {
   action: NonNullable<Product["actions"]>[number];
 }) {
-  const primary = action.variant === "primary";
-  const className = primary
-    ? "group/cta inline-flex items-center gap-2 rounded-full bg-fg px-4 py-2.5 text-sm font-medium text-base transition-transform hover:-translate-y-0.5"
-    : "group/cta inline-flex items-center gap-2 rounded-full border border-line-strong bg-elevated/60 px-4 py-2.5 text-sm font-medium text-fg transition-colors hover:border-accent/40";
+  const className =
+    action.variant === "primary"
+      ? "group/cta inline-flex items-center gap-2 rounded-full bg-fg px-4 py-2.5 text-sm font-medium text-base transition-transform hover:-translate-y-0.5"
+      : action.variant === "subtle"
+        ? "group/cta inline-flex items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-fg"
+        : "group/cta inline-flex items-center gap-2 rounded-full border border-line-strong bg-elevated/60 px-4 py-2.5 text-sm font-medium text-fg transition-colors hover:border-accent/40";
 
   const inner = (
     <>

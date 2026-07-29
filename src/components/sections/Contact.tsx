@@ -24,6 +24,9 @@ export function Contact() {
               I&apos;m always glad to trade notes on products, marketplaces, and
               making AI genuinely useful. The best way to reach me is below.
             </p>
+            <p className="mx-auto mt-4 max-w-lg font-mono text-[11px] uppercase tracking-[0.16em] text-faint">
+              Open to Senior AI Product · Technical Product · AI Platform PM roles
+            </p>
 
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
               <a

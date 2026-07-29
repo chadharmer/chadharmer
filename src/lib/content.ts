@@ -13,6 +13,7 @@ export const site = {
 
 export const nav = [
   { label: "Products", href: "/#products" },
+  { label: "AI Work", href: "/#ai-work" },
   { label: "How I Build", href: "/#how-i-build" },
   { label: "Experience", href: "/#experience" },
 ] as const;
@@ -23,9 +24,11 @@ export const hero = {
   subtitle:
     "I turn ambiguous problems into real software — designing AI workflows, marketplaces, and recruiting technology that compound over time.",
   focusAreas: [
-    "AI workflows",
-    "Marketplaces",
-    "Recruiting technology",
+    "AI workflow design",
+    "RAG & retrieval",
+    "Model evaluation",
+    "Model comparison & routing",
+    "Human-in-the-loop",
     "Product strategy",
     "Systems design",
   ],
@@ -49,7 +52,7 @@ export type Product = {
     href: string;
     external?: boolean;
     /** Visual weight on flagship cards. Defaults to secondary. */
-    variant?: "primary" | "secondary";
+    variant?: "primary" | "secondary" | "subtle";
   }[];
   /** Non-clickable status text, used when no live destination exists yet. */
   availability?: string;
@@ -88,6 +91,7 @@ export const products: Product[] = [
         ),
         variant: "primary",
       },
+      { label: "Read Case Study", href: "/lesson-plan", variant: "secondary" },
       {
         label: "Notify Me When It's Live",
         href: mailto(
@@ -95,7 +99,7 @@ export const products: Product[] = [
           "Notify Me When It's Live",
           "Hi Chad,\n\nI'd like to be notified when the platform is publicly available.\n\nName:\nSchool (optional):\nEmail:"
         ),
-        variant: "secondary",
+        variant: "subtle",
       },
     ],
     // Fallback status if the CTAs are ever removed.
@@ -249,6 +253,234 @@ export const products: Product[] = [
 ];
 
 /* ------------------------------------------------------------------ */
+/*  AI product competencies — named skills, backed by real evidence    */
+/* ------------------------------------------------------------------ */
+
+export type Competency = {
+  name: string;
+  summary: string;
+  /** Concrete proof, tagged to the product it comes from. */
+  evidence: { product: string; detail: string }[];
+};
+
+export const competencies: Competency[] = [
+  {
+    name: "Retrieval-Augmented Generation (RAG)",
+    summary:
+      "Ground generation in authoritative sources instead of model memory, so outputs are correct and defensible.",
+    evidence: [
+      {
+        product: "Lesson Plan",
+        detail:
+          "Hybrid retrieval over authoritative academic standards — a hard metadata filter, then vector similarity, then an AI reranker — feeds the model a bounded, correct candidate set.",
+      },
+      {
+        product: "Ryger",
+        detail:
+          "Evidence pulled from a candidate's real history and attached to each job requirement, so a match is reasoned over retrieved proof rather than recalled.",
+      },
+    ],
+  },
+  {
+    name: "Vector Search",
+    summary:
+      "Search by meaning, not keywords — with guardrails so relevance never overrides correctness.",
+    evidence: [
+      {
+        product: "Lesson Plan",
+        detail:
+          "pgvector embeddings rank standards by semantic similarity, but only within a hard-filtered set, so meaning-based search can't return an out-of-jurisdiction result.",
+      },
+      {
+        product: "Ryger",
+        detail:
+          "Moved matching past keyword presence — a resume listing “Agile” never proved the experience — toward relevance judged on demonstrated work.",
+      },
+    ],
+  },
+  {
+    name: "Model Evaluation",
+    summary:
+      "Measure output quality with rubrics and repeatable checks instead of eyeballing a few good demos.",
+    evidence: [
+      {
+        product: "Lesson Plan",
+        detail:
+          "Rubric-based, evidence-grounded evaluation scores lessons against explicit criteria; a regression harness of scripted checks guards quality as prompts and models change.",
+      },
+      {
+        product: "Ryger",
+        detail:
+          "Match quality judged at the requirement level with supporting evidence, not a single opaque score.",
+      },
+    ],
+  },
+  {
+    name: "Model Comparison & Routing",
+    summary:
+      "Pick the right model per task by weighing quality, latency, and cost — not defaulting to the biggest one.",
+    evidence: [
+      {
+        product: "Lesson Plan",
+        detail:
+          "Policy-driven, model-agnostic routing across Claude Sonnet, Claude Haiku, and GPT tiers — cheap models for low-stakes materials, stronger models reserved for summative tests.",
+      },
+      {
+        product: "ReadMyStrip",
+        detail:
+          "Chose a vision-capable model for on-device-quality strip reading, balanced against latency and per-call cost for a consumer app.",
+      },
+    ],
+  },
+  {
+    name: "Structured Outputs",
+    summary:
+      "Constrain generation to typed schemas so downstream systems get reliable data, not free text.",
+    evidence: [
+      {
+        product: "Lesson Plan",
+        detail:
+          "Every production AI call returns schema-validated output; the model can't emit free-form text or pick a value outside the allowed set (it can't invent a standard).",
+      },
+      {
+        product: "ReadMyStrip",
+        detail:
+          "Water-chemistry readings returned as structured, typed results the app can render and act on directly.",
+      },
+    ],
+  },
+  {
+    name: "Prompt Orchestration",
+    summary:
+      "Coordinate many AI steps into one reliable workflow rather than one brittle mega-prompt.",
+    evidence: [
+      {
+        product: "Lesson Plan",
+        detail:
+          "A single orchestration layer sequences retrieval, generation, review, adaptation, evaluation, material creation, and publishing — each a discrete, testable step.",
+      },
+      {
+        product: "Ryger",
+        detail:
+          "Multi-step match-reasoning workflows chained behind a single recruiter action.",
+      },
+    ],
+  },
+  {
+    name: "Grounding",
+    summary:
+      "Tie every AI claim to real evidence to reduce hallucination and keep outputs trustworthy.",
+    evidence: [
+      {
+        product: "Lesson Plan",
+        detail:
+          "Standards suggestions are constrained to retrieved candidates — the model cannot fabricate a standard that doesn't exist.",
+      },
+      {
+        product: "Resume",
+        detail:
+          "Truth-preservation controls keep resumes free of invented metrics and grounded in real work history.",
+      },
+      {
+        product: "Ryger",
+        detail:
+          "Every match recommendation carries the evidence that supports it, per requirement.",
+      },
+    ],
+  },
+  {
+    name: "Human-in-the-loop",
+    summary:
+      "Keep AI assistive — the human reviews and approves before anything counts.",
+    evidence: [
+      {
+        product: "Lesson Plan",
+        detail:
+          "Preview-first: AI engines persist nothing; teachers review, edit, and approve before any write, with full version history behind them.",
+      },
+      {
+        product: "Ryger",
+        detail:
+          "AI clears the obvious matches and misses; the recruiter keeps the nuanced calls where judgment adds value.",
+      },
+    ],
+  },
+  {
+    name: "AI Reliability",
+    summary:
+      "Make AI dependable in production — retries, timeouts, validation, and reversibility.",
+    evidence: [
+      {
+        product: "Lesson Plan",
+        detail:
+          "A centralized execution seam wraps every call with retry, timeout, and schema validation; immutable, trigger-written version history makes every AI change reversible.",
+      },
+      {
+        product: "ReadMyStrip",
+        detail:
+          "A technically complex image-analysis workflow made dependable enough for one-tap consumer use and App Store review.",
+      },
+    ],
+  },
+  {
+    name: "Cost Optimization",
+    summary:
+      "Control the unit economics of AI features without sacrificing quality where it matters.",
+    evidence: [
+      {
+        product: "Lesson Plan",
+        detail:
+          "Low-stakes materials routed to a model at roughly a third of the cost; premium models spent only where correctness is critical. Cached standards suggestions avoid repeat embedding and rerank cost.",
+      },
+    ],
+  },
+  {
+    name: "Workflow Design",
+    summary:
+      "Start from how the work actually flows, then fit software and AI into it.",
+    evidence: [
+      {
+        product: "Lesson Plan",
+        detail:
+          "The product follows a teacher's real arc — planning through classroom delivery — instead of dropping a generated document into a vacuum.",
+      },
+      {
+        product: "Ryger",
+        detail:
+          "Redesigned candidate review to end the constant context-switching between a job description and a resume.",
+      },
+      {
+        product: "Resume",
+        detail:
+          "Reads a job description against a full career narrative to surface the most relevant real experience first.",
+      },
+    ],
+  },
+  {
+    name: "Product Discovery",
+    summary:
+      "Find the real problem through research and use before building — and let it reshape the product.",
+    evidence: [
+      {
+        product: "Ryger",
+        detail:
+          "A seven-discovery sequence turned a matching tool into a recruiter-owned talent network.",
+      },
+      {
+        product: "Lesson Plan",
+        detail:
+          "Discovered teachers don't need lessons generated so much as lessons that adapt — reshaping the product around adaptation.",
+      },
+      {
+        product: "ReadMyStrip",
+        detail:
+          "Reduced a fiddly, error-prone testing routine to a single photo.",
+      },
+    ],
+  },
+];
+
+/* ------------------------------------------------------------------ */
 /*  Ryger — dedicated case study                                       */
 /* ------------------------------------------------------------------ */
 
@@ -390,6 +622,133 @@ export const ryger = {
     "AI trust & explainability",
     "Systems thinking",
     "Strategic evolution",
+  ],
+} as const;
+
+/* ------------------------------------------------------------------ */
+/*  Lesson Plan — dedicated case study                                 */
+/* ------------------------------------------------------------------ */
+
+export const lessonPlan = {
+  name: "Lesson Plan",
+  status: "Beta · Teacher Testing",
+  positioning:
+    "An AI workflow platform that carries a lesson from authoritative standards through to classroom delivery.",
+  intro:
+    "I designed and built Lesson Plan end to end — the product strategy, the AI architecture, and the systems underneath. It started as lesson generation and became something larger: a platform that orchestrates AI across the full arc of teaching, with the teacher in control at every step.",
+  tldr: "Generating a lesson is one step. The product is the workflow around it — grounding, review, adaptation, materials, scheduling, and delivery — coordinated by one AI orchestration layer, with every AI write previewed and teacher-approved.",
+
+  workflow: [
+    {
+      index: "01",
+      stage: "Planning",
+      decision:
+        "A lesson starts inside real structure — course, unit, standards, and classroom constraints — not a blank prompt box.",
+    },
+    {
+      index: "02",
+      stage: "Grounding in standards",
+      decision:
+        "Hybrid retrieval grounds the lesson in authoritative, multi-state standards, so alignment is real rather than asserted.",
+    },
+    {
+      index: "03",
+      stage: "Review",
+      decision:
+        "Standards-aware review and rubric evaluation check the lesson before it's taught, not after.",
+    },
+    {
+      index: "04",
+      stage: "Adaptation",
+      decision:
+        "One lesson adapts — shortened block, substitute, ELL, intervention, advanced — without losing its objective or standards alignment.",
+    },
+    {
+      index: "05",
+      stage: "Materials",
+      decision:
+        "Quizzes, worksheets, exit tickets, and tests generate as reusable instructional assets, not one-off documents.",
+    },
+    {
+      index: "06",
+      stage: "Scheduling",
+      decision:
+        "Copy-on-write scheduled instances let one lesson run in many classes and dates without collisions.",
+    },
+    {
+      index: "07",
+      stage: "Publishing",
+      decision:
+        "Destination-abstracted publishing delivers into Google Classroom as Docs, Forms, or live links — idempotently, with no duplicates.",
+    },
+  ],
+
+  systems: [
+    {
+      title: "One orchestration layer",
+      body: "Every AI capability — retrieval, generation, review, adaptation, evaluation, material creation — runs through a single execution seam with retry, timeout, and validation. That seam is where model routing, cost accounting, and evaluation hooks live, so the system improves in one place instead of feature by feature.",
+    },
+    {
+      title: "Retrieval over recollection",
+      body: "Standards come from a hybrid pipeline — a hard metadata filter, then vector similarity, then an AI reranker — so the model reasons over authoritative candidates it can't cross-contaminate across state, grade, or framework. Correctness is a property of the pipeline, not a hope about the model.",
+    },
+    {
+      title: "Model comparison & routing",
+      body: "Model choice is policy-driven and model-agnostic through a gateway. Low-stakes materials route to a fast, inexpensive model; summative tests route to a stronger one. The decision is made per workflow and backed by comparison, not by defaulting to the largest model.",
+    },
+    {
+      title: "Structured, teacher-approved outputs",
+      body: "Every call returns schema-validated output the rest of the system can trust, and every AI change is preview-first — engines persist nothing until a teacher approves. Immutable, trigger-written version history makes each change reversible and attributable.",
+    },
+  ],
+
+  evaluation: {
+    intro:
+      "Evaluation is the part most AI products skip and the part I lean on hardest. Shipping AI teachers can trust means measuring quality deliberately — not eyeballing a few good demos.",
+    points: [
+      {
+        label: "Rubric evaluation",
+        body: "Lessons are scored against explicit, evidence-grounded criteria, so “is this good?” has a repeatable answer.",
+      },
+      {
+        label: "Regression harness",
+        body: "A library of scripted checks runs against real models, catching quality regressions when a prompt or model changes.",
+      },
+      {
+        label: "Model comparison",
+        body: "Model and prompt variants are compared on quality, latency, and cost — and the results drive the routing policy.",
+      },
+      {
+        label: "Fidelity checks",
+        body: "Adapted lessons are verified to preserve the source's objective and standards, measuring the thing that actually matters.",
+      },
+    ],
+  },
+
+  decisions: [
+    {
+      title: "AI as orchestration, not autonomy",
+      body: "The model drafts; the teacher decides. Preview-first isn't a UX nicety — it's how the product keeps professional accountability with the human who owns the classroom.",
+    },
+    {
+      title: "Correctness over coverage",
+      body: "Retrieval is bounded to a filtered candidate set even though a broader search would surface more. In a standards-aligned product, a confidently wrong suggestion is worse than a narrower right one.",
+    },
+  ],
+
+  lesson:
+    "Generating a lesson was never the hard part; a model does that in seconds. The product is everything around it — grounding, evaluation, adaptation, and delivery — orchestrated so AI stays useful and the teacher stays accountable.",
+
+  demonstrates: [
+    "AI workflow design",
+    "RAG & retrieval",
+    "Model evaluation",
+    "Model comparison & routing",
+    "Structured outputs",
+    "Human-in-the-loop",
+    "Cost optimization",
+    "Product discovery",
+    "Systems thinking",
   ],
 } as const;
 
