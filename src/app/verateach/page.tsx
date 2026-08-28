@@ -4,27 +4,27 @@ import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
+import { Shot, ShotAside } from "@/components/ui/Shot";
 import { Architecture } from "@/components/ui/Architecture";
-import { lessonPlan, products, site } from "@/lib/content";
+import { products, site, verateach } from "@/lib/content";
 
 const ACCENT = "120, 200, 255";
 
 export const metadata: Metadata = {
-  title: "Lesson Plan — Case Study",
+  title: "VeraTeach — Case Study",
   description:
-    "How Lesson Plan evolved from AI lesson generation into a workflow platform that orchestrates AI across grounding, review, adaptation, materials, scheduling, and Google Classroom delivery — with evaluation and human-in-the-loop control at its center.",
+    "How VeraTeach became an integrated AI teaching workspace — standards-grounded planning, assessment creation, Google Classroom publishing, and a grading loop that returns scores to Classroom, with the teacher in control throughout.",
   openGraph: {
-    title: "Lesson Plan — Case Study · Chad Harmer",
+    title: "VeraTeach — Case Study · Chad Harmer",
     description:
       "An AI-orchestrated classroom workflow platform: retrieval, evaluation, model routing, and teacher-approved outputs.",
   },
 };
 
-export default function LessonPlanCaseStudy() {
-  const lp = products.find((p) => p.name === "Lesson Plan");
-  const architecture = lp?.architecture ?? [];
-  const demo = lp?.actions?.find((a) => a.label === "Book a Demo");
-  const notify = lp?.actions?.find((a) => a.label.startsWith("Notify"));
+export default function VeraTeachCaseStudy() {
+  const vt = products.find((p) => p.name === "VeraTeach");
+  const architecture = vt?.architecture ?? [];
+  const visit = vt?.actions?.find((a) => a.label === "Visit VeraTeach");
 
   return (
     <>
@@ -76,23 +76,23 @@ export default function LessonPlanCaseStudy() {
                     className="grid h-12 w-12 place-items-center rounded-2xl border border-line-strong bg-elevated font-mono text-xl font-medium"
                     style={{ color: `rgb(${ACCENT})` }}
                   >
-                    L
+                    V
                   </span>
                   <span className="font-mono text-xs uppercase tracking-[0.16em] text-faint">
-                    {lessonPlan.status}
+                    {verateach.status}
                   </span>
                 </div>
               </Reveal>
 
               <Reveal delay={0.06}>
                 <h1 className="mt-7 text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.03em] text-gradient sm:text-6xl">
-                  {lessonPlan.positioning}
+                  {verateach.positioning}
                 </h1>
               </Reveal>
 
               <Reveal delay={0.12}>
                 <p className="mt-7 max-w-2xl text-lg leading-relaxed text-muted">
-                  {lessonPlan.intro}
+                  {verateach.intro}
                 </p>
               </Reveal>
 
@@ -105,11 +105,29 @@ export default function LessonPlanCaseStudy() {
                     The short version
                   </p>
                   <p className="mt-2.5 text-balance text-base leading-relaxed text-fg/90">
-                    {lessonPlan.tldr}
+                    {verateach.tldr}
                   </p>
                 </div>
               </Reveal>
             </div>
+          </Container>
+        </section>
+
+        {/* The product, before any description of it. A hiring manager
+            skimming from a resume link should see the thing itself above the
+            fold-and-a-half, not four paragraphs about it. */}
+        <section className="pb-4">
+          <Container>
+            <Reveal>
+              <Shot
+                src="/verateach/lesson-workspace.png"
+                width={2880}
+                height={1676}
+                priority
+                alt="The VeraTeach lesson workspace: a generated biology lesson with its class, readiness checks, and materials rail."
+                caption="A lesson is an object in a workspace, not a document in a chat window — it belongs to a class, tracks whether it is ready to teach, and carries the materials made from it."
+              />
+            </Reveal>
           </Container>
         </section>
 
@@ -141,7 +159,7 @@ export default function LessonPlanCaseStudy() {
             </Reveal>
 
             <ol className="mt-14 max-w-3xl">
-              {lessonPlan.workflow.map((step, i) => (
+              {verateach.workflow.map((step, i) => (
                 <Reveal as="li" key={step.index} delay={i * 0.05}>
                   <div className="relative flex gap-5 pb-8 last:pb-0">
                     {/* Rail */}
@@ -152,7 +170,7 @@ export default function LessonPlanCaseStudy() {
                       >
                         {step.index}
                       </span>
-                      {i < lessonPlan.workflow.length - 1 ? (
+                      {i < verateach.workflow.length - 1 ? (
                         <span
                           aria-hidden
                           className="mt-1 w-px flex-1 bg-line"
@@ -172,6 +190,21 @@ export default function LessonPlanCaseStudy() {
                 </Reveal>
               ))}
             </ol>
+          </Container>
+        </section>
+
+        {/* Standards, where the claim about retrieval is actually visible. */}
+        <section className="pb-4">
+          <Container>
+            <Reveal>
+              <Shot
+                src="/verateach/standards-suggestions.png"
+                width={1544}
+                height={600}
+                alt="Suggested standards on a lesson, each with its code, framework, a match rating, and the reason it was matched."
+                caption="Standards are retrieved from the corpus and proposed with the reason they match — the teacher keeps the ones that fit. Alignment is something the product can show its working for, not a label it asserts."
+              />
+            </Reveal>
           </Container>
         </section>
 
@@ -197,7 +230,7 @@ export default function LessonPlanCaseStudy() {
               </Reveal>
 
               <div className="grid gap-5 sm:grid-cols-2">
-                {lessonPlan.systems.map((s, i) => (
+                {verateach.systems.map((s, i) => (
                   <Reveal key={s.title} delay={(i % 2) * 0.06} className="h-full">
                     <div className="h-full rounded-2xl border border-line bg-surface/50 p-6">
                       <div className="flex items-center gap-2.5">
@@ -216,6 +249,32 @@ export default function LessonPlanCaseStudy() {
                   </Reveal>
                 ))}
               </div>
+            </div>
+          </Container>
+        </section>
+
+        {/* What the generation actually produces, and the round trip it enters. */}
+        <section className="pb-4">
+          <Container>
+            <div className="flex flex-col gap-16">
+              <Reveal>
+                <Shot
+                  src="/verateach/quiz-answer-key.png"
+                  width={1600}
+                  height={1150}
+                  alt="A generated quiz in teacher view, showing correct answers marked and an explanation beneath a true/false item."
+                  caption="Generated assessments are structured objects, not prose — every item carries its answer key and rationale, the teacher can switch to the student view, and anything here can be rewritten before it goes out."
+                />
+              </Reveal>
+
+              <ShotAside
+                src="/verateach/classroom-publishing.png"
+                width={800}
+                height={1280}
+                alt="A material's Classroom panel showing it published to two class periods, with submission counts and a grading action for each."
+                title="The loop closes back inside Classroom"
+                body="Publishing creates a real Google Form in the teacher's own Classroom and keeps the link to it, so submissions come back per class and each one hands off to grading on its own. That round trip — not the export — is what makes this usable on a Tuesday."
+              />
             </div>
           </Container>
         </section>
@@ -239,13 +298,13 @@ export default function LessonPlanCaseStudy() {
                   You can&apos;t ship AI you can&apos;t measure.
                 </h2>
                 <p className="mx-auto mt-5 max-w-xl text-balance text-base leading-relaxed text-muted">
-                  {lessonPlan.evaluation.intro}
+                  {verateach.evaluation.intro}
                 </p>
               </div>
             </Reveal>
 
             <div className="mx-auto mt-14 grid max-w-4xl gap-5 sm:grid-cols-2">
-              {lessonPlan.evaluation.points.map((p, i) => (
+              {verateach.evaluation.points.map((p, i) => (
                 <Reveal key={p.label} delay={(i % 2) * 0.06} className="h-full">
                   <div className="h-full rounded-2xl border border-line bg-surface/60 p-6">
                     <p
@@ -279,7 +338,7 @@ export default function LessonPlanCaseStudy() {
             </Reveal>
 
             <div className="mt-12 grid gap-5 md:grid-cols-2">
-              {lessonPlan.decisions.map((d, i) => (
+              {verateach.decisions.map((d, i) => (
                 <Reveal key={d.title} delay={i * 0.08} className="h-full">
                   <div className="h-full rounded-2xl border border-line bg-surface/50 p-6 sm:p-7">
                     <h3 className="text-base font-semibold tracking-tight text-fg">
@@ -291,6 +350,62 @@ export default function LessonPlanCaseStudy() {
                   </div>
                 </Reveal>
               ))}
+            </div>
+          </Container>
+        </section>
+
+        {/* The decision above, shown. This is the one screenshot the case
+            study most needs: "AI assists, the teacher decides" is a claim until
+            you can see the empty score box next to the suggestion. */}
+        <section className="pb-4">
+          <Container>
+            <Reveal>
+              <Shot
+                src="/verateach/grading-workspace.png"
+                width={2060}
+                height={1650}
+                alt="The grading workspace: objective questions already scored by percentage, a written question with its expected answer, each student response with an empty score field and a suggest-a-score action."
+                caption="Objective questions arrive already scored. For written work the teacher sees the expected answer and each response with an empty score box beside a suggestion they can ask for — the model proposes, the score field stays theirs to fill. The class shown is seeded sample data, not student work."
+              />
+            </Reveal>
+          </Container>
+        </section>
+
+        {/* In production — the claim that separates a shipped product from a demo */}
+        <section className="border-t border-line py-24 sm:py-32">
+          <Container>
+            <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+              <Reveal>
+                <div>
+                  <span className="font-mono text-xs uppercase tracking-[0.18em] text-faint">
+                    In Production
+                  </span>
+                  <h2 className="mt-4 text-balance text-3xl font-semibold tracking-tight text-gradient sm:text-4xl">
+                    Shipped, not staged.
+                  </h2>
+                  <p className="mt-5 max-w-md text-base leading-relaxed text-muted">
+                    {verateach.production.intro}
+                  </p>
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.08}>
+                <ul className="grid gap-3">
+                  {verateach.production.points.map((point) => (
+                    <li
+                      key={point}
+                      className="flex items-start gap-3 rounded-2xl border border-line bg-surface/50 px-5 py-4"
+                    >
+                      <span
+                        aria-hidden
+                        className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full"
+                        style={{ background: `rgb(${ACCENT})` }}
+                      />
+                      <span className="text-sm leading-relaxed text-muted">{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
             </div>
           </Container>
         </section>
@@ -333,7 +448,7 @@ export default function LessonPlanCaseStudy() {
                   Core Lesson
                 </span>
                 <p className="mt-6 text-balance text-2xl font-medium leading-[1.4] tracking-tight text-fg sm:text-3xl">
-                  {lessonPlan.lesson}
+                  {verateach.lesson}
                 </p>
               </div>
             </Reveal>
@@ -363,7 +478,7 @@ export default function LessonPlanCaseStudy() {
 
             <Reveal delay={0.08}>
               <div className="mx-auto mt-9 flex max-w-2xl flex-wrap justify-center gap-2.5">
-                {lessonPlan.demonstrates.map((tag) => (
+                {verateach.demonstrates.map((tag) => (
                   <span
                     key={tag}
                     className="rounded-full border border-line-strong bg-surface/60 px-4 py-2 text-sm text-muted"
@@ -376,20 +491,14 @@ export default function LessonPlanCaseStudy() {
 
             <Reveal delay={0.16}>
               <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
-                {demo ? (
+                {visit ? (
                   <a
-                    href={demo.href}
+                    href={visit.href}
+                    target="_blank"
+                    rel="noreferrer"
                     className="inline-flex items-center gap-2 rounded-full bg-fg px-5 py-3 text-sm font-medium text-base transition-transform hover:-translate-y-0.5"
                   >
-                    Book a Demo
-                  </a>
-                ) : null}
-                {notify ? (
-                  <a
-                    href={notify.href}
-                    className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-elevated/60 px-5 py-3 text-sm font-medium text-fg transition-colors hover:border-accent/40"
-                  >
-                    Notify Me When It&apos;s Live
+                    Visit VeraTeach
                   </a>
                 ) : null}
                 <Link

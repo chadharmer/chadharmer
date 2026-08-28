@@ -63,54 +63,37 @@ export type ArchGroup = {
   items: string[];
 };
 
-/** Build a mailto: link with a reliably-encoded subject and body. */
-function mailto(to: string, subject: string, body: string): string {
-  return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-
 export const products: Product[] = [
   {
-    name: "Lesson Plan",
+    name: "VeraTeach",
     featured: true,
     tagline:
-      "An end-to-end teaching workflow platform that orchestrates AI from lesson planning through Google Classroom delivery.",
-    status: "Beta",
+      "A production AI teaching workspace that carries a lesson from standards through Google Classroom to returned grades.",
+    status: "Live",
     problem:
-      "Teaching isn't a sequence of blank pages — it's a workflow. A lesson has to align to authoritative standards, hold up under review, adapt to the class in front of you, carry its own materials, land on a specific day, and reach students through the tools a school already runs on. Most AI education tools generate a lesson and stop there, dropping a plausible document into the middle of a workflow they don't understand.",
-    why: "The workflow became the product. Lesson generation is one capability inside a larger system that orchestrates AI across the full arc of teaching. A lesson is grounded in authoritative multi-state standards through retrieval rather than recollection, reviewed and evaluated against those standards, adapted for a shortened block or an ELL group or a substitute without losing its objective, extended into quizzes, worksheets, and exit tickets as reusable assets, scheduled into real classes, and delivered into Google Classroom as Docs, Forms, or live links. One orchestration layer coordinates retrieval, generation, review, adaptation, evaluation, material creation, scheduling, and publishing — and every AI write is previewed and teacher-approved before it counts. The teacher directs the workflow; AI runs the stages.",
+      "A teacher's week is spread across disconnected tools: one place to plan, another to look up standards, another to build the quiz, Google Classroom to hand it out, a spreadsheet to grade it, and a blank document whenever last year's material needs adapting. Each handoff is manual re-entry. Most AI education tools generate a lesson and stop there, dropping a plausible document into the middle of a workflow they don't participate in.",
+    why: "The workflow became the product. Lesson generation is one capability inside a system that spans the whole arc: a lesson is grounded in a 100,000-record standards corpus through retrieval rather than recollection, shaped by guidance the teacher writes before generation runs, extended into quizzes, worksheets, study guides and exit tickets, published to a class as a native Google Form where that fits, and graded in a workspace that scores the objective questions automatically and proposes — never applies — scores for written answers. Grades go back to Classroom. Teachers can also import material they already have rather than starting from a blank page. One orchestration layer coordinates every AI stage, and every AI write is previewed before it counts.",
     lesson:
-      "The engineering that matters lives in the coordination: hybrid standards retrieval that filters, ranks by vector similarity, then reranks; immutable, trigger-written version history that makes every change reversible and attributable; copy-on-write scheduled instances that let one lesson run in many classes without collisions; cost- and stakes-based model routing; and destination-abstracted publishing to Google Classroom that stays idempotent. AI earns its place by being orchestrated into real work and keeping the teacher accountable — not by making decisions on its own.",
+      "The engineering that matters lives in the coordination: hybrid standards retrieval that filters, ranks by vector similarity, then reranks; immutable, trigger-written version history that makes every change reversible; copy-on-write scheduled instances so one lesson runs in many classes without collisions; cost- and stakes-based model routing; idempotent publishing into Google Classroom; and a grading path that keeps the teacher as the one who decides. AI earns its place by being orchestrated into real work and keeping the teacher accountable — not by making the call on its own.",
     accent: "120, 200, 255",
     actions: [
       {
-        label: "Book a Demo",
-        href: mailto(
-          "chad@ryger.app",
-          "Lesson Planning Platform Demo",
-          "Hi Chad,\n\nI'm interested in seeing a demo.\n\nName:\nSchool:\nGrade(s):\nSubject(s):"
-        ),
+        label: "Visit VeraTeach",
+        href: "https://verateach.com",
+        external: true,
         variant: "primary",
       },
-      { label: "Read Case Study", href: "/lesson-plan", variant: "secondary" },
-      {
-        label: "Notify Me When It's Live",
-        href: mailto(
-          "chad@ryger.app",
-          "Notify Me When It's Live",
-          "Hi Chad,\n\nI'd like to be notified when the platform is publicly available.\n\nName:\nSchool (optional):\nEmail:"
-        ),
-        variant: "subtle",
-      },
+      { label: "Read Case Study", href: "/verateach", variant: "secondary" },
     ],
-    // Fallback status if the CTAs are ever removed.
-    availability: "Currently in Teacher Beta Testing",
+    // Fallback status if the live link is ever pulled. Kept positive, never "broken".
+    availability: "Live at verateach.com",
     highlights: [
-      "The workflow is the product",
-      "AI orchestration across stages",
-      "Retrieval over recollection",
-      "Preview-first, teacher-approved",
-      "Reusable assets, not documents",
-      "Classroom delivery, not just plans",
+      "Plan through grading, one workspace",
+      "100k+ standards, semantically retrieved",
+      "Native Google Forms quizzes",
+      "AI suggests scores, teachers decide",
+      "Grades returned to Classroom",
+      "Live, self-serve, billed",
     ],
     architecture: [
       {
@@ -145,10 +128,21 @@ export const products: Product[] = [
       {
         label: "Google Classroom",
         items: [
-          "OAuth with encrypted tokens",
+          "Verified OAuth with encrypted tokens",
           "Persistent period → course mapping",
+          "Native Google Forms quiz creation",
           "Publishing as Docs · Forms · live links",
           "Idempotent re-publish",
+          "Grades returned to Classroom",
+        ],
+      },
+      {
+        label: "Production",
+        items: [
+          "Stripe subscriptions",
+          "Usage entitlements",
+          "Authentication & account recovery",
+          "Error monitoring",
         ],
       },
       {
@@ -156,13 +150,13 @@ export const products: Product[] = [
         items: [
           "Hybrid standards retrieval (filter + vector + rerank)",
           "AI orchestration across stages",
-          "Reusable instructional assets",
-          "Copy-on-write scheduled instances",
-          "Lesson review & evaluation",
           "Instructional material generation",
-          "Scheduling into classes",
+          "Assessment → publish → grade → return loop",
+          "Automatic objective scoring",
+          "AI-assisted free-response suggestions",
+          "Lesson import from existing material",
+          "Copy-on-write scheduled instances",
           "Destination-abstracted publishing",
-          "Duplicate-publication prevention",
         ],
       },
     ],
@@ -270,7 +264,7 @@ export const competencies: Competency[] = [
       "Ground generation in authoritative sources instead of model memory, so outputs are correct and defensible.",
     evidence: [
       {
-        product: "Lesson Plan",
+        product: "VeraTeach",
         detail:
           "Hybrid retrieval over authoritative academic standards — a hard metadata filter, then vector similarity, then an AI reranker — feeds the model a bounded, correct candidate set.",
       },
@@ -287,7 +281,7 @@ export const competencies: Competency[] = [
       "Search by meaning, not keywords — with guardrails so relevance never overrides correctness.",
     evidence: [
       {
-        product: "Lesson Plan",
+        product: "VeraTeach",
         detail:
           "pgvector embeddings rank standards by semantic similarity, but only within a hard-filtered set, so meaning-based search can't return an out-of-jurisdiction result.",
       },
@@ -304,7 +298,7 @@ export const competencies: Competency[] = [
       "Measure output quality with rubrics and repeatable checks instead of eyeballing a few good demos.",
     evidence: [
       {
-        product: "Lesson Plan",
+        product: "VeraTeach",
         detail:
           "Rubric-based, evidence-grounded evaluation scores lessons against explicit criteria; a regression harness of scripted checks guards quality as prompts and models change.",
       },
@@ -321,7 +315,7 @@ export const competencies: Competency[] = [
       "Pick the right model per task by weighing quality, latency, and cost — not defaulting to the biggest one.",
     evidence: [
       {
-        product: "Lesson Plan",
+        product: "VeraTeach",
         detail:
           "Policy-driven, model-agnostic routing across Claude Sonnet, Claude Haiku, and GPT tiers — cheap models for low-stakes materials, stronger models reserved for summative tests.",
       },
@@ -338,7 +332,7 @@ export const competencies: Competency[] = [
       "Constrain generation to typed schemas so downstream systems get reliable data, not free text.",
     evidence: [
       {
-        product: "Lesson Plan",
+        product: "VeraTeach",
         detail:
           "Every production AI call returns schema-validated output; the model can't emit free-form text or pick a value outside the allowed set (it can't invent a standard).",
       },
@@ -355,7 +349,7 @@ export const competencies: Competency[] = [
       "Coordinate many AI steps into one reliable workflow rather than one brittle mega-prompt.",
     evidence: [
       {
-        product: "Lesson Plan",
+        product: "VeraTeach",
         detail:
           "A single orchestration layer sequences retrieval, generation, review, adaptation, evaluation, material creation, and publishing — each a discrete, testable step.",
       },
@@ -372,7 +366,7 @@ export const competencies: Competency[] = [
       "Tie every AI claim to real evidence to reduce hallucination and keep outputs trustworthy.",
     evidence: [
       {
-        product: "Lesson Plan",
+        product: "VeraTeach",
         detail:
           "Standards suggestions are constrained to retrieved candidates — the model cannot fabricate a standard that doesn't exist.",
       },
@@ -394,7 +388,7 @@ export const competencies: Competency[] = [
       "Keep AI assistive — the human reviews and approves before anything counts.",
     evidence: [
       {
-        product: "Lesson Plan",
+        product: "VeraTeach",
         detail:
           "Preview-first: AI engines persist nothing; teachers review, edit, and approve before any write, with full version history behind them.",
       },
@@ -411,7 +405,7 @@ export const competencies: Competency[] = [
       "Make AI dependable in production — retries, timeouts, validation, and reversibility.",
     evidence: [
       {
-        product: "Lesson Plan",
+        product: "VeraTeach",
         detail:
           "A centralized execution seam wraps every call with retry, timeout, and schema validation; immutable, trigger-written version history makes every AI change reversible.",
       },
@@ -428,7 +422,7 @@ export const competencies: Competency[] = [
       "Control the unit economics of AI features without sacrificing quality where it matters.",
     evidence: [
       {
-        product: "Lesson Plan",
+        product: "VeraTeach",
         detail:
           "Low-stakes materials routed to a model at roughly a third of the cost; premium models spent only where correctness is critical. Cached standards suggestions avoid repeat embedding and rerank cost.",
       },
@@ -440,7 +434,7 @@ export const competencies: Competency[] = [
       "Start from how the work actually flows, then fit software and AI into it.",
     evidence: [
       {
-        product: "Lesson Plan",
+        product: "VeraTeach",
         detail:
           "The product follows a teacher's real arc — planning through classroom delivery — instead of dropping a generated document into a vacuum.",
       },
@@ -467,7 +461,7 @@ export const competencies: Competency[] = [
           "A seven-discovery sequence turned a matching tool into a recruiter-owned talent network.",
       },
       {
-        product: "Lesson Plan",
+        product: "VeraTeach",
         detail:
           "Discovered teachers don't need lessons generated so much as lessons that adapt — reshaping the product around adaptation.",
       },
@@ -626,75 +620,75 @@ export const ryger = {
 } as const;
 
 /* ------------------------------------------------------------------ */
-/*  Lesson Plan — dedicated case study                                 */
+/*  VeraTeach — dedicated case study                                 */
 /* ------------------------------------------------------------------ */
 
-export const lessonPlan = {
-  name: "Lesson Plan",
-  status: "Beta · Teacher Testing",
+export const verateach = {
+  name: "VeraTeach",
+  status: "Live · verateach.com",
   positioning:
-    "An AI workflow platform that carries a lesson from authoritative standards through to classroom delivery.",
+    "An AI teaching workspace that carries a lesson from standards through Google Classroom to returned grades.",
   intro:
-    "I designed and built Lesson Plan end to end — the product strategy, the AI architecture, and the systems underneath. It started as lesson generation and became something larger: a platform that orchestrates AI across the full arc of teaching, with the teacher in control at every step.",
-  tldr: "Generating a lesson is one step. The product is the workflow around it — grounding, review, adaptation, materials, scheduling, and delivery — coordinated by one AI orchestration layer, with every AI write previewed and teacher-approved.",
+    "I designed and built VeraTeach end to end — the product strategy, the AI architecture, and the systems underneath. It started as lesson generation and became something larger: an integrated workspace spanning planning, standards alignment, assessment creation, classroom publishing, and grading, with the teacher in control at every step.",
+  tldr: "Generating a lesson is one step. The product is the workflow around it — grounding, materials, publishing, and grading — collapsed into one workspace, with AI doing the drafting and the teacher keeping the decisions.",
 
   workflow: [
     {
       index: "01",
       stage: "Planning",
       decision:
-        "A lesson starts inside real structure — course, unit, standards, and classroom constraints — not a blank prompt box.",
+        "A lesson starts inside real structure — course, class, standards — not a blank prompt box. Teachers can write guidance that shapes generation before it runs, or import material they already have.",
     },
     {
       index: "02",
       stage: "Grounding in standards",
       decision:
-        "Hybrid retrieval grounds the lesson in authoritative, multi-state standards, so alignment is real rather than asserted.",
+        "Hybrid retrieval grounds the lesson in a 100,000-record corpus of state standards, so alignment is verifiable rather than asserted.",
     },
     {
       index: "03",
-      stage: "Review",
+      stage: "Review & adaptation",
       decision:
-        "Standards-aware review and rubric evaluation check the lesson before it's taught, not after.",
+        "Standards-aware review checks the lesson before it's taught, and one lesson adapts — shortened block, substitute, ELL — without losing its objective.",
     },
     {
       index: "04",
-      stage: "Adaptation",
+      stage: "Materials",
       decision:
-        "One lesson adapts — shortened block, substitute, ELL, intervention, advanced — without losing its objective or standards alignment.",
+        "Quizzes, tests, worksheets, study guides, exit tickets and handouts generate from the lesson as editable assets the teacher can rewrite.",
     },
     {
       index: "05",
-      stage: "Materials",
+      stage: "Publishing",
       decision:
-        "Quizzes, worksheets, exit tickets, and tests generate as reusable instructional assets, not one-off documents.",
+        "A material publishes into Google Classroom — as a native Google Form where it's an assessment, or as a Doc or live link where it isn't.",
     },
     {
       index: "06",
-      stage: "Scheduling",
+      stage: "Grading",
       decision:
-        "Copy-on-write scheduled instances let one lesson run in many classes and dates without collisions.",
+        "Submissions come back into a grading workspace. Objective questions score automatically; written answers get AI-drafted suggestions the teacher accepts, edits, or ignores.",
     },
     {
       index: "07",
-      stage: "Publishing",
+      stage: "Returning grades",
       decision:
-        "Destination-abstracted publishing delivers into Google Classroom as Docs, Forms, or live links — idempotently, with no duplicates.",
+        "Approved scores go back to Google Classroom, closing the loop inside the tool the school already runs on.",
     },
   ],
 
   systems: [
     {
       title: "One orchestration layer",
-      body: "Every AI capability — retrieval, generation, review, adaptation, evaluation, material creation — runs through a single execution seam with retry, timeout, and validation. That seam is where model routing, cost accounting, and evaluation hooks live, so the system improves in one place instead of feature by feature.",
+      body: "Every AI capability — retrieval, generation, review, adaptation, material creation, grading suggestions — runs through a single execution seam with retry, timeout, and validation. That seam is where model routing, cost accounting, and evaluation hooks live, so the system improves in one place instead of feature by feature.",
     },
     {
-      title: "Retrieval over recollection",
-      body: "Standards come from a hybrid pipeline — a hard metadata filter, then vector similarity, then an AI reranker — so the model reasons over authoritative candidates it can't cross-contaminate across state, grade, or framework. Correctness is a property of the pipeline, not a hope about the model.",
+      title: "A standards corpus worth retrieving from",
+      body: "Alignment is only as good as what you can search. I built and maintain the corpus itself — 144 frameworks across 13 states, 103,934 records, with all 94,036 coded standards embedded for semantic retrieval — from authoritative state sources, each with its own document format and its own parsing failures. Retrieval then filters hard on jurisdiction and grade, ranks by vector similarity, and reranks, so the model reasons over candidates it cannot cross-contaminate across states.",
     },
     {
-      title: "Model comparison & routing",
-      body: "Model choice is policy-driven and model-agnostic through a gateway. Low-stakes materials route to a fast, inexpensive model; summative tests route to a stronger one. The decision is made per workflow and backed by comparison, not by defaulting to the largest model.",
+      title: "Assessment as a round trip, not an export",
+      body: "Publishing a quiz means creating a real Google Form in the teacher's own Classroom, mapping every question so responses can be read back, matching submissions to students, and returning grades. Getting that loop to close — rather than stopping at 'export to Google' — is most of what separates a demo from a tool a teacher uses on a Tuesday.",
     },
     {
       title: "Structured, teacher-approved outputs",
@@ -708,7 +702,7 @@ export const lessonPlan = {
     points: [
       {
         label: "Rubric evaluation",
-        body: "Lessons are scored against explicit, evidence-grounded criteria, so “is this good?” has a repeatable answer.",
+        body: "Lessons are scored against explicit, evidence-grounded criteria, so \u201cis this good?\u201d has a repeatable answer.",
       },
       {
         label: "Regression harness",
@@ -716,16 +710,20 @@ export const lessonPlan = {
       },
       {
         label: "Model comparison",
-        body: "Model and prompt variants are compared on quality, latency, and cost — and the results drive the routing policy.",
+        body: "Model and prompt variants are compared on quality, latency, and cost — and the results drive the routing policy. One migration cut a workflow from 74s to 18s by measuring rather than assuming.",
       },
       {
-        label: "Fidelity checks",
-        body: "Adapted lessons are verified to preserve the source's objective and standards, measuring the thing that actually matters.",
+        label: "Corpus verification",
+        body: "Every standards framework is gated by coverage checks before teachers see it — counts, grade spans, and sampled text read back from the database against the source.",
       },
     ],
   },
 
   decisions: [
+    {
+      title: "AI suggests the grade; the teacher gives it",
+      body: "Objective questions score themselves. For written work the model drafts a score and a rationale, and stops there — the teacher accepts, edits, or ignores it. Grading is a professional judgment a teacher answers for, so automating the judgment would move accountability to something that cannot hold it.",
+    },
     {
       title: "AI as orchestration, not autonomy",
       body: "The model drafts; the teacher decides. Preview-first isn't a UX nicety — it's how the product keeps professional accountability with the human who owns the classroom.",
@@ -734,10 +732,26 @@ export const lessonPlan = {
       title: "Correctness over coverage",
       body: "Retrieval is bounded to a filtered candidate set even though a broader search would surface more. In a standards-aligned product, a confidently wrong suggestion is worse than a narrower right one.",
     },
+    {
+      title: "Own the corpus rather than the integration",
+      body: "Licensing a standards API would have been faster. Building the ingestion meant meeting each state's own PDFs, spreadsheets and quirks — but it means alignment is verifiable, additions cost days rather than negotiations, and no vendor sits between a teacher and whether their lesson is correct.",
+    },
   ],
 
+  production: {
+    intro:
+      "VeraTeach is a deployed product, not a prototype. A teacher can sign up, subscribe, and use it without talking to me.",
+    points: [
+      "Authentication with self-serve account recovery",
+      "Stripe subscriptions and usage entitlements",
+      "Managed Postgres with pgvector, migrations, and row-level security",
+      "Google OAuth verified for production use",
+      "Error monitoring and coverage checks over the standards corpus",
+    ],
+  },
+
   lesson:
-    "Generating a lesson was never the hard part; a model does that in seconds. The product is everything around it — grounding, evaluation, adaptation, and delivery — orchestrated so AI stays useful and the teacher stays accountable.",
+    "Generating a lesson was never the hard part; a model does that in seconds. The product is everything around it — the standards corpus, the assessment loop, the grading round trip — orchestrated so AI stays useful and the teacher stays accountable.",
 
   demonstrates: [
     "AI workflow design",
@@ -746,9 +760,11 @@ export const lessonPlan = {
     "Model comparison & routing",
     "Structured outputs",
     "Human-in-the-loop",
+    "Third-party API integration",
     "Cost optimization",
     "Product discovery",
     "Systems thinking",
+    "Production SaaS",
   ],
 } as const;
 
@@ -858,7 +874,7 @@ export const writing: Essay[] = [
     category: "Product Strategy",
     title: "Lessons from building four products in a year",
     blurb:
-      "What actually transferred between Ryger, Resume, ReadMyStrip, and Lesson Plan — and what didn't.",
+      "What actually transferred between Ryger, Resume, ReadMyStrip, and VeraTeach — and what didn't.",
     status: "Coming soon",
   },
 ];
