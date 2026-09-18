@@ -42,6 +42,12 @@ export type Product = {
   why: string;
   lesson: string;
   accent: string; // tailwind-ish rgba used for the card glow
+  /**
+   * Real shipped App Store artwork, served from /public. Only genuine artwork
+   * belongs here — a product without an icon keeps the monogram rather than
+   * being handed a stand-in for the sake of symmetry.
+   */
+  icon?: string;
   /** Render as a full-width flagship card instead of a grid cell. */
   featured?: boolean;
   highlights?: string[]; // short capability chips
@@ -205,6 +211,7 @@ export const products: Product[] = [
     lesson:
       "Reliability is the product. A technically complex image-analysis workflow has to land as one trustworthy tap — onboarding, edge cases, subscriptions, and Apple's review process all handled so the user never has to think about them.",
     accent: "72, 202, 178",
+    icon: "/readmystrip-icon.png",
     // Live App Store listing — link directly to it.
     actions: [
       {
@@ -239,6 +246,77 @@ export const products: Product[] = [
           "AI water-chemistry interpretation",
           "End-to-end onboarding to results",
           "Subscription management",
+          "App Store production release",
+        ],
+      },
+    ],
+  },
+  {
+    name: "Grocery Sidekick",
+    tagline: "Scan a grocery product and understand what is actually in it",
+    status: "Live · App Store",
+    problem:
+      "The answer to “can I eat this?” is printed on the back of the package in 6pt type, written for regulatory compliance rather than for a shopper, and it has to be decoded standing in an aisle holding a cart. Anyone avoiding an allergen, a seed oil, or an additive ends up translating an ingredient list on the spot — and most apps that offer to help hand back a letter grade instead of the facts.",
+    why: "Grocery Sidekick reads the label instead of ranking it. A barcode scan answers from a 417,000-product catalog bundled inside the app, so an aisle with no signal still works; a photo of the ingredient panel is read on-device, where the image never leaves the phone. Either way the shopper sees which of the things they asked to watch for — the US major allergens, plus seed oils, MSG, and high-fructose corn syrup — are present, possible, or genuinely absent, and which ingredient is responsible. I built it end to end: product, ingredient dictionary and catalog pipeline, parser, app, and App Store launch.",
+    lesson:
+      "Refusing to answer is a feature. “We could not read it” and “may contain” stay distinct from “absent” rather than collapsing into a clean result, because the failure that matters here is false reassurance. Recall is measured against a hand-adjudicated benchmark of 9,653 declared allergen instances, and every alternative the app suggests clears the same gate the scan did.",
+    accent: "247, 197, 51",
+    icon: "/grocery-sidekick-icon.png",
+    // Live App Store listing — link directly to it.
+    actions: [
+      {
+        label: "View on App Store",
+        href: "https://apps.apple.com/us/app/grocery-sidekick/id6807912507",
+        external: true,
+      },
+    ],
+    // Fallback status if the live link is ever pulled. Kept positive, never "broken".
+    availability: "Live on the Apple App Store",
+    highlights: [
+      "Shipped end-to-end",
+      "On-device OCR, images never sent",
+      "417k-product offline catalog",
+      "Never claims absence",
+      "iOS · Expo React Native",
+    ],
+    architecture: [
+      { label: "App", items: ["Expo", "React Native", "TypeScript", "iOS", "Offline-first"] },
+      {
+        label: "On-device OCR",
+        items: [
+          "Hand-written native modules",
+          "Apple Vision",
+          "ML Kit",
+          "Images never leave the device",
+        ],
+      },
+      {
+        label: "Data",
+        items: [
+          "Bundled SQLite catalog",
+          "417k formulations · 324k ingredient statements",
+          "Curated ingredient dictionary",
+          "Build-time precomputed watch flags",
+        ],
+      },
+      {
+        label: "Interpretation",
+        items: [
+          "Ingredient statement parser",
+          "Deterministic normalization, then fuzzy resolution",
+          "Evidence-gated absence claims",
+          "Four-state outcomes: present · possible · cleared · unknown",
+        ],
+      },
+      { label: "Payments", items: ["RevenueCat", "Subscription management"] },
+      {
+        label: "Key Systems",
+        items: [
+          "Barcode scan → catalog lookup",
+          "Label photo → on-device OCR → parse",
+          "Per-shopper allergen and preference watch list",
+          "Same-type alternative recommendations",
+          "Measured allergen-recall benchmark",
           "App Store production release",
         ],
       },
@@ -702,7 +780,7 @@ export const verateach = {
     points: [
       {
         label: "Rubric evaluation",
-        body: "Lessons are scored against explicit, evidence-grounded criteria, so \u201cis this good?\u201d has a repeatable answer.",
+        body: "Lessons are scored against explicit, evidence-grounded criteria, so “is this good?” has a repeatable answer.",
       },
       {
         label: "Regression harness",

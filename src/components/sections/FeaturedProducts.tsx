@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -169,6 +170,54 @@ function ActionButton({
   );
 }
 
+/**
+ * The square that sits left of a product name.
+ *
+ * Shipped App Store artwork when the product has it, and the first letter of
+ * the name when it does not. The monogram is a FALLBACK, not a house style —
+ * a real icon is better evidence that something actually shipped, so any
+ * product that gains one should be given it rather than kept uniform.
+ *
+ * Both sizes are fixed and match the box the monogram already occupied, so
+ * adding an icon to a product never changes the height of its card.
+ */
+function ProductMark({
+  product,
+  size,
+}: {
+  product: Product;
+  size: "lg" | "sm";
+}) {
+  const large = size === "lg";
+  const box = large ? "h-11 w-11 rounded-xl" : "h-9 w-9 rounded-lg";
+
+  if (product.icon) {
+    return (
+      <Image
+        src={product.icon}
+        alt=""
+        aria-hidden
+        width={large ? 44 : 36}
+        height={large ? 44 : 36}
+        /* Decorative: the product name is right beside it, so announcing the
+           icon would only repeat that name to a screen reader. */
+        className={`${box} shrink-0 border border-line-strong object-cover`}
+      />
+    );
+  }
+
+  return (
+    <span
+      className={`${box} grid shrink-0 place-items-center border border-line-strong bg-elevated font-mono font-medium ${
+        large ? "text-lg" : "text-sm"
+      }`}
+      style={{ color: `rgb(${product.accent})` }}
+    >
+      {product.name.charAt(0)}
+    </span>
+  );
+}
+
 function FeatureCard({ product }: { product: Product }) {
   return (
     <div className="group relative overflow-hidden rounded-3xl border border-line-strong bg-surface/60 p-7 transition-colors duration-300 hover:border-accent/40 sm:p-9">
@@ -184,12 +233,7 @@ function FeatureCard({ product }: { product: Product }) {
       <div className="relative">
         {/* Header */}
         <div className="flex items-center gap-3">
-          <span
-            className="grid h-11 w-11 place-items-center rounded-xl border border-line-strong bg-elevated font-mono text-lg font-medium"
-            style={{ color: `rgb(${product.accent})` }}
-          >
-            {product.name.charAt(0)}
-          </span>
+          <ProductMark product={product} size="lg" />
           <div>
             <h3 className="text-2xl font-semibold tracking-tight text-fg">
               {product.name}
@@ -273,17 +317,17 @@ function ProductCard({ product }: { product: Product }) {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <span
-              className="grid h-9 w-9 place-items-center rounded-lg border border-line-strong bg-elevated font-mono text-sm font-medium"
-              style={{ color: `rgb(${product.accent})` }}
-            >
-              {product.name.charAt(0)}
-            </span>
+            <ProductMark product={product} size="sm" />
             <h3 className="text-lg font-semibold tracking-tight text-fg">
               {product.name}
             </h3>
           </div>
-          <span className="rounded-full border border-line bg-base/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
+          {/* shrink-0 + nowrap: at 390px a two-word product name and a
+              two-word status were both wrapping, and a status that breaks
+              mid-phrase ("LIVE · APP / STORE") reads as a layout accident.
+              Holding the pill whole leaves the name enough room to stay on
+              one line as well. */}
+          <span className="shrink-0 whitespace-nowrap rounded-full border border-line bg-base/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
             {product.status}
           </span>
         </div>
