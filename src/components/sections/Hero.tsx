@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { Container } from "@/components/ui/Container";
-import { hero } from "@/lib/content";
+import { hero, site } from "@/lib/content";
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -13,8 +13,11 @@ export function Hero() {
       transition: { staggerChildren: 0.08, delayChildren: 0.05 },
     },
   };
+  /* Reduced motion still has to land on the visible state: the server renders
+     the "hidden" variant (opacity 0) before it can know the preference, so
+     empty variants here would leave the hero invisible for those visitors. */
   const item = reduce
-    ? { hidden: {}, show: {} }
+    ? { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0 } }
     : {
         hidden: { opacity: 0, y: 16 },
         show: {
@@ -67,7 +70,7 @@ export function Hero() {
           </motion.div>
 
           {/* Title */}
-          <h1 className="mt-7 text-5xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-7xl">
+          <h1 className="mt-7 text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl">
             {hero.titleLines.map((line, i) => (
               <motion.span
                 key={line}
@@ -87,7 +90,7 @@ export function Hero() {
           {/* Subtitle */}
           <motion.p
             variants={item}
-            className="mt-7 max-w-xl text-lg leading-relaxed text-muted"
+            className="mt-7 max-w-2xl text-lg leading-relaxed text-muted"
           >
             {hero.subtitle}
           </motion.p>
@@ -95,10 +98,10 @@ export function Hero() {
           {/* CTAs */}
           <motion.div variants={item} className="mt-9 flex flex-wrap items-center gap-3">
             <a
-              href="#products"
+              href="#work"
               className="group inline-flex items-center gap-2 rounded-full bg-fg px-5 py-3 text-sm font-medium text-base transition-transform hover:-translate-y-0.5"
             >
-              See what I&apos;ve built
+              See selected work
               <svg
                 width="14"
                 height="14"
@@ -115,31 +118,44 @@ export function Hero() {
                 />
               </svg>
             </a>
-            <a
-              href="#how-i-build"
-              className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-elevated/60 px-5 py-3 text-sm font-medium text-fg backdrop-blur transition-colors hover:border-accent/40"
-            >
-              How I build
-            </a>
-          </motion.div>
-
-          {/* Focus areas */}
-          <motion.div variants={item} className="mt-12">
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
-              Focus areas
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {hero.focusAreas.map((area) => (
-                <span
-                  key={area}
-                  className="rounded-md border border-line bg-surface/60 px-3 py-1.5 text-sm text-muted"
-                >
-                  {area}
-                </span>
-              ))}
-            </div>
+            {site.resume ? (
+              <a
+                href={site.resume}
+                className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-elevated/60 px-5 py-3 text-sm font-medium text-fg backdrop-blur transition-colors hover:border-accent/40"
+              >
+                Résumé (PDF)
+              </a>
+            ) : (
+              <a
+                href="#experience"
+                className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-elevated/60 px-5 py-3 text-sm font-medium text-fg backdrop-blur transition-colors hover:border-accent/40"
+              >
+                Experience
+              </a>
+            )}
           </motion.div>
         </motion.div>
+
+        {/* Proof strip — outcomes and range, enterprise and AI side by side */}
+        <motion.dl
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line lg:grid-cols-4"
+        >
+          {hero.proof.map((p) => (
+            <motion.div
+              key={p.value}
+              variants={item}
+              className="flex flex-col-reverse gap-1.5 bg-surface/70 p-5 backdrop-blur sm:p-6"
+            >
+              <dt className="text-[13px] leading-snug text-muted">{p.label}</dt>
+              <dd className="text-xl font-semibold tracking-tight text-fg sm:text-2xl">
+                {p.value}
+              </dd>
+            </motion.div>
+          ))}
+        </motion.dl>
       </Container>
     </section>
   );

@@ -1,88 +1,111 @@
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
-import { experience } from "@/lib/content";
+import { Arrow } from "@/components/ui/Arrow";
+import { experience, type Role } from "@/lib/content";
 
 export function Experience() {
   return (
-    <section id="experience" className="scroll-mt-20 py-24 sm:py-32">
+    <section id="experience" className="scroll-mt-20 border-t border-line py-24 sm:py-32">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
+        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           {/* Narrative — the "why" */}
-          <div>
+          <div className="lg:sticky lg:top-28 lg:self-start">
             <Reveal>
               <div className="flex items-center gap-2.5">
                 <span className="h-1 w-1 rounded-full bg-accent" />
                 <span className="font-mono text-xs uppercase tracking-[0.18em] text-faint">
-                  Experience
+                  {experience.label}
                 </span>
               </div>
             </Reveal>
             <Reveal delay={0.06}>
               <h2 className="mt-4 text-balance text-3xl font-semibold tracking-tight text-gradient sm:text-4xl">
-                Why I approach problems the way I do.
+                {experience.title}
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
-              <p className="mt-5 text-base leading-relaxed text-muted">
-                {experience.intro}
-              </p>
+              <p className="mt-5 text-base leading-relaxed text-muted">{experience.intro}</p>
             </Reveal>
             <Reveal delay={0.16}>
-              <p className="mt-4 text-base leading-relaxed text-muted">
-                {experience.connection}
-              </p>
-            </Reveal>
-            <Reveal delay={0.2}>
-              <div className="mt-7 flex flex-wrap gap-2">
-                {experience.themes.map((theme) => (
-                  <span
-                    key={theme}
-                    className="rounded-md border border-line bg-surface/60 px-3 py-1.5 text-sm text-muted"
-                  >
-                    {theme}
-                  </span>
-                ))}
+              <div className="mt-8">
+                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-faint">
+                  Education &amp; certifications
+                </p>
+                <ul className="mt-3 space-y-1.5">
+                  {experience.credentials.map((c) => (
+                    <li key={c} className="text-sm text-muted">
+                      {c}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </Reveal>
           </div>
 
-          {/* Career highlights — the "what" */}
-          <div className="lg:pt-1">
-            <Reveal>
-              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-faint">
-                Career highlights
-              </p>
-            </Reveal>
-            <ul className="mt-5 border-t border-line">
-              {experience.roles.map((role, i) => (
-                <Reveal as="li" key={role.company} delay={i * 0.06}>
-                  <div className="border-b border-line py-6">
-                    <h3 className="text-base font-medium tracking-tight text-fg">
-                      {role.company}
-                    </h3>
-                    <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.12em] text-accent/80">
-                      {role.context}
-                    </p>
-                    <p className="mt-3 text-sm leading-relaxed text-muted">
-                      {role.focus}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </ul>
-          </div>
+          {/* Roles — the "what" */}
+          <ol className="border-t border-line">
+            {experience.roles.map((role, i) => (
+              <Reveal as="li" key={role.company} delay={i * 0.04}>
+                <RoleEntry role={role} />
+              </Reveal>
+            ))}
+          </ol>
         </div>
-
-        {/* Closing message */}
-        <Reveal delay={0.05}>
-          <div className="mt-14 border-t border-line pt-10 sm:mt-16">
-            <p className="max-w-3xl text-balance text-lg font-medium leading-relaxed tracking-tight sm:text-xl">
-              <span className="text-fg">{experience.closing.lead}</span>{" "}
-              <span className="text-faint">{experience.closing.trail}</span>
-            </p>
-          </div>
-        </Reveal>
       </Container>
     </section>
+  );
+}
+
+function RoleEntry({ role }: { role: Role }) {
+  return (
+    <div className="border-b border-line py-7">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+        <h3 className="text-lg font-semibold tracking-tight text-fg">{role.company}</h3>
+        <p className="shrink-0 font-mono text-[11px] uppercase tracking-[0.12em] text-faint">
+          {role.dates}
+        </p>
+      </div>
+
+      {role.title ? (
+        <p className="mt-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-accent/80">
+          {role.title}
+        </p>
+      ) : null}
+      {role.summary ? (
+        <p className="mt-3 text-sm leading-relaxed text-muted">{role.summary}</p>
+      ) : null}
+
+      {role.positions?.map((pos) => (
+        <div key={pos.title} className="mt-5">
+          <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-accent/80">
+              {pos.title}
+            </p>
+            <p className="shrink-0 font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
+              {pos.dates}
+            </p>
+          </div>
+          <ul className="mt-3 space-y-2">
+            {pos.bullets.map((b) => (
+              <li key={b} className="flex gap-3 text-sm leading-relaxed text-muted">
+                <span aria-hidden className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-faint" />
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      {role.link ? (
+        <Link
+          href={role.link.href}
+          className="group mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-fg transition-colors hover:text-accent"
+        >
+          {role.link.label}
+          <Arrow className="group-hover:translate-x-0.5" />
+        </Link>
+      ) : null}
+    </div>
   );
 }

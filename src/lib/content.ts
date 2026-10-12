@@ -2,558 +2,988 @@
  * Single source of truth for site content.
  * Keeping copy out of components makes it trivial to iterate on
  * messaging without touching layout or styling.
+ *
+ * EVERY NUMBER HERE IS TRACED TO THE PRODUCT'S OWN REPOSITORY — code, tests,
+ * benchmark baselines, commit history or docs — and was re-verified in
+ * October 2026. Precision is only what the source supports: where a figure
+ * moves between releases it is stated as a floor ("400,000+") rather than a
+ * snapshot that will quietly go stale.
  */
 
 export const site = {
   name: "Chad Harmer",
-  role: "Product Leader · Founder · Builder",
-  email: "chad@ryger.app",
-  linkedin: "https://www.linkedin.com/in/chadharmer",
+  role: "Product leader · AI & platform products",
+  email: "chadharmer@mac.com",
+  linkedin: "https://www.linkedin.com/in/chad-harmer-231a0531",
+  /**
+   * Public résumé PDF. Held back (null) until the updated résumé matching this
+   * site's career story is ready — every résumé link and button keys off this,
+   * so publishing it is a one-line change plus the file in /public.
+   */
+  resume: null as string | null,
 } as const;
 
 export const nav = [
-  { label: "Products", href: "/#products" },
-  { label: "AI Work", href: "/#ai-work" },
-  { label: "How I Build", href: "/#how-i-build" },
+  { label: "Work", href: "/work" },
+  { label: "Capabilities", href: "/#capabilities" },
   { label: "Experience", href: "/#experience" },
 ] as const;
 
+/** One sentence, used verbatim wherever the "did he build it?" question is answered. */
+export const methodNote =
+  "I use AI-assisted development to work directly in the implementation layer, while owning the product decisions, architecture, evaluation criteria and production validation.";
+
+/* ------------------------------------------------------------------ */
+/*  Homepage                                                           */
+/* ------------------------------------------------------------------ */
+
 export const hero = {
-  eyebrow: "Product · Systems · AI",
-  titleLines: ["Product Leader.", "Founder.", "Builder."],
+  eyebrow: "Chad Harmer · Product leadership",
+  titleLines: ["Product leadership", "where workflows, data and AI meet."],
   subtitle:
-    "I turn ambiguous problems into real software — designing AI workflows, marketplaces, and recruiting technology that compound over time.",
-  focusAreas: [
-    "AI workflow design",
-    "RAG & retrieval",
-    "Model evaluation",
-    "Model comparison & routing",
-    "Human-in-the-loop",
-    "Product strategy",
-    "Systems design",
+    "Fifteen years of product, platform and process work at Capital One, PNC and TD Bank. Since 2025, I’ve also taken production AI products from discovery through architecture, evaluation, launch and iteration myself — close enough to the implementation to know how these systems actually behave.",
+  proof: [
+    {
+      value: "57 → 2",
+      label: "user interactions in a validation workflow · Capital One",
+    },
+    {
+      value: "~$2.5M",
+      label: "estimated savings from a Green Belt project I led · TD Bank",
+    },
+    {
+      value: "Web + iOS",
+      label: "production AI products, taken from discovery through iteration",
+    },
+    {
+      value: "Paying customers",
+      label: "consumer subscription app · ReadMyStrip",
+    },
   ],
 } as const;
 
-export type Product = {
+export const background = {
+  label: "Background",
+  title: "From enterprise systems to production AI.",
+  paragraphs: [
+    "Most of my career has been spent on the systems underneath large organizations — data governance, risk controls, validation workflows, operational measurement. At Capital One I owned a platform for data-management validations and control testing, working across engineering, design, data, validators and risk leadership to turn control requirements into software people relied on.",
+    "As AI began changing what software could do, I wanted to understand it well enough to make better product decisions about it. Through Yellow Labs Products I’ve taken production AI products from discovery through architecture, implementation, evaluation, launch and iteration.",
+  ],
+  thread:
+    "The thread is the same in both: systems people can trust, especially when the answer is uncertain.",
+} as const;
+
+/* ------------------------------------------------------------------ */
+/*  Selected work — the four products, as homepage / index cards       */
+/* ------------------------------------------------------------------ */
+
+export type WorkSlug = "verateach" | "grocery-sidekick" | "ryger" | "readmystrip";
+
+export type Work = {
+  slug: WorkSlug;
   name: string;
-  tagline: string;
   status: string;
-  problem: string;
-  why: string;
-  lesson: string;
-  accent: string; // tailwind-ish rgba used for the card glow
+  oneLiner: string;
+  demonstrates: string[];
+  decision: string;
+  signal: string;
+  accent: string; // "r, g, b" used for glows and markers
   /**
    * Real shipped App Store artwork, served from /public. Only genuine artwork
    * belongs here — a product without an icon keeps the monogram rather than
    * being handed a stand-in for the sake of symmetry.
    */
   icon?: string;
-  /** Render as a full-width flagship card instead of a grid cell. */
-  featured?: boolean;
-  highlights?: string[]; // short capability chips
-  architecture?: ArchGroup[]; // grouped tech-stack categories
-  /** Real CTA links. Only ever points to live, useful destinations. */
-  actions?: {
-    label: string;
-    href: string;
-    external?: boolean;
-    /** Visual weight on flagship cards. Defaults to secondary. */
-    variant?: "primary" | "secondary" | "subtle";
-  }[];
-  /** Non-clickable status text, used when no live destination exists yet. */
-  availability?: string;
+  live: { label: string; href: string };
 };
+
+export const works: Work[] = [
+  {
+    slug: "verateach",
+    name: "VeraTeach",
+    status: "Live · Web · K–12",
+    oneLiner:
+      "An AI teaching workspace that carries a lesson from state standards through Google Classroom to returned grades.",
+    demonstrates: [
+      "Multi-stage AI orchestration",
+      "Retrieval over 110,000+ standards",
+      "Evaluation and model routing",
+      "Human-in-the-loop grading",
+    ],
+    decision:
+      "AI drafts grading suggestions; only teacher-approved scores go back to Classroom.",
+    signal:
+      "Rubric evaluation went from 74s to 19s at ~2.1× lower cost, with near-identical scores.",
+    accent: "120, 200, 255",
+    live: { label: "verateach.com", href: "https://verateach.com" },
+  },
+  {
+    slug: "grocery-sidekick",
+    name: "Grocery Sidekick",
+    status: "Live · iOS",
+    oneLiner:
+      "Scan a grocery product and see whether the allergens and ingredients you watch for are present, possible or not found — and which ingredient is responsible.",
+    demonstrates: [
+      "Normalizing 400,000+ foods",
+      "Deterministic engine, scoped AI",
+      "Benchmark-gated quality",
+      "Offline-first mobile",
+    ],
+    decision:
+      "The app never says “safe.” It reports “not found” only when the label was fully read and every ingredient resolved.",
+    signal:
+      "99.2% allergen recall from ingredient lists alone, against 9,612 manufacturer-declared allergens.",
+    accent: "247, 197, 51",
+    icon: "/grocery-sidekick-icon.png",
+    live: {
+      label: "App Store",
+      href: "https://apps.apple.com/us/app/grocery-sidekick/id6807912507",
+    },
+  },
+  {
+    slug: "ryger",
+    name: "Ryger",
+    status: "Live · Web",
+    oneLiner:
+      "A recruiting platform that assesses candidates requirement by requirement — Met, Review or Missed — with the supporting evidence attached.",
+    demonstrates: [
+      "Discovery that reshaped the thesis",
+      "Vector retrieval, evidence-cited assessment",
+      "Evidence-constrained generation",
+      "Two-sided workflows",
+    ],
+    decision:
+      "Uncertain evidence goes to Review instead of being forced into a yes or no, and a keyword match alone is never marked Met.",
+    signal:
+      "In generated resumes, every number and date must appear in the cited source evidence, or the line is removed.",
+    accent: "139, 139, 255",
+    live: { label: "ryger.app", href: "https://www.ryger.app" },
+  },
+  {
+    slug: "readmystrip",
+    name: "ReadMyStrip",
+    status: "Live · iOS · Paying customers",
+    oneLiner:
+      "Photograph a pool or spa test strip next to your own bottle’s chart and get every reading in seconds.",
+    demonstrates: [
+      "Vision-model pipeline for real-world photos",
+      "Deterministic validation of model output",
+      "Subscription monetization",
+      "Iteration from production feedback",
+    ],
+    decision:
+      "The model only perceives; code decides. A reading that isn’t printed on your chart becomes “unknown,” never a guess.",
+    signal:
+      "Paying customers — and production feedback led to scan history and notes.",
+    accent: "72, 202, 178",
+    icon: "/readmystrip-icon.png",
+    live: {
+      label: "App Store",
+      href: "https://apps.apple.com/us/app/readmystrip/id6785080076",
+    },
+  },
+];
+
+export const workBySlug = (slug: WorkSlug) => works.find((w) => w.slug === slug)!;
+
+export const selectedWork = {
+  label: "Selected Work",
+  title: "Production products across recruiting, education and consumer apps.",
+  description:
+    "Each one surfaced a different problem in designing AI systems people can rely on — from grounding and evaluation to deciding what a model shouldn’t decide at all.",
+} as const;
+
+/* ------------------------------------------------------------------ */
+/*  Capabilities — four themes, each claim tied to where it happened   */
+/* ------------------------------------------------------------------ */
+
+export type CapabilityTheme = {
+  key: string;
+  name: string;
+  covers: string;
+  evidence: { source: string; detail: string }[];
+};
+
+export const capabilities = {
+  label: "Capabilities",
+  title: "Where I’ve actually done this.",
+  description:
+    "Patterns that recur across my work, each tied to where it was applied — at Capital One and in production AI products. Every one is something I can walk through in detail, tradeoffs included.",
+} as const;
+
+export const capabilityThemes: CapabilityTheme[] = [
+  {
+    key: "A",
+    name: "Grounded AI systems",
+    covers: "RAG · vector search · structured outputs · orchestration",
+    evidence: [
+      {
+        source: "VeraTeach",
+        detail:
+          "Standards retrieval filters hard by state, subject and grade, runs vector search over 110,000+ records, then an LLM rerank that can only choose from the retrieved IDs — and abstains when nothing is a strong match.",
+      },
+      {
+        source: "Ryger",
+        detail:
+          "Job descriptions become typed requirements (must / should / nice, gating, tenure). Candidates are retrieved by vector search, and each requirement is assessed by a model that may only cite evidence that exists.",
+      },
+      {
+        source: "Ryger",
+        detail:
+          "Resume generation draws only on extracted evidence; code checks remove any line whose numbers, dates or employers aren’t in the cited source.",
+      },
+      {
+        source: "VeraTeach",
+        detail:
+          "Every generative call runs through one execution layer that enforces a typed schema and a timeout, and records model, latency, tokens and cost.",
+      },
+    ],
+  },
+  {
+    key: "B",
+    name: "AI quality and operations",
+    covers: "Evaluation · model comparison · routing · cost and latency",
+    evidence: [
+      {
+        source: "VeraTeach",
+        detail:
+          "Blind, order-shuffled A/B comparisons on quality, latency and cost set the model routing — rubric evaluation went from 74s to 19s at ~2.1× lower cost, with a mean score difference of 0.05 on a 0–4 scale.",
+      },
+      {
+        source: "VeraTeach",
+        detail:
+          "Summative tests go to the stronger model; low-stakes materials to one roughly 10× cheaper per token.",
+      },
+      {
+        source: "Grocery Sidekick",
+        detail:
+          "A frozen benchmark in the test suite: 99.2% recall from ingredient lists alone, and zero false “not found” results when the label’s declaration is read — zero enforced, not targeted.",
+      },
+      {
+        source: "Capital One",
+        detail:
+          "Built reporting and KPIs where meaningful process visibility hadn’t existed.",
+      },
+    ],
+  },
+  {
+    key: "C",
+    name: "Designing for uncertainty",
+    covers: "Grounding · confidence states · deterministic + AI hybrids",
+    evidence: [
+      {
+        source: "Capital One",
+        detail:
+          "Owned the platform for data-management validations and control testing.",
+      },
+      {
+        source: "Grocery Sidekick",
+        detail:
+          "“Not found” only when the read is complete and every ingredient resolved; otherwise “couldn’t tell.” The word “safe” is banned in code.",
+      },
+      {
+        source: "Grocery Sidekick",
+        detail:
+          "Measured fuzzy ingredient matching and turned it off: under one point of coverage gained, and it mapped “sodium citrate” to “sodium nitrate.”",
+      },
+      {
+        source: "Ryger",
+        detail:
+          "Met / Review / Missed — and deterministic rules can only lower the overall assessment when must-haves are missing, never raise it.",
+      },
+      {
+        source: "ReadMyStrip",
+        detail:
+          "The model perceives; code decides. Readings not printed on the user’s chart are rejected, and too many unknowns prompt a rescan.",
+      },
+    ],
+  },
+  {
+    key: "D",
+    name: "Workflow, discovery and human judgment",
+    covers: "Human-in-the-loop · workflow redesign · discovery · measurement",
+    evidence: [
+      {
+        source: "Capital One",
+        detail:
+          "Automation cut a manual validation workflow from ~57 user interactions to 2.",
+      },
+      {
+        source: "Capital One",
+        detail:
+          "Redesigned enterprise data governance from consumer-driven usage agreements to producer-driven provisioning agreements.",
+      },
+      {
+        source: "Capital One",
+        detail:
+          "Traced low completion of a governance activity to a ~4-month approval backlog — separating an internal bottleneck from an adoption problem — then eliminated the backlog.",
+      },
+      {
+        source: "VeraTeach",
+        detail:
+          "AI drafts grading suggestions and can flag “needs teacher judgment”; only teacher-authored scores are returned to Classroom.",
+      },
+      {
+        source: "Ryger",
+        detail:
+          "Seven discoveries turned a matching tool into a recruiter-owned talent network.",
+      },
+    ],
+  },
+];
+
+/** The /work matrix: how each body of work evidences each theme. */
+export const capabilityMatrix: {
+  theme: string;
+  cells: Record<"capitalOne" | WorkSlug, string | null>;
+}[] = [
+  {
+    theme: "Grounded AI systems",
+    cells: {
+      capitalOne: null,
+      verateach: "Filter → vector search → constrained rerank",
+      "grocery-sidekick": "Dictionary-grounded resolution; AI only names the product",
+      ryger: "Evidence-cited verdicts; evidence-only resumes",
+      readmystrip: "Readings validated against the user’s own chart",
+    },
+  },
+  {
+    theme: "AI quality and operations",
+    cells: {
+      capitalOne: "KPIs where none existed",
+      verateach: "Blind A/B routing; per-call cost telemetry",
+      "grocery-sidekick": "Frozen allergen benchmark in the test suite",
+      ryger: "Blind-judged resume truthfulness",
+      readmystrip: "Image quality gates; parser contract tests",
+    },
+  },
+  {
+    theme: "Designing for uncertainty",
+    cells: {
+      capitalOne: "Validations and control testing",
+      verateach: "Abstains when nothing is a strong match",
+      "grocery-sidekick": "Never says “safe”; a “couldn’t tell” state",
+      ryger: "Met / Review / Missed",
+      readmystrip: "“Unknown,” never a guess; rescan prompt",
+    },
+  },
+  {
+    theme: "Workflow, discovery and human judgment",
+    cells: {
+      capitalOne: "57 → 2 interactions; governance redesign",
+      verateach: "Teacher approves every grade",
+      "grocery-sidekick": "Answers in the aisle, with no signal",
+      ryger: "Seven discoveries → talent network",
+      readmystrip: "History and notes from customer feedback",
+    },
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  How I make product decisions                                       */
+/* ------------------------------------------------------------------ */
+
+export type Principle = {
+  index: string;
+  title: string;
+  body: string;
+  sources: string;
+};
+
+export const principlesIntro = {
+  label: "How I Work",
+  title: "Principles, with the decisions behind them.",
+  description:
+    "How I make product calls — each one anchored to a decision I actually made, not a slide.",
+} as const;
+
+export const principles: Principle[] = [
+  {
+    index: "01",
+    title: "Find the bottleneck before building the fix.",
+    body: "Low completion looked like an adoption problem. The data showed a four-month approval backlog.",
+    sources: "Capital One · Ryger",
+  },
+  {
+    index: "02",
+    title: "A confident wrong answer costs more than no answer.",
+    body: "“Couldn’t tell,” “Review” and “unknown” are product features. When an evaluation benchmark turned out to reward confident invention over asking a clarifying question, I changed the benchmark.",
+    sources: "Grocery Sidekick · Ryger · VeraTeach · ReadMyStrip",
+  },
+  {
+    index: "03",
+    title: "AI drafts; accountable people decide.",
+    body: "Where someone answers for the outcome, the model suggests and the person decides.",
+    sources: "VeraTeach grading · control testing",
+  },
+  {
+    index: "04",
+    title: "Remove steps before adding features.",
+    body: "Taking a workflow from 57 interactions to 2 did more than any new capability would have.",
+    sources: "Capital One",
+  },
+  {
+    index: "05",
+    title: "Measure, then decide — including deciding not to ship.",
+    body: "Model routing set by blind comparison. Fuzzy matching measured and turned off. KPIs built where none existed.",
+    sources: "VeraTeach · Grocery Sidekick · Capital One",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Experience                                                         */
+/* ------------------------------------------------------------------ */
+
+export type Position = { title: string; dates: string; bullets: string[] };
+
+export type Role = {
+  company: string;
+  dates: string;
+  /** Single-title roles carry their title and a summary paragraph. */
+  title?: string;
+  summary?: string;
+  /** Multi-title roles list each position with its own dates. */
+  positions?: Position[];
+  link?: { label: string; href: string };
+};
+
+export const experience = {
+  label: "Experience",
+  title: "Fifteen years of systems work. The tools changed.",
+  intro:
+    "My career has been spent on the workflows, controls and data underneath large organizations — first in banking operations, then process management, then product. The problems stayed consistent: where work gets stuck, what can’t be measured, and what people can’t trust.",
+  roles: [
+    {
+      company: "Yellow Labs Products",
+      title: "Founder / AI Product Builder",
+      dates: "January 2025 – Present",
+      summary:
+        "An independent product studio building and operating production AI web and mobile products in recruiting, education and consumer apps. I own the lifecycle from discovery and market research through strategy, experience design, architecture, implementation, launch, measurement and iteration.",
+      link: { label: "Selected work", href: "/work" },
+    },
+    {
+      company: "Capital One, Risk Management",
+      dates: "October 2018 – September 2023",
+      positions: [
+        {
+          title: "Manager, Product Management",
+          dates: "October 2020 – September 2023",
+          bullets: [
+            "Owned strategy and delivery for VaaS, a platform supporting data-management validations and control testing.",
+            "Led an Agile delivery team of engineers, designers and data analysts as product manager, partnering with engineering, validators, risk stakeholders and enterprise teams to turn control and process requirements into technology.",
+            "Led the move from a Collibra-based front end to a standalone AWS-hosted application; automation cut a manual validation workflow from ~57 user interactions to 2.",
+            "Increased high-priority usage validations completed per quarter by 15%.",
+            "Built the roadmap, strategy and vision for a new product with senior leadership, and started cross-team PM collaboration to share features and reduce arbitrary differences between products.",
+            "Designed rollout timelines and led training for frontline users.",
+          ],
+        },
+        {
+          title: "Manager, Process Management",
+          dates: "October 2018 – October 2020",
+          bullets: [
+            "Redesigned enterprise data governance from a consumer-driven Data Usage Agreement model to a producer-driven Data Provisioning Agreement model, removing duplicate requirements and making accountability scale.",
+            "Built reporting and KPIs where none existed; used them to trace low completion of a governance activity to a ~4-month approval backlog, then eliminated the backlog.",
+            "Led design and delivery of the Effective Challenge Guidelines, helping first-line users understand data-management requirements.",
+            "Subject-matter expert across enterprise projects; mentored newer process managers.",
+          ],
+        },
+      ],
+    },
+    {
+      company: "PNC Bank",
+      title: "Process Improvement Consultant",
+      dates: "2017 – 2018",
+      summary:
+        "Coordinated cross-functional problem solving using PDCA, ran root-cause analysis on service metrics, and coached managers on performance huddles built around metrics and continuous improvement.",
+    },
+    {
+      company: "TD Bank",
+      title: "Business Process Manager",
+      dates: "2008 – 2017",
+      summary:
+        "Five roles over nearly a decade, from frontline service through team leadership, process management and retail operations. Led a Lean Six Sigma Green Belt project on coin reconciliation that contributed to an estimated $2.5M in savings; built a decision-support dashboard modeling TD and competitor operating hours by market; joined TD’s first social-media team and led a group of 10 agents.",
+    },
+  ] satisfies Role[],
+  credentials: [
+    "B.A. Psychology, Rutgers University",
+    "Certified Scrum Product Owner (CSPO)",
+    "AI for Product — Product School",
+    "Product Leader Certificate — Product School",
+    "Lean Six Sigma Green Belt",
+  ],
+} as const;
+
+/* ------------------------------------------------------------------ */
+/*  Contact                                                            */
+/* ------------------------------------------------------------------ */
+
+export const contact = {
+  label: "Contact",
+  title: "Hiring for AI or platform product leadership?",
+  body: "I’m looking for Senior and Principal product roles in AI, platform and technical product management — teams where product judgment and a working understanding of AI systems both matter. Email is the fastest way to reach me.",
+} as const;
+
+/* ------------------------------------------------------------------ */
+/*  Case studies — shared shapes                                       */
+/* ------------------------------------------------------------------ */
 
 export type ArchGroup = {
   label: string;
   items: string[];
 };
 
-export const products: Product[] = [
-  {
-    name: "VeraTeach",
-    featured: true,
-    tagline:
-      "A production AI teaching workspace that carries a lesson from standards through Google Classroom to returned grades.",
-    status: "Live",
-    problem:
-      "A teacher's week is spread across disconnected tools: one place to plan, another to look up standards, another to build the quiz, Google Classroom to hand it out, a spreadsheet to grade it, and a blank document whenever last year's material needs adapting. Each handoff is manual re-entry. Most AI education tools generate a lesson and stop there, dropping a plausible document into the middle of a workflow they don't participate in.",
-    why: "The workflow became the product. Lesson generation is one capability inside a system that spans the whole arc: a lesson is grounded in a 100,000-record standards corpus through retrieval rather than recollection, shaped by guidance the teacher writes before generation runs, extended into quizzes, worksheets, study guides and exit tickets, published to a class as a native Google Form where that fits, and graded in a workspace that scores the objective questions automatically and proposes — never applies — scores for written answers. Grades go back to Classroom. Teachers can also import material they already have rather than starting from a blank page. One orchestration layer coordinates every AI stage, and every AI write is previewed before it counts.",
-    lesson:
-      "The engineering that matters lives in the coordination: hybrid standards retrieval that filters, ranks by vector similarity, then reranks; immutable, trigger-written version history that makes every change reversible; copy-on-write scheduled instances so one lesson runs in many classes without collisions; cost- and stakes-based model routing; idempotent publishing into Google Classroom; and a grading path that keeps the teacher as the one who decides. AI earns its place by being orchestrated into real work and keeping the teacher accountable — not by making the call on its own.",
-    accent: "120, 200, 255",
-    actions: [
-      {
-        label: "Visit VeraTeach",
-        href: "https://verateach.com",
-        external: true,
-        variant: "primary",
-      },
-      { label: "Read Case Study", href: "/verateach", variant: "secondary" },
-    ],
-    // Fallback status if the live link is ever pulled. Kept positive, never "broken".
-    availability: "Live at verateach.com",
-    highlights: [
-      "Plan through grading, one workspace",
-      "100k+ standards, semantically retrieved",
-      "Native Google Forms quizzes",
-      "AI suggests scores, teachers decide",
-      "Grades returned to Classroom",
-      "Live, self-serve, billed",
-    ],
-    architecture: [
-      {
-        label: "Stack",
-        items: [
-          "Next.js 16",
-          "React 19",
-          "TypeScript",
-          "Supabase / Postgres",
-          "Vercel",
-        ],
-      },
-      {
-        label: "Data & standards",
-        items: [
-          "pgvector",
-          "Multi-state standards",
-          "Authoritative ingest",
-          "Immutable trigger-based versioning",
-        ],
-      },
-      {
-        label: "AI orchestration",
-        items: [
-          "One orchestration layer across all AI stages",
-          "Model-agnostic routing via AI Gateway",
-          "Cost / stakes-based model routing",
-          "Retrieval where correctness matters",
-          "Preview-first, teacher-approved writes",
-        ],
-      },
-      {
-        label: "Google Classroom",
-        items: [
-          "Verified OAuth with encrypted tokens",
-          "Persistent period → course mapping",
-          "Native Google Forms quiz creation",
-          "Publishing as Docs · Forms · live links",
-          "Idempotent re-publish",
-          "Grades returned to Classroom",
-        ],
-      },
-      {
-        label: "Production",
-        items: [
-          "Stripe subscriptions",
-          "Usage entitlements",
-          "Authentication & account recovery",
-          "Error monitoring",
-        ],
-      },
-      {
-        label: "Key Systems",
-        items: [
-          "Hybrid standards retrieval (filter + vector + rerank)",
-          "AI orchestration across stages",
-          "Instructional material generation",
-          "Assessment → publish → grade → return loop",
-          "Automatic objective scoring",
-          "AI-assisted free-response suggestions",
-          "Lesson import from existing material",
-          "Copy-on-write scheduled instances",
-          "Destination-abstracted publishing",
-        ],
-      },
-    ],
-  },
-  {
-    name: "Resume",
-    tagline: "Resumes grounded in your whole career, not just one role",
-    status: "Live · Web",
-    problem:
-      "Resumes are built for a single role, so experience that doesn't match the current application quietly gets cut. Most tools make it worse — optimizing for keywords, or inventing accomplishments that no longer sound like you.",
-    why: "Built to tell a more complete career story. Resume pairs a traditional resume with a deeper career narrative, then reads a job description against both — surfacing the most relevant real experience first, always grounded in your actual work history.",
-    lesson:
-      "Trust is the product. Every resume has to stay truthful, free of invented metrics, and still sound like the person behind it — even though a model does the drafting.",
-    accent: "109, 139, 255",
-    // Landing page is live at www.ryger.app/resume — link directly to it.
-    actions: [
-      { label: "Visit Resume", href: "https://www.ryger.app/resume", external: true },
-    ],
-    // Fallback status if the live link is ever pulled. Kept positive, never "broken".
-    availability: "Available by request",
-    highlights: ["Career-story grounded", "JD-aware prioritization", "Truthful by design"],
-    architecture: [
-      { label: "Frontend", items: ["Next.js", "TypeScript", "Tailwind", "Vercel"] },
-      { label: "Platform", items: ["AWS Lambda", "API Gateway", "DynamoDB", "S3", "SES"] },
-      { label: "AI", items: ["OpenAI"] },
-      { label: "Identity", items: ["Custom authentication"] },
-      {
-        label: "Key Systems",
-        items: [
-          "Career story engine",
-          "Resume generation workflows",
-          "Grounded content generation",
-          "Job alignment workflows",
-          "Truth-preservation controls",
-        ],
-      },
-    ],
-  },
-  {
-    name: "ReadMyStrip",
-    tagline: "AI-Powered Water Test Strip Reader for iPhone",
-    status: "Live · App Store",
-    problem:
-      "Testing pool, spa, or aquarium water means reading a strip of subtle color pads against a reference chart — slow, subjective, and easy to get wrong. Results shift with lighting, eyesight, and guesswork, right when accuracy matters most.",
-    why: "ReadMyStrip turns that into a single photo. I led the product from concept through production release — product strategy, UX, AI workflow design, engineering, backend architecture, and App Store launch — so anyone can point their iPhone at a used test strip and get reliable, interpreted results in seconds.",
-    lesson:
-      "Reliability is the product. A technically complex image-analysis workflow has to land as one trustworthy tap — onboarding, edge cases, subscriptions, and Apple's review process all handled so the user never has to think about them.",
-    accent: "72, 202, 178",
-    icon: "/readmystrip-icon.png",
-    // Live App Store listing — link directly to it.
-    actions: [
-      {
-        label: "View on App Store",
-        href: "https://apps.apple.com/us/app/readmystrip/id6785080076",
-        external: true,
-      },
-    ],
-    // Fallback status if the live link is ever pulled. Kept positive, never "broken".
-    availability: "Live on the Apple App Store",
-    highlights: [
-      "Shipped end-to-end",
-      "AI photo analysis",
-      "iOS · Expo React Native",
-      "Simple over complex",
-    ],
-    architecture: [
-      { label: "App", items: ["Expo", "React Native", "TypeScript", "iOS"] },
-      {
-        label: "AI",
-        items: ["Image analysis workflow", "Test strip interpretation"],
-      },
-      {
-        label: "Platform",
-        items: ["Authentication", "Backend APIs", "Cloud storage"],
-      },
-      { label: "Payments", items: ["RevenueCat", "Subscription management"] },
-      {
-        label: "Key Systems",
-        items: [
-          "Single-photo capture flow",
-          "AI water-chemistry interpretation",
-          "End-to-end onboarding to results",
-          "Subscription management",
-          "App Store production release",
-        ],
-      },
-    ],
-  },
-  {
-    name: "Grocery Sidekick",
-    tagline: "Scan a grocery product and understand what is actually in it",
-    status: "Live · App Store",
-    problem:
-      "The answer to “can I eat this?” is printed on the back of the package in 6pt type, written for regulatory compliance rather than for a shopper, and it has to be decoded standing in an aisle holding a cart. Anyone avoiding an allergen, a seed oil, or an additive ends up translating an ingredient list on the spot — and most apps that offer to help hand back a letter grade instead of the facts.",
-    why: "Grocery Sidekick reads the label instead of ranking it. A barcode scan answers from a 417,000-product catalog bundled inside the app, so an aisle with no signal still works; a photo of the ingredient panel is read on-device, where the image never leaves the phone. Either way the shopper sees which of the things they asked to watch for — the US major allergens, plus seed oils, MSG, and high-fructose corn syrup — are present, possible, or genuinely absent, and which ingredient is responsible. I built it end to end: product, ingredient dictionary and catalog pipeline, parser, app, and App Store launch.",
-    lesson:
-      "Refusing to answer is a feature. “We could not read it” and “may contain” stay distinct from “absent” rather than collapsing into a clean result, because the failure that matters here is false reassurance. Recall is measured against a hand-adjudicated benchmark of 9,653 declared allergen instances, and every alternative the app suggests clears the same gate the scan did.",
-    accent: "247, 197, 51",
-    icon: "/grocery-sidekick-icon.png",
-    // Live App Store listing — link directly to it.
-    actions: [
-      {
-        label: "View on App Store",
-        href: "https://apps.apple.com/us/app/grocery-sidekick/id6807912507",
-        external: true,
-      },
-    ],
-    // Fallback status if the live link is ever pulled. Kept positive, never "broken".
-    availability: "Live on the Apple App Store",
-    highlights: [
-      "Shipped end-to-end",
-      "On-device OCR, images never sent",
-      "417k-product offline catalog",
-      "Never claims absence",
-      "iOS · Expo React Native",
-    ],
-    architecture: [
-      { label: "App", items: ["Expo", "React Native", "TypeScript", "iOS", "Offline-first"] },
-      {
-        label: "On-device OCR",
-        items: [
-          "Hand-written native modules",
-          "Apple Vision",
-          "ML Kit",
-          "Images never leave the device",
-        ],
-      },
-      {
-        label: "Data",
-        items: [
-          "Bundled SQLite catalog",
-          "417k formulations · 324k ingredient statements",
-          "Curated ingredient dictionary",
-          "Build-time precomputed watch flags",
-        ],
-      },
-      {
-        label: "Interpretation",
-        items: [
-          "Ingredient statement parser",
-          "Deterministic normalization, then fuzzy resolution",
-          "Evidence-gated absence claims",
-          "Four-state outcomes: present · possible · cleared · unknown",
-        ],
-      },
-      { label: "Payments", items: ["RevenueCat", "Subscription management"] },
-      {
-        label: "Key Systems",
-        items: [
-          "Barcode scan → catalog lookup",
-          "Label photo → on-device OCR → parse",
-          "Per-shopper allergen and preference watch list",
-          "Same-type alternative recommendations",
-          "Measured allergen-recall benchmark",
-          "App Store production release",
-        ],
-      },
-    ],
-  },
-];
+export type TitledBody = { title: string; body: string };
 
-/* ------------------------------------------------------------------ */
-/*  AI product competencies — named skills, backed by real evidence    */
-/* ------------------------------------------------------------------ */
+export type Step = { index: string; title: string; body: string };
 
-export type Competency = {
-  name: string;
-  summary: string;
-  /** Concrete proof, tagged to the product it comes from. */
-  evidence: { product: string; detail: string }[];
+export type Glance = {
+  role: string;
+  timeline: string;
+  status: string;
+  signals: readonly string[];
+  capabilities: readonly string[];
 };
 
-export const competencies: Competency[] = [
-  {
-    name: "Retrieval-Augmented Generation (RAG)",
-    summary:
-      "Ground generation in authoritative sources instead of model memory, so outputs are correct and defensible.",
-    evidence: [
-      {
-        product: "VeraTeach",
-        detail:
-          "Hybrid retrieval over authoritative academic standards — a hard metadata filter, then vector similarity, then an AI reranker — feeds the model a bounded, correct candidate set.",
-      },
-      {
-        product: "Ryger",
-        detail:
-          "Evidence pulled from a candidate's real history and attached to each job requirement, so a match is reasoned over retrieved proof rather than recalled.",
-      },
-    ],
-  },
-  {
-    name: "Vector Search",
-    summary:
-      "Search by meaning, not keywords — with guardrails so relevance never overrides correctness.",
-    evidence: [
-      {
-        product: "VeraTeach",
-        detail:
-          "pgvector embeddings rank standards by semantic similarity, but only within a hard-filtered set, so meaning-based search can't return an out-of-jurisdiction result.",
-      },
-      {
-        product: "Ryger",
-        detail:
-          "Moved matching past keyword presence — a resume listing “Agile” never proved the experience — toward relevance judged on demonstrated work.",
-      },
-    ],
-  },
-  {
-    name: "Model Evaluation",
-    summary:
-      "Measure output quality with rubrics and repeatable checks instead of eyeballing a few good demos.",
-    evidence: [
-      {
-        product: "VeraTeach",
-        detail:
-          "Rubric-based, evidence-grounded evaluation scores lessons against explicit criteria; a regression harness of scripted checks guards quality as prompts and models change.",
-      },
-      {
-        product: "Ryger",
-        detail:
-          "Match quality judged at the requirement level with supporting evidence, not a single opaque score.",
-      },
-    ],
-  },
-  {
-    name: "Model Comparison & Routing",
-    summary:
-      "Pick the right model per task by weighing quality, latency, and cost — not defaulting to the biggest one.",
-    evidence: [
-      {
-        product: "VeraTeach",
-        detail:
-          "Policy-driven, model-agnostic routing across Claude Sonnet, Claude Haiku, and GPT tiers — cheap models for low-stakes materials, stronger models reserved for summative tests.",
-      },
-      {
-        product: "ReadMyStrip",
-        detail:
-          "Chose a vision-capable model for on-device-quality strip reading, balanced against latency and per-call cost for a consumer app.",
-      },
-    ],
-  },
-  {
-    name: "Structured Outputs",
-    summary:
-      "Constrain generation to typed schemas so downstream systems get reliable data, not free text.",
-    evidence: [
-      {
-        product: "VeraTeach",
-        detail:
-          "Every production AI call returns schema-validated output; the model can't emit free-form text or pick a value outside the allowed set (it can't invent a standard).",
-      },
-      {
-        product: "ReadMyStrip",
-        detail:
-          "Water-chemistry readings returned as structured, typed results the app can render and act on directly.",
-      },
-    ],
-  },
-  {
-    name: "Prompt Orchestration",
-    summary:
-      "Coordinate many AI steps into one reliable workflow rather than one brittle mega-prompt.",
-    evidence: [
-      {
-        product: "VeraTeach",
-        detail:
-          "A single orchestration layer sequences retrieval, generation, review, adaptation, evaluation, material creation, and publishing — each a discrete, testable step.",
-      },
-      {
-        product: "Ryger",
-        detail:
-          "Multi-step match-reasoning workflows chained behind a single recruiter action.",
-      },
-    ],
-  },
-  {
-    name: "Grounding",
-    summary:
-      "Tie every AI claim to real evidence to reduce hallucination and keep outputs trustworthy.",
-    evidence: [
-      {
-        product: "VeraTeach",
-        detail:
-          "Standards suggestions are constrained to retrieved candidates — the model cannot fabricate a standard that doesn't exist.",
-      },
-      {
-        product: "Resume",
-        detail:
-          "Truth-preservation controls keep resumes free of invented metrics and grounded in real work history.",
-      },
-      {
-        product: "Ryger",
-        detail:
-          "Every match recommendation carries the evidence that supports it, per requirement.",
-      },
-    ],
-  },
-  {
-    name: "Human-in-the-loop",
-    summary:
-      "Keep AI assistive — the human reviews and approves before anything counts.",
-    evidence: [
-      {
-        product: "VeraTeach",
-        detail:
-          "Preview-first: AI engines persist nothing; teachers review, edit, and approve before any write, with full version history behind them.",
-      },
-      {
-        product: "Ryger",
-        detail:
-          "AI clears the obvious matches and misses; the recruiter keeps the nuanced calls where judgment adds value.",
-      },
-    ],
-  },
-  {
-    name: "AI Reliability",
-    summary:
-      "Make AI dependable in production — retries, timeouts, validation, and reversibility.",
-    evidence: [
-      {
-        product: "VeraTeach",
-        detail:
-          "A centralized execution seam wraps every call with retry, timeout, and schema validation; immutable, trigger-written version history makes every AI change reversible.",
-      },
-      {
-        product: "ReadMyStrip",
-        detail:
-          "A technically complex image-analysis workflow made dependable enough for one-tap consumer use and App Store review.",
-      },
-    ],
-  },
-  {
-    name: "Cost Optimization",
-    summary:
-      "Control the unit economics of AI features without sacrificing quality where it matters.",
-    evidence: [
-      {
-        product: "VeraTeach",
-        detail:
-          "Low-stakes materials routed to a model at roughly a third of the cost; premium models spent only where correctness is critical. Cached standards suggestions avoid repeat embedding and rerank cost.",
-      },
-    ],
-  },
-  {
-    name: "Workflow Design",
-    summary:
-      "Start from how the work actually flows, then fit software and AI into it.",
-    evidence: [
-      {
-        product: "VeraTeach",
-        detail:
-          "The product follows a teacher's real arc — planning through classroom delivery — instead of dropping a generated document into a vacuum.",
-      },
-      {
-        product: "Ryger",
-        detail:
-          "Redesigned candidate review to end the constant context-switching between a job description and a resume.",
-      },
-      {
-        product: "Resume",
-        detail:
-          "Reads a job description against a full career narrative to surface the most relevant real experience first.",
-      },
-    ],
-  },
-  {
-    name: "Product Discovery",
-    summary:
-      "Find the real problem through research and use before building — and let it reshape the product.",
-    evidence: [
-      {
-        product: "Ryger",
-        detail:
-          "A seven-discovery sequence turned a matching tool into a recruiter-owned talent network.",
-      },
-      {
-        product: "VeraTeach",
-        detail:
-          "Discovered teachers don't need lessons generated so much as lessons that adapt — reshaping the product around adaptation.",
-      },
-      {
-        product: "ReadMyStrip",
-        detail:
-          "Reduced a fiddly, error-prone testing routine to a single photo.",
-      },
-    ],
-  },
-];
+const YELLOW_LABS_ROLE = "Founder / AI Product Builder, Yellow Labs Products";
 
 /* ------------------------------------------------------------------ */
-/*  Ryger — dedicated case study                                       */
+/*  VeraTeach                                                          */
+/* ------------------------------------------------------------------ */
+
+export const verateach = {
+  positioning:
+    "An AI teaching workspace that carries a lesson from standards through Google Classroom to returned grades.",
+  intro:
+    "I designed and built VeraTeach end to end — the product strategy, the AI architecture, and the systems underneath. It started as lesson generation and became something larger: an integrated workspace spanning planning, standards alignment, assessment creation, classroom publishing, and grading, with the teacher in control at every step.",
+  tldr: "Generating a lesson is one step. The product is the workflow around it — grounding, materials, publishing, and grading — collapsed into one workspace, with AI doing the drafting and the teacher keeping the decisions.",
+
+  glance: {
+    role: YELLOW_LABS_ROLE,
+    timeline: "2026 – present",
+    status: "Live at verateach.com · self-serve · subscription billing",
+    signals: [
+      "110,000+ standards records across 185 frameworks in 17 states",
+      "Rubric evaluation 74s → 19s at ~2.1× lower cost, scores held",
+      "Every generative call schema-validated and cost-tracked",
+    ],
+    capabilities: [
+      "AI workflow design",
+      "Retrieval & vector search",
+      "Evaluation & model routing",
+      "Structured outputs",
+      "Human-in-the-loop",
+      "Third-party integration",
+    ],
+  } satisfies Glance,
+
+  problem:
+    "A teacher’s week is spread across disconnected tools: one place to plan, another to look up standards, another to build the quiz, Google Classroom to hand it out, a spreadsheet to grade it, and a blank document whenever last year’s material needs adapting. Each handoff is manual re-entry. Most AI education tools generate a lesson and stop there, dropping a plausible document into the middle of a workflow they don’t participate in.",
+
+  discovery: {
+    title: "The workflow became the product.",
+    body: "Teachers didn’t need lessons generated so much as lessons that fit — into their standards, their classes and the tools their school already runs on. Lesson generation became one step in a sequence, each stage a deliberate decision about where AI helps and where the teacher stays in control.",
+  },
+
+  workflow: [
+    {
+      index: "01",
+      title: "Planning",
+      body: "A lesson starts inside real structure — course, class, standards — not a blank prompt box. Teachers can write guidance that shapes generation before it runs, or import material they already have.",
+    },
+    {
+      index: "02",
+      title: "Grounding in standards",
+      body: "Retrieval grounds the lesson in a corpus of 110,000+ state standards records, so alignment is verifiable rather than asserted.",
+    },
+    {
+      index: "03",
+      title: "Review & adaptation",
+      body: "Standards-aware review checks the lesson before it’s taught, and one lesson adapts — shortened block, substitute, ELL — without losing its objective.",
+    },
+    {
+      index: "04",
+      title: "Materials",
+      body: "Quizzes, tests, worksheets, study guides, exit tickets and handouts generate from the lesson as editable assets the teacher can rewrite.",
+    },
+    {
+      index: "05",
+      title: "Publishing",
+      body: "A material publishes into Google Classroom — as a native Google Form where it’s an assessment, or as a Doc or live link where it isn’t.",
+    },
+    {
+      index: "06",
+      title: "Grading",
+      body: "Submissions come back into a grading workspace. Objective questions score automatically; written answers get AI-drafted suggestions the teacher accepts, edits, or ignores.",
+    },
+    {
+      index: "07",
+      title: "Returning grades",
+      body: "Approved scores go back to Google Classroom, closing the loop inside the tool the school already runs on.",
+    },
+  ] satisfies Step[],
+
+  decisions: [
+    {
+      title: "AI suggests the grade; the teacher gives it",
+      body: "Objective questions score themselves. For written work the model drafts a score and a rationale, and stops there — it can also decline with “needs teacher judgment,” and it never sees student identity. Grading is a professional judgment a teacher answers for, so automating the judgment would move accountability to something that cannot hold it.",
+    },
+    {
+      title: "Correctness over coverage",
+      body: "Retrieval is bounded to a filtered candidate set even though a broader search would surface more, and the model abstains rather than padding the list. In a standards-aligned product, a confidently wrong suggestion is worse than a narrower right one.",
+    },
+    {
+      title: "Own the corpus rather than the integration",
+      body: "Licensing a standards API would have been faster. Building the ingestion meant meeting each state’s own PDFs, spreadsheets and quirks — but it means alignment is verifiable, additions cost days rather than negotiations, and no vendor sits between a teacher and whether their lesson is correct.",
+    },
+    {
+      title: "Route by stakes, decided by measurement",
+      body: "Summative tests get a stronger model than a worksheet does. Which model, for which workflow, is set by blind comparison on quality, latency and cost — not by defaulting to the largest one.",
+    },
+  ] satisfies TitledBody[],
+
+  systems: [
+    {
+      title: "Standards retrieval, step by step",
+      body: "A hard metadata filter (state → the frameworks eligible for the course’s subject → grade, deprecated standards excluded), then exact vector similarity over the embedded standards (top 20), then an LLM rerank that can only choose from the retrieved IDs, with a confidence gate that abstains when nothing is a strong match. Results are cached on a key that includes the corpus, model and prompt versions; abstentions are never cached.",
+    },
+    {
+      title: "A corpus worth retrieving from",
+      body: "I built and maintain the corpus itself — 185 frameworks across 17 states, 110,000+ records — ingested from authoritative state sources, each with its own document format and its own parsing failures, and verified state by state before teachers see it.",
+    },
+    {
+      title: "One execution layer for every AI call",
+      body: "Every generative capability — generation, review, adaptation, materials, grading suggestions — runs through a single seam that enforces a typed schema and a per-attempt timeout, with retry where a workflow opts in. It records model, provider, latency, tokens and estimated cost for every call, including failures, which is where routing and cost decisions get their data.",
+    },
+    {
+      title: "Assessment as a round trip, not an export",
+      body: "Publishing a quiz creates a real Google Form in the teacher’s own Classroom, maps every question so responses can be read back, matches submissions to students, and returns grades. Re-publishing is idempotent; returning grades is resumable and sends only teacher-authored scores.",
+    },
+    {
+      title: "Reversible by construction",
+      body: "Every AI change is preview-first — engines persist nothing until a teacher approves — and lesson history is append-only and written by database trigger, so changes are reversible and attributable. Scheduled instances are copy-on-write, so one lesson can run in many classes without collisions.",
+    },
+    {
+      title: "Search that mixes meaning and keywords",
+      body: "Separately from standards, the public lesson library combines keyword and vector search, fused with Reciprocal Rank Fusion, so a teacher finds a lesson whether they type its title or describe what it teaches.",
+    },
+  ] satisfies TitledBody[],
+
+  evaluation: {
+    intro:
+      "Evaluation is the part most AI products skip and the part I lean on hardest. Shipping AI teachers can trust means measuring quality deliberately — not eyeballing a few good demos.",
+    points: [
+      {
+        title: "Rubric evaluation",
+        body: "Lessons are scored on eight explicit criteria — from objective clarity to teacher usability — and any evidence quote the evaluator cites must appear verbatim in the lesson, or it is dropped.",
+      },
+      {
+        title: "Live regression checks",
+        body: "A library of live checks runs against real models when a prompt or model changes, alongside a baseline matrix that generates and evaluates lessons across K–12 subjects and grades.",
+      },
+      {
+        title: "Blind model comparison",
+        body: "Model and prompt variants are compared blind, with output order shuffled, on quality, latency and cost — and the results set the routing policy.",
+      },
+      {
+        title: "Retrieval and corpus checks",
+        body: "Retrieval recall is benchmarked against a full-pool baseline, and every standards framework passes coverage checks — counts, grade spans, and sampled text read back against the source — before teachers see it.",
+      },
+    ] satisfies TitledBody[],
+  },
+
+  production: {
+    intro:
+      "VeraTeach is a deployed product, not a prototype. A teacher can sign up, subscribe, and use it without talking to me.",
+    points: [
+      "Self-serve signup with account recovery",
+      "Stripe subscriptions and usage entitlements",
+      "Managed Postgres with pgvector and migrations",
+      "Google OAuth for Classroom and Forms",
+      "Per-call AI usage and cost telemetry",
+      "Error monitoring, funnel alerts and a daily canary",
+    ],
+  },
+
+  evidence: [
+    {
+      title: "Evaluation got nearly 4× faster without getting worse",
+      body: "Moving rubric evaluation to a cheaper reasoning model cut it from 74s to 19s at ~2.1× lower cost — with a mean score difference of 0.05 on a 0–4 scale across a fixed lesson set.",
+    },
+    {
+      title: "The reranker got 7× faster",
+      body: "Standards reranking moved to a faster model: 12.6s to 1.8s, at 6.4× lower cost.",
+    },
+    {
+      title: "Tests routed on a blind comparison",
+      body: "A blind three-way comparison on generated tests found equal quality at ~33% lower cost than the previous model, and set the routing for summative assessments.",
+    },
+    {
+      title: "A benchmark that rewarded the wrong thing",
+      body: "One evaluation benchmark turned out to reward confident invention over asking a clarifying question. I changed the benchmark before trusting its results.",
+    },
+    {
+      title: "Silent failover, made visible",
+      body: "Gateway failover was masking schema rejections from one provider. Adding provider attribution to every call’s log exposed it.",
+    },
+    {
+      title: "Query work measured in production",
+      body: "Rewriting the standards vector query to compute distance once cut cold latency from 177ms to 27ms; moving the teacher-facing standards picker to a trigram index fixed searches that had taken 1–7 seconds.",
+    },
+  ] satisfies TitledBody[],
+
+  lesson:
+    "Generating a lesson was never the hard part; a model does that in seconds. The product is everything around it — the standards corpus, the assessment loop, the grading round trip — orchestrated so AI stays useful and the teacher stays accountable.",
+
+  next: [
+    "Run the live evaluation suite automatically on every prompt or model change, rather than on demand.",
+    "Build an expert-labeled standards gold set, so retrieval recall is measured against teachers’ judgment rather than a full-pool model baseline.",
+  ],
+
+  architecture: [
+    {
+      label: "Stack",
+      items: ["Next.js 16", "React 19", "TypeScript", "Supabase / Postgres", "Vercel"],
+    },
+    {
+      label: "Data & standards",
+      items: [
+        "pgvector (exact cosine)",
+        "text-embedding-3-small",
+        "185 frameworks · 17 states",
+        "Per-state ingestion and verification",
+        "Append-only, trigger-written versioning",
+      ],
+    },
+    {
+      label: "AI orchestration",
+      items: [
+        "One execution seam for every generative call",
+        "Typed schemas and per-attempt timeouts",
+        "Stakes- and cost-based routing via AI Gateway",
+        "Preview-first, teacher-approved writes",
+      ],
+    },
+    {
+      label: "Google Classroom",
+      items: [
+        "OAuth with encrypted tokens",
+        "Persistent period → course mapping",
+        "Native Google Forms quizzes",
+        "Idempotent re-publish",
+        "Resumable grade return",
+      ],
+    },
+    {
+      label: "Production",
+      items: [
+        "Stripe subscriptions",
+        "Usage entitlements",
+        "AI usage and cost events",
+        "Error monitoring and canaries",
+      ],
+    },
+    {
+      label: "Key systems",
+      items: [
+        "Standards retrieval (filter → vector → constrained rerank)",
+        "Library search (keyword + vector, RRF)",
+        "Assessment → publish → grade → return loop",
+        "AI-suggested free-response scores",
+        "Lesson import from existing material",
+        "Copy-on-write scheduled instances",
+      ],
+    },
+  ] satisfies ArchGroup[],
+} as const;
+
+/* ------------------------------------------------------------------ */
+/*  Grocery Sidekick                                                   */
+/* ------------------------------------------------------------------ */
+
+export const grocerySidekick = {
+  positioning:
+    "An ingredient scanner that never says “safe.”",
+  intro:
+    "I built Grocery Sidekick end to end: the product, the catalog pipeline, the ingredient dictionary and parser, the results engine, the app, and the App Store launch. It reads the label instead of ranking it.",
+  tldr: "The product’s hardest job isn’t finding allergens — it’s never implying an absence it can’t support. Most of the system exists to keep “we couldn’t tell” distinct from “not found.”",
+
+  glance: {
+    role: YELLOW_LABS_ROLE,
+    timeline: "2026 – present",
+    status: "Live on the App Store",
+    signals: [
+      "99.2% allergen recall from ingredient lists alone (9,612 declared allergens)",
+      "Zero false “not found” results when the label’s declaration is read",
+      "400,000+ foods bundled on the phone for offline use",
+    ],
+    capabilities: [
+      "Data normalization at scale",
+      "Deterministic + AI hybrid",
+      "Evaluation benchmarks",
+      "Designing for uncertainty",
+      "On-device OCR",
+      "Consumer mobile",
+    ],
+  } satisfies Glance,
+
+  problem:
+    "The answer to “can I eat this?” is printed on the back of the package in 6pt type, written for regulatory compliance rather than for a shopper, and it has to be decoded standing in an aisle holding a cart. Anyone avoiding an allergen, a seed oil, or an additive ends up translating an ingredient list on the spot — and most apps that offer to help hand back a letter grade instead of the facts.",
+
+  discovery: {
+    title: "The failure that matters is false reassurance.",
+    body: "A shopper with an allergy acts on “not found.” A missed allergen and a cheerful “looks fine” are the same failure from where they stand. So the product is built around what it can honestly say: present, possible, not found — and, often enough to matter, “couldn’t tell.”",
+  },
+
+  decisions: [
+    {
+      title: "Never say “safe”",
+      body: "The word is banned in code, in every state. “Not found” is reported only when the label was read cleanly, nothing was truncated, and every ingredient resolved — otherwise the answer is “couldn’t tell.” “May contain” and facility warnings stay distinct from absence rather than collapsing into a clean result.",
+    },
+    {
+      title: "Fuzzy matching, measured and switched off",
+      body: "Edit-distance matching added under one point of coverage, and mapped “sodium citrate” to “sodium nitrate” and “vitamin E” to “ascorbic acid.” A coverage gain that quietly misidentifies ingredients isn’t a gain here, so it stays disabled; resolution is exact, alias-based, and repairs known OCR confusions deterministically.",
+    },
+    {
+      title: "A deterministic engine with AI on a short leash",
+      body: "What’s in a product is never decided by a model. AI has one runtime job — reading a brand and product name from a photo of the front of the package when a barcode fails — and a validator strips anything else it returns.",
+    },
+    {
+      title: "Bundle the clean source, not the biggest one",
+      body: "Bundling Open Food Facts would have added 12.1% more products — and 15.4% of the statements it added failed quality checks. The bundled catalog is USDA Branded Foods; Open Food Facts stays an online fallback.",
+    },
+    {
+      title: "Alternatives clear the same gate",
+      body: "A suggested alternative must clear each of the shopper’s allergens and diets under the same evidence gate as the scan. “Possible” or “couldn’t tell” never qualifies.",
+    },
+  ] satisfies TitledBody[],
+
+  pipeline: [
+    {
+      index: "01",
+      title: "Identify",
+      body: "A barcode resolves against a catalog of 400,000+ foods bundled on the phone — so an aisle with no signal still works — with online lookups as fallbacks, and front-of-package identification as the last resort.",
+    },
+    {
+      index: "02",
+      title: "Read",
+      body: "A photo of the ingredient panel is read on the device by hand-written native modules over Apple Vision and ML Kit. Ingredient-label photos are never uploaded.",
+    },
+    {
+      index: "03",
+      title: "Parse and resolve",
+      body: "The statement is parsed and each ingredient resolved against a curated dictionary of 1,307 ingredients and 3,791 aliases, drawn from FDA, USDA and public-domain sources.",
+    },
+    {
+      index: "04",
+      title: "Judge",
+      body: "A results engine assigns each watched item a state — present, possible, not found or couldn’t tell — and names the ingredient responsible. The watch list covers the nine major US allergens (gluten standing in for wheat) plus seed oils, MSG, high-fructose corn syrup and artificial sweeteners.",
+    },
+    {
+      index: "05",
+      title: "Precompute",
+      body: "Evaluating a complex label live took up to four seconds on a phone, so the catalog carries flags precomputed at build time by the same engine — 2 MB — and a verification step re-evaluates a random sample live and fails on any disagreement.",
+    },
+  ] satisfies Step[],
+
+  evaluation: {
+    intro:
+      "Recall on allergens is the number that matters, so it’s measured against a frozen benchmark and held there by the test suite.",
+    points: [
+      {
+        title: "Allergen benchmark",
+        body: "9,612 allergen declarations taken from manufacturers’ own CONTAINS statements. With the declaration withheld, the ingredient list alone yields 99.2% recall; with it read, as a real scan does, recall is 100% with zero false “not found” results.",
+      },
+      {
+        title: "A ratchet, not a target",
+        body: "Zero false “not found” results is enforced as an absolute in the test suite, and the strict-mode miss count may never rise.",
+      },
+      {
+        title: "MSG and seed-oil benchmark",
+        body: "A second frozen gate of 7,780 known-positive rows covers the non-allergen watch items.",
+      },
+      {
+        title: "Release audit",
+        body: "An audit of 1,180 “not found” answers on products named for an allergen surfaced 74 false clears, each fixed or downgraded.",
+      },
+    ] satisfies TitledBody[],
+  },
+
+  production: {
+    intro:
+      "Grocery Sidekick is live on the App Store and built to work where shoppers actually are — in an aisle, often without signal.",
+    points: [
+      "Offline-first: catalog, saved scans and label reading work without a network",
+      "Ingredient labels read entirely on-device",
+      "JavaScript and dictionary fixes ship over the air; native changes are gated by runtime version",
+      "Stable product IDs preserved across catalog rebuilds",
+      "Subscriptions through RevenueCat",
+    ],
+  },
+
+  evidence: [
+    {
+      title: "Alternatives that still carried the allergen",
+      body: "Before the shared gate, 3.3% of suggested alternatives still carried an active allergen or diet conflict. After it: zero.",
+    },
+    {
+      title: "Fuzzy matching removed",
+      body: "Measured, found to cause dangerous mis-mappings for under a point of coverage, and switched off.",
+    },
+    {
+      title: "Precomputation after measuring latency",
+      body: "Live evaluation took 851ms for ranch dressing and four seconds for ice cream. Build-time flags made results instant for 2 MB.",
+    },
+    {
+      title: "A bigger catalog rejected",
+      body: "+12.1% products wasn’t worth 15.4% of new statements failing quality checks.",
+    },
+  ] satisfies TitledBody[],
+
+  lesson:
+    "Refusing to answer is a feature. The trust a shopper places in “not found” is only deserved if the product is just as willing to say “couldn’t tell.”",
+
+  next: [
+    "Precompute catalog flags for high-fructose corn syrup and artificial sweeteners, so alternatives can account for them too.",
+    "Run the benchmark gates automatically on every change, not only in the local test suite.",
+  ],
+
+  architecture: [
+    { label: "App", items: ["Expo", "React Native", "TypeScript", "iOS", "Offline-first"] },
+    {
+      label: "On-device OCR",
+      items: ["Hand-written native modules", "Apple Vision", "ML Kit"],
+    },
+    {
+      label: "Data",
+      items: [
+        "Bundled SQLite catalog (USDA Branded Foods)",
+        "400,000+ foods · 430,000+ barcodes",
+        "1,307-ingredient curated dictionary",
+        "Build-time precomputed watch flags",
+      ],
+    },
+    {
+      label: "Interpretation",
+      items: [
+        "Ingredient statement parser",
+        "Exact and alias resolution with OCR-confusion repair",
+        "Evidence-gated absence",
+        "Present · possible · not found · couldn’t tell",
+      ],
+    },
+    {
+      label: "Scoped AI",
+      items: [
+        "Front-of-package product identification via a hardened server proxy",
+        "Agent-proposed dictionary repairs behind a deterministic safety check and an approval step",
+      ],
+    },
+    { label: "Payments", items: ["RevenueCat", "Subscription management"] },
+  ] satisfies ArchGroup[],
+} as const;
+
+/* ------------------------------------------------------------------ */
+/*  Ryger                                                              */
 /* ------------------------------------------------------------------ */
 
 export type Discovery = {
@@ -564,395 +994,386 @@ export type Discovery = {
 };
 
 export const ryger = {
-  name: "Ryger",
-  status: "Founder · Case Study",
   positioning:
     "A recruiter-owned talent network, discovered one workflow problem at a time.",
   intro:
-    "Ryger didn't start as a recruiting product. It started as a question I kept running into during my own job search — and every answer changed what it should be. What follows is the sequence of discoveries that turned a matching tool into a network.",
+    "Ryger didn’t start as a recruiting product. It started as a question about why both sides of hiring kept missing each other — and every answer changed what it should be. What follows is the sequence of discoveries that turned a matching tool into a network, and the evidence-first assessment system underneath it.",
   tldr: "Each discovery moved Ryger further from “build a better match” and closer to “build the asset recruiters actually keep.” The matching engine was never the point. The network was.",
+
+  glance: {
+    role: YELLOW_LABS_ROLE,
+    timeline: "2025 – present",
+    status: "Live at ryger.app",
+    signals: [
+      "Per-requirement Met / Review / Missed, each verdict citing real evidence",
+      "Every number and date in a generated resume traced to source evidence",
+      "Seven discoveries from matching tool to talent network",
+    ],
+    capabilities: [
+      "Product discovery",
+      "Workflow design",
+      "Vector retrieval",
+      "Explainable AI assessment",
+      "Evidence-constrained generation",
+      "Marketplace thinking",
+    ],
+  } satisfies Glance,
+
+  problem:
+    "Recruiting effort rarely compounds. Candidates, relationships and past searches scatter across ATS systems, LinkedIn, spreadsheets and inboxes, so each role starts over — and the tools meant to help mostly match on keywords, which never proved the experience behind them.",
 
   discoveries: [
     {
       index: "01",
       label: "Initial Observation",
-      saw: "I was getting recruiter outreach for roles nowhere near my experience — and at the same time watching qualified people struggle to get seen despite searching hard. Mass layoffs, hundreds of applications each, signal getting buried. It wasn't just bad outreach. Both sides were working hard and still missing each other.",
-      led: "That mismatch is what pulled me in. If effort this high on both sides still ended in misses, the problem probably wasn't effort. It was something in how recruiting itself works.",
+      saw: "Both sides of the hiring market were working harder than ever and still missing each other — recruiters sending outreach for roles far from a candidate’s experience, while qualified people applied hundreds of times without being seen.",
+      led: "That mismatch is what pulled me in. If effort this high on both sides still ended in misses, the problem probably wasn’t effort. It was something in how recruiting itself works.",
     },
     {
       index: "02",
       label: "Research",
       saw: "Digging into ATS platforms, sourcing workflows, and recruiter behavior, one pattern kept surfacing: recruiters repeatedly rebuild value they already created. Candidates, relationships, and recruiting effort get trapped across ATS systems, LinkedIn, spreadsheets, inboxes, and personal files.",
-      led: "Recruiting effort almost never compounds. Each role tends to start over, and the work from the last search rarely carries into the next. The bottleneck wasn't technology — it was value leaking out of the system between roles.",
+      led: "Recruiting effort almost never compounds. Each role tends to start over, and the work from the last search rarely carries into the next. The bottleneck wasn’t technology — it was value leaking out of the system between roles.",
     },
     {
       index: "03",
       label: "Workflow Discovery",
-      saw: "Evaluating candidates myself, I was constantly moving back and forth between the job description and the resume, holding both in my head. The workflow just felt inefficient. The friction wasn't the decision — it was all the context-switching around it.",
-      led: "That realization came before any feature. Once the problem was friction, the design followed: structured review that keeps the requirements and the evidence in one place, so the recruiter isn't reassembling context on every candidate.",
+      saw: "Evaluating candidates, I was constantly moving back and forth between the job description and the resume, holding both in my head. The friction wasn’t the decision — it was all the context-switching around it.",
+      led: "That realization came before any feature. Once the problem was friction, the design followed: structured review that keeps the requirements and the evidence in one place, so the recruiter isn’t reassembling context on every candidate.",
     },
     {
       index: "04",
       label: "AI Trust Discovery",
-      saw: "As I evaluated candidates, I kept moving between the job description and the resume to validate why someone was considered a fit. I also kept hitting the limits of keywords: a resume might list Agile, Scrum, or product management, but the words being present never proved the experience behind them. The real question was always “what evidence supports this?” — and no recruiter should have to reconstruct that by hand, candidate after candidate.",
+      saw: "I kept hitting the limits of keywords: a resume might list Agile, Scrum, or product management, but the words being present never proved the experience behind them. The real question was always “what evidence supports this?” — and no recruiter should have to reconstruct that by hand, candidate after candidate.",
       led: "So evidence had to travel with the recommendation. Matching became requirement-level reasoning — the support for a fit attached directly to each requirement, judged on demonstrated experience rather than keyword presence — so recruiters can make fast, confident decisions without constant re-checking.",
     },
     {
       index: "05",
       label: "Recruiting Nuance Discovery",
       saw: "Most recruiting products seem to assume fit can be fully determined through matching, search, or a score. But the hard hiring decisions rarely work that way — they turn on trajectory, adjacent experience, transferable skills, hiring-manager context, and recruiter judgment.",
-      led: "So the goal was never to automate judgment. It was to clear the obvious matches and obvious misses automatically, and focus a recruiter's expertise on the nuanced calls in between — where it actually adds value.",
+      led: "So the goal was never to automate judgment. It was to clear the obvious matches and obvious misses, and route everything in between to Review — where a recruiter’s expertise actually adds value.",
     },
     {
       index: "06",
       label: "Marketplace Discovery",
-      saw: "Almost all the recruiting technology I looked at was built to help recruiters search ever-larger pools of passive candidates. Meanwhile I was watching the opposite problem play out in real time: large numbers of active job seekers, searching hard, and still invisible.",
-      led: "It left me with a question, not a conclusion: are we solving the wrong problem? If qualified people who are actively searching still can't get seen, maybe the gap isn't sourcing at all. Maybe it's visibility and signal.",
+      saw: "Almost all the recruiting technology I looked at was built to help recruiters search ever-larger pools of passive candidates. Meanwhile the opposite problem was playing out in plain view: large numbers of active job seekers, searching hard, and still invisible.",
+      led: "It left me with a question, not a conclusion: are we solving the wrong problem? If qualified people who are actively searching still can’t get seen, maybe the gap isn’t sourcing at all. Maybe it’s visibility and signal.",
     },
     {
       index: "07",
       label: "Network Discovery",
-      saw: "Research consistently showed the same thing: recruiters rebuilding searches, rediscovering candidates they'd already found, and losing relationships scattered across ATS systems, LinkedIn, spreadsheets, inboxes, and hard drives. Matching was useful — but it was never the durable value. The durable value was the network itself.",
-      led: "This was the moment the product thesis changed. Ryger stopped being a better way to match and became a way to own and grow a talent network — recruiter landing pages, owned candidate ecosystems, reusable talent pools, and continuous accumulation — with matching repositioned as activation rather than the product. The pattern underneath every discovery was the same: technology was rarely the bottleneck. Workflow, trust, signal, and compounding value were.",
+      saw: "Research consistently showed the same thing: recruiters rebuilding searches, rediscovering candidates they’d already found, and losing relationships scattered across systems. Matching was useful — but it was never the durable value. The durable value was the network itself.",
+      led: "This was the moment the product thesis changed. Ryger stopped being a better way to match and became a way to own and grow a talent network — recruiter landing pages, owned candidate pools, and continuous accumulation — with matching repositioned as activation rather than the product.",
     },
   ] satisfies Discovery[],
 
-  pivot: "The matching engine wasn't the asset. The network was.",
+  pivot: "The matching engine wasn’t the asset. The network was.",
 
   evolution: {
     intro:
-      "That reframe moved Ryger's center of gravity from a single transaction to a compounding asset. Instead of helping a recruiter fill one role, it helps them build a talent network that gets more valuable with every search.",
+      "That reframe moved Ryger’s center of gravity from a single transaction to a compounding asset. Instead of helping a recruiter fill one role, it helps them build a talent network that gets more valuable with every search.",
     capabilities: [
       "Recruiter landing pages",
-      "Recruiter-owned candidate ecosystems",
-      "Reusable talent pools",
-      "Continuous candidate accumulation",
+      "Recruiter-owned candidate pools",
+      "A network for active job seekers",
+      "Shareable candidate slates",
       "Matching as activation, not the product",
     ],
     layers: [
       {
         title: "Growth — how the network compounds",
-        body: "A recruiter-owned network is only as valuable as its ability to grow. If recruiters have to manually source every candidate forever, the asset stays small. So recruiter landing pages and public candidate intake became core — a way to continuously grow the talent pool while the recruiter keeps ownership of every relationship. Not a marketing feature; a direct consequence of a network thesis that needed a mechanism to compound over time.",
+        body: "A recruiter-owned network is only as valuable as its ability to grow. If recruiters have to manually source every candidate forever, the asset stays small. So recruiter landing pages and public candidate intake became core — a way to continuously grow the pool while the recruiter keeps ownership of every relationship.",
       },
       {
         title: "Integrity — growth without losing signal",
-        body: "Public intake raised an obvious risk. Recruiting is increasingly flooded with automated applications, mass-apply workflows, and bot-assisted submissions — and a recruiter-owned network only works if recruiters trust the quality of the pool. That led to deliberate controls around candidate ingestion, designed to discourage automated submissions and preserve signal. Growth matters; trust and integrity matter just as much.",
+        body: "Public intake raised an obvious risk: recruiting is increasingly flooded with automated and mass-apply submissions, and a recruiter-owned network only works if recruiters trust the pool. Intake is protected by a honeypot, bot detection, per-role rate limits, file checks, a model gate that confirms an upload is actually a resume, and duplicate-person resolution.",
       },
+    ] satisfies TitledBody[],
+  },
+
+  decisions: [
+    {
+      title: "Review, not a forced yes or no",
+      body: "Every requirement resolves to Met, Review or Missed. Partial or unclear evidence goes to Review rather than being rounded to a verdict the evidence can’t support.",
+    },
+    {
+      title: "Keywords never prove experience",
+      body: "A keyword-only match is never elevated to Met, and a tool listed on a resume without supporting work history counts as Missed.",
+    },
+    {
+      title: "One place decides",
+      body: "Deterministic signals, model judgments and explanation text are kept separate, and a requirement’s status is assigned in exactly one function — so behavior is auditable and changes can be proven not to regress it.",
+    },
+    {
+      title: "The verdict can only be lowered",
+      body: "The model’s overall assessment is capped downward by deterministic rules: when more than three-quarters of must-haves are missing it cannot read better than “Stretch,” and an explicit work-authorization conflict forces “Unlikely.”",
+    },
+  ] satisfies TitledBody[],
+
+  pipeline: [
+    {
+      index: "01",
+      title: "Structure",
+      body: "A job description becomes typed requirements — must, should or nice to have; gating or not; minimum years; any-of or all-of — with role duties kept separate and an instruction not to invent qualifications the text doesn’t state.",
+    },
+    {
+      index: "02",
+      title: "Retrieve",
+      body: "Candidates are embedded and retrieved by vector search across the recruiter’s own pools and the wider network, using separate queries for must-haves, tools and domain.",
+    },
+    {
+      index: "03",
+      title: "Rank",
+      body: "Deterministic, weighted scoring over exact, partial and related matches produces a fit score and band; semantic similarity adds credit only where there is structured evidence behind it.",
+    },
+    {
+      index: "04",
+      title: "Assess",
+      body: "Tools and tenure are checked deterministically first. The remaining requirements are assessed by a model in parallel batches, and every verdict must cite evidence IDs that actually exist in the candidate’s evidence pack.",
+    },
+    {
+      index: "05",
+      title: "Resolve",
+      body: "One function assigns Met, Review or Missed per requirement; the overall assessment is then capped by rules.",
+    },
+  ] satisfies Step[],
+
+  resume: {
+    title: "Evidence-constrained resume generation",
+    problem:
+      "Resumes are built for a single role, so experience that doesn’t match the current application quietly gets cut. Most tools make it worse — optimizing for keywords, or inventing accomplishments that no longer sound like the person.",
+    approach:
+      "Ryger’s resume generator reads a job description against the candidate’s whole career and surfaces the most relevant real experience first — under rules that keep it truthful.",
+    controls: [
+      {
+        title: "Evidence is the only input about the candidate",
+        body: "The model receives extracted evidence rows, each tied to exactly one role, with verbatim quotes. The job description is explicitly not evidence about the candidate, and a stated goal is not an achieved result.",
+      },
+      {
+        title: "Checks in code, not in the prompt",
+        body: "After generation, every bullet must cite evidence from the same role, and every number and year must appear in that evidence. Lines that fail are removed, not repaired by the model.",
+      },
+      {
+        title: "Ungrounded skills are stripped",
+        body: "A grounding guard removes skills and certifications that don’t appear in the source material.",
+      },
+      {
+        title: "A limit stated, not hidden",
+        body: "The checks are objective — citations, numbers, dates, employer names — so a characterization borrowed from the job description can still slip through. That gap is measured and logged.",
+      },
+    ] satisfies TitledBody[],
+  },
+
+  evaluation: [
+    {
+      title: "Resume truthfulness, judged blind",
+      body: "In blind evaluation by two model judges, unsupported claims per generated resume fell from 20–21 to 3 between versions of the generator.",
+    },
+    {
+      title: "Rules under test",
+      body: "The overall-assessment caps are covered by automated tests, and an input-equivalence harness checks that migrations preserve behavior.",
+    },
+  ] satisfies TitledBody[],
+
+  production: {
+    intro: "Ryger is live at ryger.app, with recruiter and candidate workflows.",
+    points: [
+      "Recruiter landing pages with public candidate intake",
+      "Recruiter-owned candidate pools and a network for active job seekers",
+      "Requirement-level fit with evidence, per candidate",
+      "Shareable candidate slates",
+      "Authentication and billing",
     ],
   },
+
+  lesson:
+    "The biggest lesson from Ryger is that technology alone rarely solves workflow problems. The most valuable opportunities show up somewhere quieter — in how people actually work, where trust breaks down, where information gets lost, and where systems fail to compound value over time.",
+
+  next: [
+    "Build a human-labeled ground-truth set of candidate–requirement pairs, so Met / Review / Missed accuracy is measured directly. Today’s relevance labels are model-authored.",
+    "Extend the resume checks beyond objective facts, to catch characterizations borrowed from the job description.",
+  ],
 
   architecture: [
     { label: "Frontend", items: ["Next.js", "TypeScript", "Tailwind", "Vercel"] },
     {
       label: "Platform",
-      items: [
-        "AWS Lambda",
-        "API Gateway",
-        "DynamoDB",
-        "S3",
-        "ECS",
-        "CloudFront",
-        "SES",
-      ],
+      items: ["AWS Lambda", "API Gateway", "DynamoDB", "S3", "ECS", "CloudFront", "SES"],
     },
     {
-      label: "AI & Intelligence",
+      label: "AI & retrieval",
       items: [
-        "OpenAI",
-        "Requirement-level evaluation",
-        "Evidence-backed reasoning",
-        "Match reasoning workflows",
+        "OpenAI models",
+        "text-embedding-3-small",
+        "Pinecone vector search",
+        "Schema-validated requirement extraction",
+        "Evidence-cited requirement assessment",
       ],
     },
-    { label: "Identity & Billing", items: ["Clerk", "Stripe"] },
+    { label: "Identity & billing", items: ["Clerk", "Stripe"] },
     {
       label: "Integrations",
       items: ["Google Maps API", "Geocoding", "Location proximity"],
     },
     {
-      label: "Key Systems",
+      label: "Key systems",
       items: [
-        "Recruiter-owned talent networks",
+        "Recruiter-owned talent pools",
         "Candidate ingestion pipelines",
         "Recruiter landing pages",
-        "Resume intelligence",
-        "Match reasoning engine",
-        "Slate management workflows",
-        "Signal integrity controls",
+        "Match and fit reasoning",
+        "Evidence-constrained resume generation",
+        "Public-intake abuse controls",
       ],
     },
   ] satisfies ArchGroup[],
-
-  lesson:
-    "The biggest lesson from Ryger is that technology alone rarely solves workflow problems. The most valuable opportunities show up somewhere quieter — in how people actually work, where trust breaks down, where information gets lost, and where systems fail to compound value over time. Find those, and the product almost designs itself.",
-
-  demonstrates: [
-    "Product discovery",
-    "User research",
-    "Workflow design",
-    "Marketplace thinking",
-    "AI trust & explainability",
-    "Systems thinking",
-    "Strategic evolution",
-  ],
 } as const;
 
 /* ------------------------------------------------------------------ */
-/*  VeraTeach — dedicated case study                                 */
+/*  ReadMyStrip                                                        */
 /* ------------------------------------------------------------------ */
 
-export const verateach = {
-  name: "VeraTeach",
-  status: "Live · verateach.com",
+export const readMyStrip = {
   positioning:
-    "An AI teaching workspace that carries a lesson from standards through Google Classroom to returned grades.",
+    "A test-strip reader where the model perceives and code decides.",
   intro:
-    "I designed and built VeraTeach end to end — the product strategy, the AI architecture, and the systems underneath. It started as lesson generation and became something larger: an integrated workspace spanning planning, standards alignment, assessment creation, classroom publishing, and grading, with the teacher in control at every step.",
-  tldr: "Generating a lesson is one step. The product is the workflow around it — grounding, materials, publishing, and grading — collapsed into one workspace, with AI doing the drafting and the teacher keeping the decisions.",
+    "I took ReadMyStrip from concept through App Store launch — product strategy, capture UX, the vision pipeline, backend, subscriptions and iteration — and it has paying customers.",
+  tldr: "Real-world photos are messy, and strip brands differ. The answer was to narrow the model’s job to perception, have code make every decision, and let each user’s own chart define what a valid reading is.",
 
-  workflow: [
-    {
-      index: "01",
-      stage: "Planning",
-      decision:
-        "A lesson starts inside real structure — course, class, standards — not a blank prompt box. Teachers can write guidance that shapes generation before it runs, or import material they already have.",
-    },
-    {
-      index: "02",
-      stage: "Grounding in standards",
-      decision:
-        "Hybrid retrieval grounds the lesson in a 100,000-record corpus of state standards, so alignment is verifiable rather than asserted.",
-    },
-    {
-      index: "03",
-      stage: "Review & adaptation",
-      decision:
-        "Standards-aware review checks the lesson before it's taught, and one lesson adapts — shortened block, substitute, ELL — without losing its objective.",
-    },
-    {
-      index: "04",
-      stage: "Materials",
-      decision:
-        "Quizzes, tests, worksheets, study guides, exit tickets and handouts generate from the lesson as editable assets the teacher can rewrite.",
-    },
-    {
-      index: "05",
-      stage: "Publishing",
-      decision:
-        "A material publishes into Google Classroom — as a native Google Form where it's an assessment, or as a Doc or live link where it isn't.",
-    },
-    {
-      index: "06",
-      stage: "Grading",
-      decision:
-        "Submissions come back into a grading workspace. Objective questions score automatically; written answers get AI-drafted suggestions the teacher accepts, edits, or ignores.",
-    },
-    {
-      index: "07",
-      stage: "Returning grades",
-      decision:
-        "Approved scores go back to Google Classroom, closing the loop inside the tool the school already runs on.",
-    },
-  ],
-
-  systems: [
-    {
-      title: "One orchestration layer",
-      body: "Every AI capability — retrieval, generation, review, adaptation, material creation, grading suggestions — runs through a single execution seam with retry, timeout, and validation. That seam is where model routing, cost accounting, and evaluation hooks live, so the system improves in one place instead of feature by feature.",
-    },
-    {
-      title: "A standards corpus worth retrieving from",
-      body: "Alignment is only as good as what you can search. I built and maintain the corpus itself — 144 frameworks across 13 states, 103,934 records, with all 94,036 coded standards embedded for semantic retrieval — from authoritative state sources, each with its own document format and its own parsing failures. Retrieval then filters hard on jurisdiction and grade, ranks by vector similarity, and reranks, so the model reasons over candidates it cannot cross-contaminate across states.",
-    },
-    {
-      title: "Assessment as a round trip, not an export",
-      body: "Publishing a quiz means creating a real Google Form in the teacher's own Classroom, mapping every question so responses can be read back, matching submissions to students, and returning grades. Getting that loop to close — rather than stopping at 'export to Google' — is most of what separates a demo from a tool a teacher uses on a Tuesday.",
-    },
-    {
-      title: "Structured, teacher-approved outputs",
-      body: "Every call returns schema-validated output the rest of the system can trust, and every AI change is preview-first — engines persist nothing until a teacher approves. Immutable, trigger-written version history makes each change reversible and attributable.",
-    },
-  ],
-
-  evaluation: {
-    intro:
-      "Evaluation is the part most AI products skip and the part I lean on hardest. Shipping AI teachers can trust means measuring quality deliberately — not eyeballing a few good demos.",
-    points: [
-      {
-        label: "Rubric evaluation",
-        body: "Lessons are scored against explicit, evidence-grounded criteria, so “is this good?” has a repeatable answer.",
-      },
-      {
-        label: "Regression harness",
-        body: "A library of scripted checks runs against real models, catching quality regressions when a prompt or model changes.",
-      },
-      {
-        label: "Model comparison",
-        body: "Model and prompt variants are compared on quality, latency, and cost — and the results drive the routing policy. One migration cut a workflow from 74s to 18s by measuring rather than assuming.",
-      },
-      {
-        label: "Corpus verification",
-        body: "Every standards framework is gated by coverage checks before teachers see it — counts, grade spans, and sampled text read back from the database against the source.",
-      },
+  glance: {
+    role: YELLOW_LABS_ROLE,
+    timeline: "2026 – present",
+    status: "Live on the App Store · paying customers",
+    signals: [
+      "Paying customers on a $0.99/month or $9.99/year subscription",
+      "Model output validated against the user’s own printed chart",
+      "Scan history and notes added from production feedback",
     ],
+    capabilities: [
+      "Vision-model pipeline",
+      "Deterministic validation",
+      "Capture UX",
+      "Subscription monetization",
+      "Iterating from feedback",
+    ],
+  } satisfies Glance,
+
+  problem:
+    "Testing pool, spa, or aquarium water means reading a strip of subtle color pads against a reference chart — slow, subjective, and easy to get wrong. Results shift with lighting, eyesight, and guesswork, and every brand prints its chart differently.",
+
+  discovery: {
+    title: "Narrow the model’s job.",
+    body: "The first scan architecture leaned on reconstruction — a color-science matcher alongside a model asked to reason about chemistry and decide status. Within days it was replaced: the model now does one thing, picking the closest printed swatch for each pad, and everything after that is deterministic code.",
   },
 
   decisions: [
     {
-      title: "AI suggests the grade; the teacher gives it",
-      body: "Objective questions score themselves. For written work the model drafts a score and a rationale, and stops there — the teacher accepts, edits, or ignores it. Grading is a professional judgment a teacher answers for, so automating the judgment would move accountability to something that cannot hold it.",
+      title: "The model perceives; code decides",
+      body: "For each pad the model returns only the label of the closest swatch on the chart. Code parses the value and decides low, in range or high. Any label that isn’t actually printed on that pad’s row is rejected as a hallucination and becomes “unknown.”",
     },
     {
-      title: "AI as orchestration, not autonomy",
-      body: "The model drafts; the teacher decides. Preview-first isn't a UX nicety — it's how the product keeps professional accountability with the human who owns the classroom.",
+      title: "Your chart defines a valid reading",
+      body: "Strip brands differ, so each user photographs their own bottle’s chart once. The chart is parsed into rows and ranges, and every later scan is judged against it rather than a generic reference.",
     },
     {
-      title: "Correctness over coverage",
-      body: "Retrieval is bounded to a filtered candidate set even though a broader search would surface more. In a standards-aligned product, a confidently wrong suggestion is worse than a narrower right one.",
+      title: "Ask for a rescan instead of guessing",
+      body: "When more than 40% of pads can’t be read confidently, the app asks for another photo rather than presenting a partial result as complete.",
     },
     {
-      title: "Own the corpus rather than the integration",
-      body: "Licensing a standards API would have been faster. Building the ingestion meant meeting each state's own PDFs, spreadsheets and quirks — but it means alignment is verifiable, additions cost days rather than negotiations, and no vendor sits between a teacher and whether their lesson is correct.",
+      title: "Pay before the model runs",
+      body: "One free scan, then a subscription — enforced on the server before any model call, so unit economics hold and the paywall can’t be bypassed from the client.",
     },
-  ],
+  ] satisfies TitledBody[],
+
+  pipeline: [
+    {
+      index: "01",
+      title: "Capture",
+      body: "A camera screen draws measured framing guides for the strip and the chart, and the photo is cropped to the guide before upload. Strip scans are camera-only.",
+    },
+    {
+      index: "02",
+      title: "Check the image",
+      body: "Brightness, glare and sharpness are measured before any model call; images outside the limits prompt a retake.",
+    },
+    {
+      index: "03",
+      title: "Read the chart (once)",
+      body: "The chart is cropped into overlapping bands for resolution and parsed into a structured schema of chemicals, units and levels; illegible charts, duplicate rows or suspicious markings are rejected with a retake prompt.",
+    },
+    {
+      index: "04",
+      title: "Perceive",
+      body: "A vision model compares the strip with the user’s saved chart and returns, per chemical, the closest printed label — nothing else.",
+    },
+    {
+      index: "05",
+      title: "Decide",
+      body: "Code validates every label against the chart, parses values, and assigns low, in range, high or unknown; too many unknowns trigger a rescan.",
+    },
+  ] satisfies Step[],
+
+  evaluation: {
+    intro:
+      "Quality today comes from constraint rather than a measured accuracy figure: the model’s output space is limited to labels printed on the user’s chart, and everything else is validated in code.",
+    points: [
+      {
+        title: "Output validation",
+        body: "Every reading is checked against the chart before it is shown; an unrecognized label can only ever become “unknown.”",
+      },
+      {
+        title: "Image quality gates",
+        body: "Dark, overexposed, glary or blurry photos are caught before they reach the model.",
+      },
+      {
+        title: "Parser contract tests",
+        body: "The chart parser and value/status logic are covered by unit tests.",
+      },
+      {
+        title: "Structured logging",
+        body: "Every scan logs timings, tokens, outcomes and per-pad reads, which is how production behavior gets reviewed.",
+      },
+    ] satisfies TitledBody[],
+  },
 
   production: {
     intro:
-      "VeraTeach is a deployed product, not a prototype. A teacher can sign up, subscribe, and use it without talking to me.",
+      "ReadMyStrip is live on the App Store with paying customers, and production use has already reshaped it.",
     points: [
-      "Authentication with self-serve account recovery",
-      "Stripe subscriptions and usage entitlements",
-      "Managed Postgres with pgvector, migrations, and row-level security",
-      "Google OAuth verified for production use",
-      "Error monitoring and coverage checks over the standards corpus",
+      "One free scan, then $0.99/month or $9.99/year",
+      "Entitlements enforced server-side, synced by RevenueCat webhooks",
+      "Scan history with notes — “shocked after rain,” “added chlorine” — added in 1.0.1 from customer feedback",
+      "Notes added to the result screen too, after testing found they could only be added from History",
     ],
   },
 
   lesson:
-    "Generating a lesson was never the hard part; a model does that in seconds. The product is everything around it — the standards corpus, the assessment loop, the grading round trip — orchestrated so AI stays useful and the teacher stays accountable.",
+    "Reliability came from scoping, not from a bigger model. Give the model the narrowest job that still needs it, and make the rest of the system unable to pass along a guess.",
 
-  demonstrates: [
-    "AI workflow design",
-    "RAG & retrieval",
-    "Model evaluation",
-    "Model comparison & routing",
-    "Structured outputs",
-    "Human-in-the-loop",
-    "Third-party API integration",
-    "Cost optimization",
-    "Product discovery",
-    "Systems thinking",
-    "Production SaaS",
+  next: [
+    "Build a labeled image set across strip brands and lighting conditions, so reading accuracy is measured directly rather than inferred from constraints.",
+    "Pin the scan model version, so accuracy measurements stay comparable over time.",
   ],
+
+  architecture: [
+    { label: "App", items: ["Expo", "React Native", "TypeScript", "iOS"] },
+    {
+      label: "Vision pipeline",
+      items: [
+        "Guided capture and crop",
+        "Image quality gates (brightness, glare, sharpness)",
+        "Band-cropped chart parsing",
+        "Perception-only vision model call",
+        "Structured outputs, validated in code",
+      ],
+    },
+    {
+      label: "Platform",
+      items: ["Vercel functions", "Supabase", "Row-level security"],
+    },
+    {
+      label: "Payments",
+      items: ["RevenueCat", "Server-side entitlement checks", "Webhook sync"],
+    },
+  ] satisfies ArchGroup[],
 } as const;
-
-export type Principle = {
-  index: string;
-  title: string;
-  body: string;
-};
-
-export const principles: Principle[] = [
-  {
-    index: "01",
-    title: "Start with the workflow, not the technology.",
-    body: "Understand how the work actually gets done before deciding what to build. The best technology disappears into a better workflow.",
-  },
-  {
-    index: "02",
-    title: "Optimize for outcomes, not activity.",
-    body: "Shipping features is easy. Moving the metric that matters is the job. I measure progress by the problem getting smaller.",
-  },
-  {
-    index: "03",
-    title: "Reduce friction before adding features.",
-    body: "Most products are slowed by friction, not missing capability. Removing steps usually beats adding them.",
-  },
-  {
-    index: "04",
-    title: "Build systems that compound over time.",
-    body: "Favor decisions that get more valuable as they accumulate — data, relationships, and structure that pay off later.",
-  },
-  {
-    index: "05",
-    title: "Make AI useful, explainable, and practical.",
-    body: "AI should earn trust by being transparent and reliable in real work — not impressive in a demo and fragile in production.",
-  },
-];
-
-export type Role = {
-  company: string;
-  context: string;
-  focus: string;
-};
-
-export const experience = {
-  intro:
-    "Over the last 15+ years I've worked across customer service, team leadership, process improvement, process management, enterprise risk, data governance, and product management — inside banking, risk, operations, and product organizations.",
-  connection:
-    "The same problems kept recurring: workflow design, operational efficiency, stakeholder alignment, governance, and reducing friction in complex processes. Many of the themes in my projects — trust, reducing context switching, preserving valuable work, and building systems that scale — originated long before I started building software.",
-  themes: [
-    "Workflow design",
-    "Process optimization",
-    "Operational efficiency",
-    "Stakeholder alignment",
-    "Governance",
-    "Scaling systems",
-    "Reducing friction",
-  ],
-  roles: [
-    {
-      company: "Capital One",
-      context: "Product Management & Enterprise Risk",
-      focus:
-        "Built and managed products supporting governance, compliance, risk management, enterprise data workflows, and operational decision-making — focused on product strategy, roadmap development, stakeholder alignment, and large-scale enterprise initiatives.",
-    },
-    {
-      company: "PNC Bank",
-      context: "Process Improvement Consulting",
-      focus:
-        "Partnered with business leaders and operational teams to identify inefficiencies, improve workflows, coach teams, and drive continuous-improvement initiatives.",
-    },
-    {
-      company: "TD Bank",
-      context: "Process Management & Operational Leadership",
-      focus:
-        "Progressed from frontline leadership into business process management and enterprise process improvement — leading large-scale process optimization, data analysis, operational redesign, and organizational improvement programs.",
-    },
-  ] satisfies Role[],
-  closing: {
-    lead: "The projects demonstrate what I build.",
-    trail: "My experience explains why I think about problems the way I do.",
-  },
-} as const;
-
-export type Essay = {
-  category: string;
-  title: string;
-  blurb: string;
-  status: string;
-};
-
-export const writing: Essay[] = [
-  {
-    category: "Marketplaces",
-    title: "Why recruiting is a network problem, not a database problem",
-    blurb:
-      "The structural reason cold outreach keeps failing — and what changes when you build on trust instead of contact lists.",
-    status: "Coming soon",
-  },
-  {
-    category: "AI Workflows",
-    title: "Designing AI that earns trust in real work",
-    blurb:
-      "Practical patterns for making AI assistive and explainable instead of a black box people learn to ignore.",
-    status: "Coming soon",
-  },
-  {
-    category: "Product Strategy",
-    title: "Lessons from building four products in a year",
-    blurb:
-      "What actually transferred between Ryger, Resume, ReadMyStrip, and VeraTeach — and what didn't.",
-    status: "Coming soon",
-  },
-];

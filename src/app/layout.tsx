@@ -4,38 +4,39 @@ import { GeistMono } from "geist/font/mono";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
+const title = "Chad Harmer — AI & Platform Product Leader";
+const description =
+  "Product leader with 15+ years of enterprise product, platform and process work and hands-on experience designing, building and operating production AI products.";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://chadharmer.com"),
   title: {
-    default: "Chad Harmer — Product Leader, Founder, Builder",
+    default: title,
     template: "%s · Chad Harmer",
   },
-  description:
-    "Chad Harmer builds products and systems — AI workflows, marketplaces, and recruiting technology. Enterprise product leadership meets founder execution.",
+  description,
   keywords: [
     "Chad Harmer",
-    "Product Leader",
-    "Founder",
-    "AI workflows",
-    "Marketplaces",
-    "Recruiting technology",
-    "Product strategy",
-    "Systems design",
+    "AI Product Manager",
+    "Platform Product Manager",
+    "Principal Product Manager",
+    "Product leadership",
+    "RAG and retrieval",
+    "AI evaluation",
+    "Human-in-the-loop",
   ],
   authors: [{ name: "Chad Harmer" }],
   openGraph: {
-    title: "Chad Harmer — Product Leader, Founder, Builder",
-    description:
-      "Enterprise product leadership meets founder execution. AI workflows, marketplaces, and systems that compound.",
+    title,
+    description,
     url: "https://chadharmer.com",
     siteName: "Chad Harmer",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Chad Harmer — Product Leader, Founder, Builder",
-    description:
-      "Enterprise product leadership meets founder execution. AI workflows, marketplaces, and systems that compound.",
+    title,
+    description,
   },
 };
 

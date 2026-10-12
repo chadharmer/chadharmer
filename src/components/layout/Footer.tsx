@@ -27,6 +27,14 @@ export function Footer() {
                 {item.label}
               </a>
             ))}
+            {site.resume ? (
+              <a
+                href={site.resume}
+                className="text-sm text-muted transition-colors hover:text-fg"
+              >
+                Résumé
+              </a>
+            ) : null}
             <a
               href={`mailto:${site.email}`}
               className="text-sm text-muted transition-colors hover:text-fg"

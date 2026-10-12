@@ -1,10 +1,11 @@
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
-import { FeaturedProducts } from "@/components/sections/FeaturedProducts";
-import { AICompetencies } from "@/components/sections/AICompetencies";
-import { HowIBuild } from "@/components/sections/HowIBuild";
+import { Background } from "@/components/sections/Background";
+import { SelectedWork } from "@/components/sections/SelectedWork";
+import { Capabilities } from "@/components/sections/Capabilities";
 import { Experience } from "@/components/sections/Experience";
+import { HowIBuild } from "@/components/sections/HowIBuild";
 import { Contact } from "@/components/sections/Contact";
 
 export default function Home() {
@@ -13,10 +14,11 @@ export default function Home() {
       <Nav />
       <main className="flex-1">
         <Hero />
-        <FeaturedProducts />
-        <AICompetencies />
-        <HowIBuild />
+        <Background />
+        <SelectedWork />
+        <Capabilities />
         <Experience />
+        <HowIBuild />
         <Contact />
       </main>
       <Footer />

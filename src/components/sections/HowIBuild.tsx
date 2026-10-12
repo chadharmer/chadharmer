@@ -1,12 +1,12 @@
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
-import { principles } from "@/lib/content";
+import { principles, principlesIntro } from "@/lib/content";
 
 export function HowIBuild() {
   return (
     <section
-      id="how-i-build"
+      id="how-i-work"
       className="relative scroll-mt-20 border-y border-line py-24 sm:py-32"
     >
       {/* Subtle section tint */}
@@ -17,9 +17,9 @@ export function HowIBuild() {
 
       <Container>
         <SectionHeading
-          label="How I Build"
-          title="Principles over playbooks."
-          description="A consistent way of thinking about product problems — the lens I bring before any specific tool or feature enters the conversation."
+          label={principlesIntro.label}
+          title={principlesIntro.title}
+          description={principlesIntro.description}
         />
 
         <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2">
@@ -44,6 +44,9 @@ export function HowIBuild() {
                     </h3>
                     <p className="mt-2.5 max-w-xl text-sm leading-relaxed text-muted">
                       {p.body}
+                    </p>
+                    <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-accent/70">
+                      {p.sources}
                     </p>
                   </div>
                 </div>

@@ -52,11 +52,19 @@ export function Nav() {
                 {item.label}
               </Link>
             ))}
+            {site.resume ? (
+              <a
+                href={site.resume}
+                className="rounded-md px-3 py-2 text-sm text-muted transition-colors hover:text-fg"
+              >
+                Résumé
+              </a>
+            ) : null}
             <Link
               href="/#contact"
               className="ml-2 rounded-full border border-line-strong bg-elevated px-4 py-2 text-sm font-medium text-fg transition-all hover:border-accent/50 hover:bg-elevated/80"
             >
-              Get in touch
+              Contact
             </Link>
           </div>
 
@@ -99,12 +107,21 @@ export function Nav() {
                   {item.label}
                 </Link>
               ))}
+              {site.resume ? (
+                <a
+                  href={site.resume}
+                  onClick={() => setOpen(false)}
+                  className="rounded-md px-2 py-3 text-sm text-muted transition-colors hover:text-fg"
+                >
+                  Résumé
+                </a>
+              ) : null}
               <Link
                 href="/#contact"
                 onClick={() => setOpen(false)}
                 className="mt-2 rounded-full border border-line-strong bg-elevated px-4 py-2.5 text-center text-sm font-medium text-fg"
               >
-                Get in touch
+                Contact
               </Link>
             </div>
           </div>

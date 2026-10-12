@@ -1,6 +1,6 @@
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
-import { site } from "@/lib/content";
+import { contact, site } from "@/lib/content";
 
 export function Contact() {
   return (
@@ -15,17 +15,13 @@ export function Contact() {
         <Reveal className="mx-auto max-w-2xl text-center">
           <div>
             <span className="font-mono text-xs uppercase tracking-[0.18em] text-faint">
-              Contact
+              {contact.label}
             </span>
             <h2 className="mt-5 text-balance text-3xl font-semibold tracking-tight text-gradient sm:text-5xl">
-              Building something interesting?
+              {contact.title}
             </h2>
-            <p className="mx-auto mt-5 max-w-lg text-balance text-base leading-relaxed text-muted">
-              I&apos;m always glad to trade notes on products, marketplaces, and
-              making AI genuinely useful. The best way to reach me is below.
-            </p>
-            <p className="mx-auto mt-4 max-w-lg font-mono text-[11px] uppercase tracking-[0.16em] text-faint">
-              Open to Senior AI Product · Technical Product · AI Platform PM roles
+            <p className="mx-auto mt-5 max-w-xl text-balance text-base leading-relaxed text-muted">
+              {contact.body}
             </p>
 
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
@@ -63,6 +59,14 @@ export function Contact() {
                 </svg>
                 LinkedIn
               </a>
+              {site.resume ? (
+                <a
+                  href={site.resume}
+                  className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-elevated/60 px-5 py-3 text-sm font-medium text-fg backdrop-blur transition-colors hover:border-accent/40"
+                >
+                  Résumé (PDF)
+                </a>
+              ) : null}
             </div>
           </div>
         </Reveal>
