@@ -41,7 +41,7 @@ export const hero = {
   eyebrow: "Chad Harmer · Product leadership",
   titleLines: ["Product leadership", "where workflows, data and AI meet."],
   subtitle:
-    "Fifteen years of product, platform and process work at Capital One, PNC and TD Bank. Since 2025, I’ve also taken production AI products from discovery through architecture, evaluation, launch and iteration myself — close enough to the implementation to know how these systems actually behave.",
+    "Fifteen years across product management, process improvement and enterprise systems at Capital One, PNC and TD Bank progressed into hands-on AI product development. Since 2025, I’ve taken production AI products from discovery through architecture, evaluation, launch and iteration.",
   /* Ordered as a set: breadth → scale → measured quality → real-world use.
      Career outcomes (57 → 2, ~$2.5M) live in Experience, where they have context. */
   proof: [
@@ -66,11 +66,11 @@ export const hero = {
 
 export const background = {
   label: "Background",
-  title: "From the front line to the implementation layer.",
+  title: "Product leadership built from understanding how the work actually happens.",
   paragraphs: [
-    "I started in customer-facing roles at TD Bank and moved into team leadership — close enough to the work to see where it broke down, for customers and for the people doing it. From there I documented processes across the phone channel, then into retail-banking process management at TD and continuous-improvement consulting at PNC.",
-    "At Capital One I owned enterprise data-management processes — Data Usage and Data Provisioning Agreements, Authoritative Source Declarations, High Priority Usage — redesigning them for clearer accountability, building the measurement they lacked, and working across enterprise teams. That led to product management: owning strategy and delivery for VaaS, a platform that moved complex data-management validation and control requirements into software.",
-    "Through Yellow Labs Products I’ve gone deeper into the implementation layer, taking production AI products through discovery, architecture, implementation, evaluation, launch and iteration.",
+    "My career has progressively moved closer to the systems behind the customer experience — from customer-facing work and process improvement, to owning enterprise data-management processes, to product management and software delivery.",
+    "At Capital One, I moved from owning and improving enterprise data-management processes into product management, leading a cross-functional Agile delivery team of engineers, designers and data analysts to build software that simplified complex validation and control workflows.",
+    "Through Yellow Labs Products, that progression moved into hands-on AI product development, taking production products through discovery, architecture, implementation, evaluation, launch and iteration.",
   ],
   closing:
     "The progression has been consistent: understand how work actually happens, improve the system around it, and increasingly build the technology that makes it better.",
@@ -110,7 +110,7 @@ export const works: Work[] = [
       "An AI teaching workspace that carries a lesson from state standards through Google Classroom to returned grades.",
     demonstrates: [
       "Multi-stage AI orchestration",
-      "Retrieval over 110,000+ standards",
+      "Shared 110K+ standards layer",
       "Evaluation and model routing",
       "Human-in-the-loop grading",
     ],
@@ -126,7 +126,7 @@ export const works: Work[] = [
     name: "Grocery Sidekick",
     status: "Live · iOS",
     oneLiner:
-      "Scan a grocery product and see which of the allergens and ingredients you watch for it contains — answered from a normalized catalog of 400,000+ foods that works with no signal.",
+      "Scan a grocery product to see which of the allergens and ingredients you watch for it contains, and which ingredient is responsible.",
     demonstrates: [
       "Large-scale data normalization",
       "Ingredient resolution",
@@ -134,7 +134,7 @@ export const works: Work[] = [
       "Benchmarks and audits",
     ],
     decision:
-      "Turn messy source data into a reliable product layer: inconsistent label records normalized into stable product identities across 430,000+ barcodes, ingredients resolved against a curated dictionary, and classifications computed deterministically at build time.",
+      "Turn messy source data into a reliable product layer: inconsistent label records normalized into stable product identities, ingredients resolved against a curated dictionary, and classifications computed deterministically at build time.",
     signal:
       "400,000+ foods and 430,000+ barcodes bundled on the phone, so lookups work with no signal.",
     accent: "247, 197, 51",
@@ -153,7 +153,7 @@ export const works: Work[] = [
     demonstrates: [
       "Requirement-level matching",
       "Evidence-grounded resume generation",
-      "Vector retrieval, structured evidence",
+      "Shared candidate-intelligence layer",
       "Discovery that reshaped the thesis",
     ],
     decision:
@@ -190,9 +190,9 @@ export const workBySlug = (slug: WorkSlug) => works.find((w) => w.slug === slug)
 
 export const selectedWork = {
   label: "Selected Work",
-  title: "Production products across recruiting, education and consumer apps.",
+  title: "Different domains. The same product discipline.",
   description:
-    "Each one surfaced a different problem in designing AI systems people can rely on — from grounding and evaluation to deciding what a model shouldn’t decide at all.",
+    "My work spans enterprise data management, recruiting, K–12 education, food intelligence and water testing. Across each, the work starts by getting deep into the users, workflows, data and constraints — then turning that understanding into the right product and system.",
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -208,138 +208,113 @@ export type CapabilityTheme = {
 
 export const capabilities = {
   label: "Capabilities",
-  title: "Where I’ve actually done this.",
+  title: "Capabilities in practice.",
   description:
-    "Patterns that recur across my work, each tied to where it was applied — at Capital One and in production AI products. Every one is something I can walk through in detail, tradeoffs included.",
+    "Product leadership, AI systems, evaluation and data — demonstrated across enterprise delivery and shipped products.",
 } as const;
 
 /*
- * Evidence first, themes second: each line is placed under the capability it
- * genuinely demonstrates, and a product or employer simply has no line under
- * a theme where its evidence is thin. Capital One is deliberately absent from
- * the AI themes.
+ * Written at hiring-manager depth: each line proves a capability in one
+ * sentence, with a metric only where it strengthens the evidence. Mechanics
+ * live in the case studies. Evidence is placed only where it is strong, so a
+ * product or employer may be absent from a theme.
  */
 export const capabilityThemes: CapabilityTheme[] = [
   {
     key: "A",
-    name: "AI systems & orchestration",
-    covers: "RAG · retrieval · structured outputs · orchestration · model / code boundaries",
+    name: "AI product systems",
+    covers: "Grounding · RAG · orchestration · structured outputs · model / code boundaries · human-in-the-loop",
     evidence: [
       {
         source: "VeraTeach",
         detail:
-          "Standards retrieval filters hard by state, subject and grade, runs vector search over the corpus, then an LLM rerank that can only choose from the retrieved IDs — and abstains when nothing is a strong match.",
-      },
-      {
-        source: "VeraTeach",
-        detail:
-          "Every generative call — lessons, materials, grading suggestions — runs through one execution layer that enforces a typed schema and a timeout, and records model, latency, tokens and cost.",
+          "Retrieval-grounded generation over 110,000+ standards records, abstaining when the supporting evidence isn’t strong enough.",
       },
       {
         source: "Ryger",
         detail:
-          "Job descriptions become typed requirements and candidates are retrieved by vector search; tools and tenure are checked deterministically, and the remaining requirements by a model that may only cite evidence IDs that exist.",
-      },
-      {
-        source: "Ryger",
-        detail:
-          "Resume generation is constrained to extracted evidence, and code — not the model — checks every number, date and employer against the cited source.",
+          "Evidence-grounded candidate matching and resume generation, constrained to experience the candidate can actually support.",
       },
       {
         source: "ReadMyStrip",
         detail:
-          "A vision model does perception only — the closest printed swatch per pad — while code validates each reading against the user’s chart and decides the result.",
+          "A clear model / code boundary: a vision model reads the test strip, and deterministic code validates every reading and makes the call.",
+      },
+      {
+        source: "VeraTeach",
+        detail:
+          "Human-in-the-loop by design: AI drafts lessons, materials and grading suggestions, and teachers approve every score before it reaches Google Classroom.",
       },
     ],
   },
   {
     key: "B",
-    name: "Evaluation & reliability",
-    covers: "Evals · benchmarks · blind comparison · regression · quality / cost / latency",
+    name: "Evaluation & AI quality",
+    covers: "Evals · model and prompt comparison · regression · quality / cost / latency · reliability",
     evidence: [
       {
         source: "VeraTeach",
         detail:
-          "Blind, order-shuffled A/B comparisons on quality, latency and cost set the model routing. Moving rubric evaluation to a cheaper model cut it from 74s to 19s at ~2.1× lower cost, with a mean score difference of 0.05 on a 0–4 scale.",
+          "Model choices evaluated blind across quality, latency and cost; one measured change cut evaluation from 74s to 19s at ~2.1× lower cost with quality essentially unchanged.",
       },
       {
         source: "VeraTeach",
         detail:
-          "Lessons are scored on an eight-criterion rubric whose cited evidence must appear verbatim in the lesson, with live regression checks run when a prompt or model changes.",
-      },
-      {
-        source: "Grocery Sidekick",
-        detail:
-          "Allergen detection is gated in the test suite by a frozen benchmark of 9,612 manufacturer-declared allergens, with zero false “not found” results enforced.",
+          "Lesson quality scored against an explicit rubric, and regression-checked against real models when prompts or models change.",
       },
       {
         source: "ReadMyStrip",
         detail:
-          "Brightness, glare and sharpness are checked before any model call, and a scan with too many unreadable pads asks for a retake instead of returning a partial result.",
+          "Reliability on real-world photos: image quality is checked before any model call, and a weak scan prompts a retake rather than a partial answer.",
       },
     ],
   },
   {
     key: "C",
-    name: "Data & decision systems",
-    covers: "Normalization · structured evidence · deterministic logic · classification · matching",
+    name: "Data & decision intelligence",
+    covers: "Structured data · normalization · evidence · matching · classification · deterministic logic",
     evidence: [
       {
         source: "Grocery Sidekick",
         detail:
-          "USDA label records normalized into a bundled catalog of 400,000+ foods and 430,000+ barcodes, with product identities kept stable across rebuilds and ingredients resolved against a curated dictionary of 1,307 ingredients and 3,791 aliases.",
-      },
-      {
-        source: "Grocery Sidekick",
-        detail:
-          "Classification is deterministic and precomputed at build time, with a check that re-evaluates a random sample live and fails on any disagreement. Fuzzy matching was measured and rejected after it mapped “sodium citrate” to “sodium nitrate.”",
+          "Turned messy source data into a normalized, deterministic product-intelligence layer across 400,000+ foods and 430,000+ barcodes, powering barcode lookup, label scanning and product alternatives.",
       },
       {
         source: "VeraTeach",
         detail:
-          "Built the standards corpus itself — 110,000+ records across 185 frameworks in 17 states — ingested from each state’s own sources and verified state by state.",
+          "Built a standards corpus of 185 frameworks across 17 states, sourced from each state and used as a shared foundation for lesson planning, imported materials and assessments.",
       },
       {
         source: "Ryger",
         detail:
-          "Structured candidate evidence and typed role requirements feed deterministic scoring; each requirement’s status is assigned in one place, and rules can only lower the overall assessment, never raise it.",
-      },
-      {
-        source: "Capital One",
-        detail:
-          "Owned enterprise data-management processes: redesigned Data Usage Agreements into producer-driven Data Provisioning Agreements, and traced low Authoritative Source Declaration completion to a ~4-month approval backlog, then eliminated it.",
+          "Structured candidate intelligence, built once per candidate, supports both recruiter matching and resume generation — with Met / Review / Missed assessments a recruiter can check.",
       },
     ],
   },
   {
     key: "D",
-    name: "Product & workflow design",
-    covers: "Discovery · workflow redesign · human-in-the-loop · measurement · shipping and iteration",
+    name: "Product leadership & delivery",
+    covers: "Discovery · strategy · workflow design · cross-functional leadership · measurement · shipping",
     evidence: [
       {
         source: "Capital One",
         detail:
-          "Owned strategy and delivery for VaaS, moving data-management validation and control requirements into software; automation cut a manual validation workflow from ~57 user interactions to 2.",
+          "Led a cross-functional Agile team across engineering, design and data to turn a complex manual validation workflow into an enterprise platform, reducing ~57 user interactions to 2.",
       },
       {
         source: "Capital One",
         detail:
-          "Built reporting and KPIs where none existed, and led an Agile delivery team as product manager across engineering, design, data, validators and risk.",
-      },
-      {
-        source: "VeraTeach",
-        detail:
-          "The workflow became the product — planning through returned grades — with AI drafting and teachers approving every score before it reaches Classroom.",
+          "Set the vision and roadmap for a new enterprise product with senior leadership, and started cross-product PM collaboration so teams shared features instead of rebuilding them.",
       },
       {
         source: "Ryger",
         detail:
-          "Seven discoveries turned a matching tool into a recruiter-owned talent network.",
+          "Recruiter research revealed that the bigger problem wasn’t finding one match, but losing valuable candidate relationships — shifting Ryger from a matching tool toward a recruiter-owned talent network.",
       },
       {
-        source: "ReadMyStrip",
+        source: "Yellow Labs",
         detail:
-          "Customer feedback in production led to scan history and notes.",
+          "Shipped four production AI products across web and iOS, including subscription software with paying customers, from discovery through launch and iteration.",
       },
     ],
   },
@@ -351,42 +326,42 @@ export const capabilityMatrix: {
   cells: Record<"capitalOne" | WorkSlug, string | null>;
 }[] = [
   {
-    theme: "AI systems & orchestration",
+    theme: "AI product systems",
     cells: {
       capitalOne: null,
-      verateach: "Filter → vector search → constrained rerank; one execution layer",
+      verateach: "Retrieval-grounded generation; teacher approval",
       "grocery-sidekick": null,
-      ryger: "Evidence-cited assessment; constrained resume generation",
+      ryger: "Evidence-grounded matching and resumes",
       readmystrip: "Model perceives, code decides",
     },
   },
   {
-    theme: "Evaluation & reliability",
+    theme: "Evaluation & AI quality",
     cells: {
       capitalOne: null,
-      verateach: "Blind A/B routing; rubric evaluation",
-      "grocery-sidekick": "Frozen allergen benchmark in the test suite",
-      ryger: null,
-      readmystrip: null,
-    },
-  },
-  {
-    theme: "Data & decision systems",
-    cells: {
-      capitalOne: "Data-management process ownership and redesign",
-      verateach: "110K+ record standards corpus",
-      "grocery-sidekick": "400K+ foods normalized; deterministic classification",
-      ryger: "Structured evidence; rule-based status",
-      readmystrip: null,
-    },
-  },
-  {
-    theme: "Product & workflow design",
-    cells: {
-      capitalOne: "VaaS strategy and delivery; 57 → 2; KPIs",
-      verateach: "Teacher approves every grade",
+      verateach: "Blind quality / latency / cost comparison; rubric",
       "grocery-sidekick": null,
-      ryger: "Seven discoveries → talent network",
+      ryger: null,
+      readmystrip: "Image-quality gates",
+    },
+  },
+  {
+    theme: "Data & decision intelligence",
+    cells: {
+      capitalOne: "Data-management process ownership",
+      verateach: "185-framework standards corpus",
+      "grocery-sidekick": "400K+ foods in a deterministic data layer",
+      ryger: "Structured evidence; Met / Review / Missed",
+      readmystrip: null,
+    },
+  },
+  {
+    theme: "Product leadership & delivery",
+    cells: {
+      capitalOne: "Cross-functional delivery; 57 → 2",
+      verateach: "The workflow became the product",
+      "grocery-sidekick": null,
+      ryger: "Discovery → talent network",
       readmystrip: "Features from customer feedback",
     },
   },
