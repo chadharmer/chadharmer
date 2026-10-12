@@ -20,11 +20,11 @@ import { verateach, workBySlug } from "@/lib/content";
 export const metadata: Metadata = {
   title: "VeraTeach — Case Study",
   description:
-    "How VeraTeach became an integrated AI teaching workspace — standards retrieval, structured evaluation and model routing, Google Classroom publishing, and a grading loop where the teacher decides.",
+    "How VeraTeach grew from a lesson planner into a standards-to-grades teaching workspace — positioning, scope, pricing and measurement decisions alongside retrieval, evaluation and teacher-approved AI.",
   openGraph: {
     title: "VeraTeach — Case Study · Chad Harmer",
     description:
-      "Retrieval, evaluation, model routing and teacher-approved outputs in a live K–12 product.",
+      "Product strategy, positioning and measurement in a live K–12 AI product — with retrieval, evaluation and teacher-approved outputs underneath.",
   },
 };
 
@@ -68,19 +68,29 @@ export default function VeraTeachCaseStudy() {
         />
 
         <CaseSection
-          label="Discovery"
+          label="Discovery & strategy"
           title={verateach.discovery.title}
-          description={verateach.discovery.body}
+          description={verateach.discovery.intro}
           accent={accent}
         >
-          <StepRail steps={verateach.workflow} accent={accent} />
+          <CardGrid items={verateach.discovery.findings} accent={accent} />
+
+          <div className="mt-16 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+            <Reveal>
+              <div className="max-w-md">
+                <h3 className="text-balance text-2xl font-semibold tracking-tight text-fg">
+                  What the product became
+                </h3>
+                <p className="mt-4 text-base leading-relaxed text-muted">
+                  {verateach.discovery.scope}
+                </p>
+              </div>
+            </Reveal>
+            <StepRail steps={verateach.workflow} accent={accent} />
+          </div>
         </CaseSection>
 
-        <CaseSection
-          label="Key decisions"
-          title="The tradeoffs I made on purpose."
-          accent={accent}
-        >
+        <CaseSection label="Key decisions" title="The tradeoffs I made on purpose." accent={accent}>
           <CardGrid items={verateach.decisions} accent={accent} />
           {/* "AI assists, the teacher decides" is a claim until you can see
               the empty score box next to the suggestion. */}
@@ -90,7 +100,7 @@ export default function VeraTeachCaseStudy() {
               width={2060}
               height={1650}
               alt="The grading workspace: objective questions already scored by percentage, a written question with its expected answer, each student response with an empty score field and a suggest-a-score action."
-              caption="Objective questions arrive already scored. For written work the teacher sees the expected answer and each response with an empty score box beside a suggestion they can ask for — the model proposes, the score field stays theirs to fill. The class shown is seeded sample data, not student work."
+              caption="Objective questions arrive already scored. For written work the teacher sees the expected answer and each response beside an empty score box — the model proposes, the score stays theirs. The class shown is seeded sample data, not student work."
             />
           </Reveal>
         </CaseSection>
@@ -119,7 +129,7 @@ export default function VeraTeachCaseStudy() {
                 width={1600}
                 height={1150}
                 alt="A generated quiz in teacher view, showing correct answers marked and an explanation beneath a true/false item."
-                caption="Generated assessments are structured objects, not prose — every item carries its answer key and rationale, the teacher can switch to the student view, and anything here can be rewritten before it goes out."
+                caption="Generated assessments are structured objects, not prose — every item carries its answer key and rationale, and anything can be rewritten before it goes out."
               />
             </Reveal>
             <ShotAside
@@ -128,7 +138,7 @@ export default function VeraTeachCaseStudy() {
               height={1280}
               alt="A material's Classroom panel showing it published to two class periods, with submission counts and a grading action for each."
               title="The loop closes back inside Classroom"
-              body="Publishing creates a real Google Form in the teacher's own Classroom and keeps the link to it, so submissions come back per class and each one hands off to grading on its own. That round trip — not the export — is what makes this usable on a Tuesday."
+              body="Publishing creates a real Google Form in the teacher's own Classroom and maps every question, so submissions come back per class and hand off to grading. Re-publishing is idempotent, and only teacher-authored scores are ever returned. That round trip — not the export — is what makes this usable on a Tuesday."
             />
           </div>
 
@@ -145,7 +155,7 @@ export default function VeraTeachCaseStudy() {
           <CardGrid items={verateach.evaluation.points} accent={accent} label />
         </CaseSection>
 
-        <CaseSection label="In production" title="Shipped, not staged." accent={accent}>
+        <CaseSection label="In production" title="Live, self-serve, and measured." accent={accent}>
           <PointList
             intro={verateach.production.intro}
             points={verateach.production.points}
@@ -155,7 +165,7 @@ export default function VeraTeachCaseStudy() {
 
         <CaseSection
           label="What changed based on evidence"
-          title="Decisions the measurements changed."
+          title="Decisions the evidence changed."
           accent={accent}
         >
           <CardGrid items={verateach.evidence} accent={accent} />

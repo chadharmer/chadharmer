@@ -542,34 +542,53 @@ export const verateach = {
   positioning:
     "An AI teaching workspace that carries a lesson from standards through Google Classroom to returned grades.",
   intro:
-    "I designed and built VeraTeach end to end — the product strategy, the AI architecture, and the systems underneath. It started as lesson generation and became something larger: an integrated workspace spanning planning, standards alignment, assessment creation, classroom publishing, and grading, with the teacher in control at every step.",
-  tldr: "Generating a lesson is one step. The product is the workflow around it — grounding, materials, publishing, and grading — collapsed into one workspace, with AI doing the drafting and the teacher keeping the decisions.",
+    "I designed and built VeraTeach end to end — strategy, positioning, the AI architecture and the systems underneath — built first for middle- and high-school teachers, with the teacher in control at every step.",
+  tldr: "A crowded category competes on what AI can generate. VeraTeach competes on the workflow around it — grounding, materials, publishing and grading in one workspace, with AI drafting and the teacher deciding.",
 
   glance: {
     role: YELLOW_LABS_ROLE,
-    timeline: "2026 – present",
-    status: "Live at verateach.com · self-serve · subscription billing",
+    timeline: "June 2026 – present",
+    status: "Live at verateach.com · self-serve",
     signals: [
-      "110,000+ standards records across 185 frameworks in 17 states",
-      "Rubric evaluation 74s → 19s at ~2.1× lower cost, scores held",
-      "Every generative call schema-validated and cost-tracked",
+      "Grew from a lesson planner into a planning → Google Classroom → grading loop",
+      "Retrieval grounded in 110,000+ standards records across 185 frameworks in 17 states",
+      "AI cost of about $1 a month for a heavy teacher, against a $4–8 planning estimate",
     ],
     capabilities: [
-      "AI workflow design",
-      "Retrieval & vector search",
+      "Product strategy",
+      "Positioning",
+      "Workflow design",
+      "Pricing & business model",
+      "Retrieval & grounding",
       "Evaluation & model routing",
-      "Structured outputs",
       "Human-in-the-loop",
-      "Third-party integration",
+      "Measurement",
     ],
   } satisfies Glance,
 
   problem:
-    "A teacher’s week is spread across disconnected tools: one place to plan, another to look up standards, another to build the quiz, Google Classroom to hand it out, a spreadsheet to grade it, and a blank document whenever last year’s material needs adapting. Each handoff is manual re-entry. Most AI education tools generate a lesson and stop there, dropping a plausible document into the middle of a workflow they don’t participate in.",
+    "A teacher’s week is spread across disconnected tools: one place to plan, another to look up standards, another to build the quiz, Google Classroom to hand it out, a spreadsheet to grade it. Each handoff is manual re-entry. Most AI tools for teachers generate a document and stop, dropping it into the middle of a workflow they don’t participate in.",
 
   discovery: {
-    title: "The workflow became the product.",
-    body: "Teachers didn’t need lessons generated so much as lessons that fit — into their standards, their classes and the tools their school already runs on. Lesson generation became one step in a sequence, each stage a deliberate decision about where AI helps and where the teacher stays in control.",
+    title: "How the product found its shape.",
+    intro:
+      "Several kinds of input shaped VeraTeach, and they carry different weight: conversations with teachers, structured walkthroughs of the product against real teaching tasks, a competitive scan, and — once it was live — how people actually used it.",
+    findings: [
+      {
+        title: "Compete on the workflow, not the feature count",
+        body: "A competitive scan of MagicSchool, Brisk, Khanmigo, Curipod and Diffit showed the category racing on breadth, time-saved claims and trust badges — a race a new product can’t win. The positioning work aimed to change the axis of competition instead: a persistent planning workspace, quality that can be shown, and depth on standards rather than breadth.",
+      },
+      {
+        title: "Walkthroughs found what the roadmap missed",
+        body: "Walking the product through real teaching tasks before pilots produced a batch of changes: a preview step was cut so generated lessons save directly, adapting a lesson moved onto the Home screen where a teacher starts the day, coaching-style review was split from scored audit, and a setting that could silently delete lessons was removed.",
+      },
+      {
+        title: "Teacher input, in the details",
+        body: "Conversations with teachers informed the product throughout. One documented example: lessons carry a movement attribute because a teacher described “my after-lunch group — they need to be up and moving.”",
+      },
+    ] satisfies TitledBody[],
+    scope:
+      "The first product vision explicitly ruled out LMS integrations, student-facing pages and billing. Each was added once the workflow made the case for it.",
   },
 
   workflow: [
@@ -581,7 +600,7 @@ export const verateach = {
     {
       index: "02",
       title: "Grounding in standards",
-      body: "Retrieval grounds the lesson in a corpus of 110,000+ state standards records, so alignment is verifiable rather than asserted.",
+      body: "Retrieval grounds the lesson in state standards, so alignment is verifiable rather than asserted.",
     },
     {
       index: "03",
@@ -601,7 +620,7 @@ export const verateach = {
     {
       index: "06",
       title: "Grading",
-      body: "Submissions come back into a grading workspace. Objective questions score automatically; written answers get AI-drafted suggestions the teacher accepts, edits, or ignores.",
+      body: "Submissions come back into a grading workspace. Objective questions score automatically; written answers get AI-drafted suggestions the teacher accepts, edits or ignores.",
     },
     {
       index: "07",
@@ -613,116 +632,104 @@ export const verateach = {
   decisions: [
     {
       title: "AI suggests the grade; the teacher gives it",
-      body: "Objective questions score themselves. For written work the model drafts a score and a rationale, and stops there — it can also decline with “needs teacher judgment,” and it never sees student identity. Grading is a professional judgment a teacher answers for, so automating the judgment would move accountability to something that cannot hold it.",
+      body: "Objective questions score themselves. For written work the model drafts a score and rationale and stops there — it can decline with “needs teacher judgment,” and never sees student identity. Grading is a judgment a teacher answers for; automating it would move accountability to something that can’t hold it.",
+    },
+    {
+      title: "Preparation, not delivery",
+      body: "VeraTeach could have drifted into becoming an LMS. Instead it prepares, publishes and grades, while Google Classroom stays the system of record schools already run on — which is also why the Workspace Marketplace listing was pursued for district admin allowlisting rather than discovery.",
     },
     {
       title: "Correctness over coverage",
-      body: "Retrieval is bounded to a filtered candidate set even though a broader search would surface more, and the model abstains rather than padding the list. In a standards-aligned product, a confidently wrong suggestion is worse than a narrower right one.",
+      body: "A broader search would surface more standards. Retrieval stays bounded and the model abstains rather than padding the list, because in a standards-aligned product a confidently wrong suggestion is worse than a narrower right one.",
     },
     {
       title: "Own the corpus rather than the integration",
-      body: "Licensing a standards API would have been faster. Building the ingestion meant meeting each state’s own PDFs, spreadsheets and quirks — but it means alignment is verifiable, additions cost days rather than negotiations, and no vendor sits between a teacher and whether their lesson is correct.",
+      body: "Licensing a standards API would have been faster. Owning the ingestion means alignment is verifiable, adding a state costs days rather than a negotiation, and no vendor sits between a teacher and whether their lesson is correct.",
     },
     {
-      title: "Route by stakes, decided by measurement",
-      body: "Summative tests get a stronger model than a worksheet does. Which model, for which workflow, is set by blind comparison on quality, latency and cost — not by defaulting to the largest one.",
+      title: "Pricing that never punishes a downgrade",
+      body: "Plans launched as hypotheses, not convictions. Downgrading deletes and locks nothing, and pricing copy was corrected whenever it promised something enforcement didn’t. When an early free plan turned out to allow a complete, forever-free workflow, limits were reset so free stays useful without replacing paid. The launch offer was a one-time discount, not a price, so it couldn’t quietly become permanent.",
+    },
+    {
+      title: "Retire what the evidence doesn’t support",
+      body: "Letting visitors generate a lesson before signing up was built to lower the barrier to trying the product. The data showed it wasn’t converting and was the only unmetered AI spend, so it was retired in favor of signing in first and starting immediately after.",
     },
   ] satisfies TitledBody[],
 
   systems: [
     {
-      title: "Standards retrieval, step by step",
-      body: "A hard metadata filter (state → the frameworks eligible for the course’s subject → grade, deprecated standards excluded), then exact vector similarity over the embedded standards (top 20), then an LLM rerank that can only choose from the retrieved IDs, with a confidence gate that abstains when nothing is a strong match. Results are cached on a key that includes the corpus, model and prompt versions; abstentions are never cached.",
+      title: "Grounded standards retrieval",
+      body: "A hard filter on state, subject-eligible frameworks and grade; vector similarity over the embedded standards; then an LLM rerank that can only choose from the retrieved candidates, with a confidence gate that abstains when nothing is a strong match. Results are cached against the corpus, model and prompt versions.",
     },
     {
       title: "A corpus worth retrieving from",
-      body: "I built and maintain the corpus itself — 185 frameworks across 17 states, 110,000+ records — ingested from authoritative state sources, each with its own document format and its own parsing failures, and verified state by state before teachers see it.",
+      body: "I built and maintain the corpus itself — 185 frameworks across 17 states, 110,000+ records — ingested from each state’s own documents, every one with its own format and parsing failures.",
     },
     {
       title: "One execution layer for every AI call",
-      body: "Every generative capability — generation, review, adaptation, materials, grading suggestions — runs through a single seam that enforces a typed schema and a per-attempt timeout, with retry where a workflow opts in. It records model, provider, latency, tokens and estimated cost for every call, including failures, which is where routing and cost decisions get their data.",
-    },
-    {
-      title: "Assessment as a round trip, not an export",
-      body: "Publishing a quiz creates a real Google Form in the teacher’s own Classroom, maps every question so responses can be read back, matches submissions to students, and returns grades. Re-publishing is idempotent; returning grades is resumable and sends only teacher-authored scores.",
-    },
-    {
-      title: "Reversible by construction",
-      body: "Every AI change is preview-first — engines persist nothing until a teacher approves — and lesson history is append-only and written by database trigger, so changes are reversible and attributable. Scheduled instances are copy-on-write, so one lesson can run in many classes without collisions.",
-    },
-    {
-      title: "Search that mixes meaning and keywords",
-      body: "Separately from standards, the public lesson library combines keyword and vector search, fused with Reciprocal Rank Fusion, so a teacher finds a lesson whether they type its title or describe what it teaches.",
+      body: "Generation, review, adaptation, materials and grading suggestions all run through a single layer that enforces a typed schema and a timeout, and records model, latency, tokens and cost for every call — which is where routing and cost decisions get their data.",
     },
   ] satisfies TitledBody[],
 
   evaluation: {
     intro:
-      "Evaluation is the part most AI products skip and the part I lean on hardest. Shipping AI teachers can trust means measuring quality deliberately — not eyeballing a few good demos.",
+      "Shipping AI teachers can trust means measuring quality deliberately — and treating cost and latency as product decisions, not afterthoughts.",
     points: [
       {
         title: "Rubric evaluation",
-        body: "Lessons are scored on eight explicit criteria — from objective clarity to teacher usability — and any evidence quote the evaluator cites must appear verbatim in the lesson, or it is dropped.",
-      },
-      {
-        title: "Live regression checks",
-        body: "A library of live checks runs against real models when a prompt or model changes, alongside a baseline matrix that generates and evaluates lessons across K–12 subjects and grades.",
+        body: "Lessons are scored on eight explicit criteria, from objective clarity to teacher usability, and any evidence the evaluator cites must appear verbatim in the lesson, or it is dropped.",
       },
       {
         title: "Blind model comparison",
-        body: "Model and prompt variants are compared blind, with output order shuffled, on quality, latency and cost — and the results set the routing policy.",
+        body: "Model and prompt variants are compared blind, with output order shuffled, on quality, latency and cost. On generated tests, a three-way comparison found equal quality at ~33% lower cost and set the routing for summative assessments; low-stakes materials run on a model roughly 10× cheaper per token.",
       },
       {
-        title: "Retrieval and corpus checks",
-        body: "Retrieval recall is benchmarked against a full-pool baseline, and every standards framework passes coverage checks — counts, grade spans, and sampled text read back against the source — before teachers see it.",
+        title: "A measured model change",
+        body: "Moving rubric evaluation to a cheaper reasoning model cut it from 74s to 19s at ~2.1× lower cost, with a mean score difference of 0.05 on a 0–4 scale across a fixed lesson set.",
+      },
+      {
+        title: "A benchmark that rewarded the wrong thing",
+        body: "One evaluation benchmark turned out to reward confident invention over asking a clarifying question. I changed the benchmark before trusting its results.",
+      },
+      {
+        title: "Regression, retrieval and corpus checks",
+        body: "Live checks run against real models when a prompt or model changes, across a baseline matrix of K–12 subjects and grades. Retrieval recall is benchmarked, and every standards framework passes coverage checks against its source before teachers see it.",
       },
     ] satisfies TitledBody[],
   },
 
   production: {
     intro:
-      "VeraTeach is a deployed product, not a prototype. A teacher can sign up, subscribe, and use it without talking to me.",
+      "VeraTeach is live and self-serve: a teacher can sign up, connect Google Classroom and start without talking to me. Getting there was as much product work as engineering.",
     points: [
-      "Self-serve signup with account recovery",
-      "Stripe subscriptions and usage entitlements",
-      "Managed Postgres with pgvector and migrations",
-      "Google OAuth for Classroom and Forms",
-      "Per-call AI usage and cost telemetry",
-      "Error monitoring, funnel alerts and a daily canary",
+      "Google OAuth verification approved for Classroom and Forms — the long pole to launch",
+      "Free and paid plans with usage entitlements, set as hypotheses to revisit",
+      "AI cost measured per call: about $1 a month for a heavy teacher, against a $4–8 planning estimate",
+      "A durable funnel-event table and alerting, so the funnel is measurable rather than inferred",
+      "Onboarding reworked so a new teacher reaches a first lesson before being asked to set anything up",
     ],
   },
 
   evidence: [
     {
-      title: "Evaluation got nearly 4× faster without getting worse",
-      body: "Moving rubric evaluation to a cheaper reasoning model cut it from 74s to 19s at ~2.1× lower cost — with a mean score difference of 0.05 on a 0–4 scale across a fixed lesson set.",
+      title: "Measurement before optimization",
+      body: "When traffic wasn’t converting, I investigated before changing the page: most catalog “views” turned out to be bots, and real visitors were largely mobile ad clicks looking for things the catalog didn’t cover. The first fixes were to the measurement, not the product.",
     },
     {
-      title: "The reranker got 7× faster",
-      body: "Standards reranking moved to a faster model: 12.6s to 1.8s, at 6.4× lower cost.",
+      title: "Two fast reversals",
+      body: "A unit-first homepage was reverted the same day, once it was clear it met lesson and quiz searches with a page about something else. A landing change that stopped ad signups was rolled back within two days.",
     },
     {
-      title: "Tests routed on a blind comparison",
-      body: "A blind three-way comparison on generated tests found equal quality at ~33% lower cost than the previous model, and set the routing for summative assessments.",
-    },
-    {
-      title: "A benchmark that rewarded the wrong thing",
-      body: "One evaluation benchmark turned out to reward confident invention over asking a clarifying question. I changed the benchmark before trusting its results.",
-    },
-    {
-      title: "Silent failover, made visible",
-      body: "Gateway failover was masking schema rejections from one provider. Adding provider attribution to every call’s log exposed it.",
-    },
-    {
-      title: "Query work measured in production",
-      body: "Rewriting the standards vector query to compute distance once cut cold latency from 177ms to 27ms; moving the teacher-facing standards picker to a trigram index fixed searches that had taken 1–7 seconds.",
+      title: "A silent failure, made loud",
+      body: "Every creation path once failed for about 14 hours behind a friendly error message that no monitoring saw. The lesson: a user-visible failure that degrades gracefully is invisible to every system you run — so alerting now watches what users experience, not just crashes.",
     },
   ] satisfies TitledBody[],
 
   lesson:
-    "Generating a lesson was never the hard part; a model does that in seconds. The product is everything around it — the standards corpus, the assessment loop, the grading round trip — orchestrated so AI stays useful and the teacher stays accountable.",
+    "Generating a lesson was never the hard part; a model does that in seconds. The product is everything around it — the standards corpus, the Classroom round trip, the grading loop, a business model that doesn’t punish teachers — and the discipline to measure which of those choices actually work.",
 
   next: [
+    "Run the properly powered landing-page experiment the conversion analysis specified, rather than iterating on a sample too small to read.",
     "Run the live evaluation suite automatically on every prompt or model change, rather than on demand.",
     "Build an expert-labeled standards gold set, so retrieval recall is measured against teachers’ judgment rather than a full-pool model baseline.",
   ],
@@ -737,7 +744,6 @@ export const verateach = {
       items: [
         "pgvector (exact cosine)",
         "text-embedding-3-small",
-        "185 frameworks · 17 states",
         "Per-state ingestion and verification",
         "Append-only, trigger-written versioning",
       ],
@@ -754,7 +760,7 @@ export const verateach = {
     {
       label: "Google Classroom",
       items: [
-        "OAuth with encrypted tokens",
+        "Verified OAuth",
         "Persistent period → course mapping",
         "Native Google Forms quizzes",
         "Idempotent re-publish",
@@ -762,12 +768,20 @@ export const verateach = {
       ],
     },
     {
+      label: "Performance work",
+      items: [
+        "Standards reranker 12.6s → 1.8s at 6.4× lower cost",
+        "Vector query rewritten: cold latency 177ms → 27ms",
+        "Standards picker moved to a trigram index (searches had taken 1–7s)",
+      ],
+    },
+    {
       label: "Production",
       items: [
-        "Stripe subscriptions",
-        "Usage entitlements",
-        "AI usage and cost events",
-        "Error monitoring and canaries",
+        "Stripe subscriptions and usage entitlements",
+        "Per-call AI usage and cost events",
+        "Funnel events, alerting and a daily canary",
+        "Error monitoring",
       ],
     },
     {
@@ -776,7 +790,6 @@ export const verateach = {
         "Standards retrieval (filter → vector → constrained rerank)",
         "Library search (keyword + vector, RRF)",
         "Assessment → publish → grade → return loop",
-        "AI-suggested free-response scores",
         "Lesson import from existing material",
         "Copy-on-write scheduled instances",
       ],
