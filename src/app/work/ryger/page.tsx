@@ -142,7 +142,7 @@ export default function RygerCaseStudy() {
 
         <CaseSection
           label="Evaluation & quality"
-          title="Truthfulness, checked in code and judged blind."
+          title="Truthfulness, checked in code."
           accent={accent}
           tinted
         >

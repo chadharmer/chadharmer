@@ -48,7 +48,9 @@ export function WorkCard({ work }: { work: Work }) {
 
         <dl className="mt-6 space-y-4 border-t border-line pt-5">
           <Row label="Key decision" value={work.decision} />
-          <Row label="Signal" value={work.signal} accent={work.accent} />
+          {work.signal ? (
+            <Row label="Signal" value={work.signal} accent={work.accent} />
+          ) : null}
         </dl>
 
         <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 pt-6">

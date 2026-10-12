@@ -23,7 +23,7 @@ export function Background() {
             ))}
             <Reveal delay={0.14}>
               <p className="border-l-2 border-accent/60 pl-5 text-lg font-medium leading-relaxed tracking-tight text-fg">
-                {background.thread}
+                {background.closing}
               </p>
             </Reveal>
           </div>

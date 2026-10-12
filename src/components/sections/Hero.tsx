@@ -147,7 +147,7 @@ export function Hero() {
             <motion.div
               key={p.value}
               variants={item}
-              className="flex flex-col-reverse gap-1.5 bg-surface/70 p-5 backdrop-blur sm:p-6"
+              className="flex flex-col-reverse justify-end gap-1.5 bg-surface/70 p-5 backdrop-blur sm:p-6"
             >
               <dt className="text-[13px] leading-snug text-muted">{p.label}</dt>
               <dd className="text-xl font-semibold tracking-tight text-fg sm:text-2xl">
